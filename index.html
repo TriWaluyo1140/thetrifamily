@@ -5,153 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Keluarga Kami</title>
     <style>
-        /* Gaya Tampilan (CSS) */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
-        }
-        header {
-            background: linear-gradient(135deg, #4a90e2, #2c3e50);
-            color: white;
-            text-align: center;
-            padding: 3rem 1rem;
-        }
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        .section {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
-        .section h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #4a90e2;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        /* Style Anggota Keluarga */
-        .grid-keluarga {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .kartu-anggota {
-            background: #f9f9f9;
-            padding: 1.5rem;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #eee;
-            transition: transform 0.2s;
-        }
-        .kartu-anggota:hover {
-            transform: translateY(-5px);
-        }
-        .avatar {
-            width: 80px;
-            height: 80px;
-            background: #4a90e2;
-            color: white;
-            font-size: 2rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-        }
-        .peran {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            font-weight: bold;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        header { background: linear-gradient(135deg, #4a90e2, #2c3e50); color: white; text-align: center; padding: 3rem 1rem; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .section { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+        .section h2 { color: #2c3e50; border-bottom: 2px solid #4a90e2; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        .grid-keluarga { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .kartu-anggota { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; text-align: center; border: 1px solid #eee; transition: transform 0.2s; }
+        .kartu-anggota:hover { transform: translateY(-5px); }
+        .avatar { width: 80px; height: 80px; background: #4a90e2; color: white; font-size: 2rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 1rem; }
+        .peran { font-size: 0.9rem; color: #7f8c8d; font-weight: bold; margin-bottom: 1rem; }
+        .btn-profil { display: inline-block; background-color: #4a90e2; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 5px; font-size: 0.9rem; font-weight: bold; transition: background 0.2s; }
+        .btn-profil:hover { background-color: #357abd; }
+        footer { text-align: center; padding: 2rem; color: #7f8c8d; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Keluarga Besar Tri Waluyo</h1>
-        <p>Selamat datang di ruang digital tempat kami berbagi cerita dan kenangan.</p>
+        <h1>Keluarga Besar Wijaya</h1>
+        <p>Selamat datang di ruang digital tempat kami berbagi cerita.</p>
     </header>
 
     <div class="container">
-        
-        <!-- Sekilas Tentang Keluarga -->
         <div class="section">
             <h2>Tentang Kami</h2>
-            <p>Halo! Ini adalah situs web resmi keluarga kami. Di sini kami mendokumentasikan momen-momen berharga, perjalanan, serta mengenalkan anggota keluarga kami kepada dunia luar. Kami percaya bahwa keluarga adalah tempat awal dan akhir dari segala cerita terbaik.</p>
+            <p>Halo! Ini adalah situs web resmi keluarga kami. Silakan klik profil di bawah untuk mengenal kami lebih jauh.</p>
         </div>
 
-        <!-- Daftar Anggota Keluarga -->
         <div class="section">
             <h2>Anggota Keluarga</h2>
             <div class="grid-keluarga">
                 
+                <!-- Kartu Ayah -->
                 <div class="kartu-anggota">
                     <div class="avatar">👨‍💼</div>
-                    <h3>Tri Waluyo</h3>
+                    <h3>Budi</h3>
                     <p class="peran">Ayah</p>
-                    <p>Suka menyeduh kopi di pagi hari</p>
+                    <a href="ayah.html" class="btn-profil">Lihat Profil</a>
                 </div>
 
+                <!-- Kartu Ibu -->
                 <div class="kartu-anggota">
                     <div class="avatar">👩‍🍳</div>
-                    <h3>Siti Umiyati</h3>
+                    <h3>Siti</h3>
                     <p class="peran">Ibu</p>
-                    <p>Seorang Pengajar tinggal Mts di Jakarta Barat</p>
+                    <a href="ibu.html" class="btn-profil">Lihat Profil</a>
                 </div>
 
+                <!-- Kartu Anak -->
                 <div class="kartu-anggota">
                     <div class="avatar">👨‍🎓</div>
-                    <h3>Sylda Frizqia Qiftiyani Putri</h3>
-                    <p class="peran">Anak Pertama</p>
-                    <p>Satriwati Ponpes Al Amanah Al Gontory</p>
-                </div>
-                <div class="kartu-anggota">
-                    <div class="avatar">👩‍🎨</div>
-                    <h3>Haidar Fawaz Alhuzam Putra</h3>
-                    <p class="peran">Anak Kedua</p>
-                    <p>Siswa MTSN 37 Jakarta Barat yang hobi menggambar bermain bola</p>
+                    <h3>Andi</h3>
+                    <p class="peran">Anak</p>
+                    <a href="anak.html" class="btn-profil">Lihat Profil</a>
                 </div>
 
             </div>
         </div>
-
-        <!-- Agenda / Kegiatan -->
-        <div class="section">
-            <h2>Momen & Agenda Terdekat</h2>
-            <ul>
-                <li>🗓️ <strong>Arisan Keluarga:</strong> Minggu depan di rumah Nenek.</li>
-                <li>✈️ <strong>Liburan Akhir Tahun:</strong> Rencana pergi ke Bali.</li>
-            </ul>
-        </div>
-
     </div>
 
     <footer>
-        <p>&copy; 2026 Keluarga Tri Waluyo. Dibuat dengan ❤️ dan dijalankan via GitHub.</p>
+        <p>&copy; 2026 Keluarga Wijaya.</p>
     </footer>
 
 </body>
