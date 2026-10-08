@@ -1,136 +1,159 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keluarga Besar Waluyo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Keluarga Kami</title>
+    <style>
+        /* Gaya Tampilan (CSS) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #4a90e2, #2c3e50);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4a90e2;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        /* Style Anggota Keluarga */
+        .grid-keluarga {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .kartu-anggota {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: transform 0.2s;
+        }
+        .kartu-anggota:hover {
+            transform: translateY(-5px);
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: #4a90e2;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+        .peran {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+    <header>
+        <h1>Keluarga Besar Wijaya</h1>
+        <p>Selamat datang di ruang digital tempat kami berbagi cerita dan kenangan.</p>
+    </header>
 
-html{
-    scroll-behavior:smooth;
-}
+    <div class="container">
+        
+        <!-- Sekilas Tentang Keluarga -->
+        <div class="section">
+            <h2>Tentang Kami</h2>
+            <p>Halo! Ini adalah situs web resmi keluarga kami. Di sini kami mendokumentasikan momen-momen berharga, perjalanan, serta mengenalkan anggota keluarga kami kepada dunia luar. Kami percaya bahwa keluarga adalah tempat awal dan akhir dari segala cerita terbaik.</p>
+        </div>
 
-body{
-    font-family: Arial, sans-serif;
-    line-height:1.6;
-    color:#333;
-}
+        <!-- Daftar Anggota Keluarga -->
+        <div class="section">
+            <h2>Anggota Keluarga</h2>
+            <div class="grid-keluarga">
+                
+                <div class="kartu-anggota">
+                    <div class="avatar">👨‍💼</div>
+                    <h3>Budi</h3>
+                    <p class="peran">Ayah</p>
+                    <p>Suka berkebun dan menyeduh kopi di pagi hari.</p>
+                </div>
 
-header{
-    background:linear-gradient(135deg,#0d47a1,#1976d2);
-    color:white;
-    padding:15px 40px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
+                <div class="kartu-anggota">
+                    <div class="avatar">👩‍🍳</div>
+                    <h3>Siti</h3>
+                    <p class="peran">Ibu</p>
+                    <p>Koki terbaik di rumah dan pecinta tanaman hias.</p>
+                </div>
 
-nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+                <div class="kartu-anggota">
+                    <div class="avatar">👨‍🎓</div>
+                    <h3>Andi</h3>
+                    <p class="peran">Anak Pertama</p>
+                    <p>Sedang kuliah IT dan hobi bermain game online.</p>
+                </div>
 
-.logo{
-    font-size:24px;
-    font-weight:bold;
-}
+                <div class="kartu-anggota">
+                    <div class="avatar">👩‍🎨</div>
+                    <h3>Rara</h3>
+                    <p class="peran">Anak Kedua</p>
+                    <p>Siswa SMA yang hobi menggambar digital dan membaca.</p>
+                </div>
 
-.menu{
-    display:flex;
-    list-style:none;
-    gap:20px;
-}
+            </div>
+        </div>
 
-.menu a{
-    text-decoration:none;
-    color:white;
-    font-weight:bold;
-    padding:8px 12px;
-    border-radius:5px;
-    transition:0.3s;
-}
+        <!-- Agenda / Kegiatan -->
+        <div class="section">
+            <h2>Momen & Agenda Terdekat</h2>
+            <ul>
+                <li>🗓️ <strong>Arisan Keluarga:</strong> Minggu depan di rumah Nenek.</li>
+                <li>✈️ <strong>Liburan Akhir Tahun:</strong> Rencana pergi ke Bali.</li>
+            </ul>
+        </div>
 
-.menu a:hover{
-    background:rgba(255,255,255,0.2);
-}
+    </div>
 
-.hero{
-    height:90vh;
-    background-image:url('https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600');
-    background-size:cover;
-    background-position:center;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-}
+    <footer>
+        <p>&copy; 2026 Keluarga Wijaya. Dibuat dengan ❤️ dan dijalankan via GitHub.</p>
+    </footer>
 
-.hero-content{
-    background:rgba(0,0,0,0.5);
-    color:white;
-    padding:40px;
-    border-radius:15px;
-}
-
-.hero h1{
-    font-size:48px;
-}
-
-.hero p{
-    margin-top:10px;
-    font-size:20px;
-}
-
-.btn{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 25px;
-    border-radius:30px;
-    background:#FFD54F;
-    text-decoration:none;
-    color:black;
-    font-weight:bold;
-}
-
-.btn:hover{
-    background:#FFC107;
-}
-
-section{
-    padding:80px 10%;
-}
-
-.section-title{
-    text-align:center;
-    margin-bottom:40px;
-    color:#0d47a1;
-}
-
-.card{
-    background:white;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.1);
-}
-
-.family-tree{
-    background:#f5f5f5;
-    border-radius:10px;
-    padding:25px;
-    text-align:center;
-}
-
-.family-tree ul{
-    list-style:none;
-}
-
-.gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px
+</body>
+</html>
