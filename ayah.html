@@ -3,26 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Ayah - Tri Waluyo</title>
+    <title>Profil Keluarga - Tri Waluyo</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; padding: 2rem; }
-        .box-profil { max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h1 { color: #2c3e50; }
-        .back-link { display: inline-block; margin-top: 1.5rem; color: #4a90e2; text-decoration: none; font-weight: bold; }
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-title: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            padding: 2.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: var(--text-title);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Profile Grid */
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: #cbd5e1;
+        }
+
+        .profile-card.featured {
+            border: 2px solid var(--primary);
+            background: #f0f6ff;
+        }
+
+        .avatar-wrapper {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 1.25rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-father { background: #dbeafe; color: #1e40af; }
+        .badge-mother { background: #fce7f3; color: #9d174d; }
+        .badge-child { background: #dcfce7; color: #166534; }
+
+        .profile-card h2 {
+            font-size: 1.25rem;
+            color: var(--text-title);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-list {
+            text-align: left;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .info-item {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .info-item i {
+            color: var(--primary);
+            margin-top: 4px;
+            font-size: 0.95rem;
+        }
+
+        /* Quote Section */
+        .quote-box {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quote-box i {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .quote-box p {
+            font-size: 1.05rem;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        /* Footer / Back Button */
+        .footer-action {
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            background: #eff6ff;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .family-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="box-profil">
-        <h1>👨‍💼 Profil Ayah: Tri Waluyo</h1>
-        <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
-        <p><strong>Pekerjaan:</strong> Karyawan Swasta</p>
-        <p><strong>Hobi:</strong> Berkebun, membaca berita, dan meracik kopi hitam di pagi hari sebelum berangkat kerja.</p>
-        <p><strong>Kata Bijak Favorit:</strong> "Kerja keras tidak akan mengkhianati hasil."</p>
-        
-        <a href="index.html" class="back-link">← Kembali ke Halaman Utama</a>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Profil Keluarga</h1>
+            <p>Mengenal lebih dekat anggota keluarga Tri Waluyo</p>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="family-grid">
+            
+            <!-- Profil Ayah (Utama) -->
+            <div class="profile-card featured">
+                <div class="avatar-wrapper">
+                    <img src="watermarked_img_4201483311439475465.jpg" alt="Foto Tri Waluyo (Ayah)">
+                </div>
+                <span class="role-badge badge-father">Ayah</span>
+                <h2>Tri Waluyo</h2>
+                <div class="info-list">
+                    <div class="info-item">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span><strong>Pekerjaan:</strong> Karyawan Swasta</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-mug-hot"></i>
+                        <span><strong>Hobi:</strong> Berkebun, membaca berita, & meracik kopi hitam pagi.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profil Ibu -->
+            <div class="profile-card">
+                <div class="avatar-wrapper">
+                    <img src="watermarked_img_16512944257374127430.jpg" alt="Foto Ibu">
+                </div>
+                <span class="role-badge badge-mother">Ibu</span>
+                <h2>Ibu Keluarga</h2>
+                <div class="info-list">
+                    <div class="info-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <span><strong>Peran:</strong> Ibu Rumah Tangga & Kewirausahaan</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-utensils"></i>
+                        <span><strong>Hobi:</strong> Memasak resep baru & dekorasi rumah.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profil Anak -->
+            <div class="profile-card">
+                <div class="avatar-wrapper">
+                    <img src="watermarked_img_647218869581484380.jpg" alt="Foto Anak">
+                </div>
+                <span class="role-badge badge-child">Anak</span>
+                <h2>Anak</h2>
+                <div class="info-list">
+                    <div class="info-item">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span><strong>Status:</strong> Pelajar / Mahasiswa</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <span><strong>Hobi:</strong> Olahraga, mendengarkan musik, & belajar teknologi.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kutipan Bijak -->
+        <div class="quote-box">
+            <i class="fa-solid fa-quote-left"></i>
+            <p>"Kerja keras tidak akan mengkhianati hasil."</p>
+        </div>
+
+        <!-- Tombol Kembali -->
+        <div class="footer-action">
+            <a href="index.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Halaman Utama
+            </a>
+        </div>
     </div>
 
 </body>
 </html>
-
