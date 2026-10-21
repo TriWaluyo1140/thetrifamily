@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri — Keluarga Tri Waluyo</title>
+    <meta name="description" content="Rumah digital Keluarga Tri Waluyo — mengenal Ayah, Ibu, Sylda, dan Haidar.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="wrap">
+            <a href="index.html" class="logo"><span class="logo-mark">TW</span> Keluarga Tri Waluyo</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="anggota.html">Anggota</a></li>
+                <li><a href="galeri.html" class="active" aria-current="page">Galeri</a></li>
+                <li><a href="tentang.html">Tentang Kami</a></li>
+                <li><a href="motto.html">Motto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page">
+    <section id="galeri">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <h2>Galeri Liburan</h2>
+                <p>Tempat-tempat yang pernah kami kunjungi bersama. Klik foto untuk melihat lebih besar.</p>
+            </div>
+
+            <!--
+                CARA MENAMBAH FOTO:
+                1. Unggah foto ke folder "galeri" di GitHub (contoh: galeri/foto4.jpg).
+                2. Salin satu blok <figure> ... </figure> di bawah, tempel, lalu ganti isinya.
+            -->
+            <div class="gallery">
+                <!-- FOTO 1: ganti nama file, nama tempat, tanggal, dan cerita -->
+                <figure class="photo reveal">
+                    <img src="galeri/foto1.jpg" alt="Liburan ke Nama Tempat" loading="lazy" onerror="this.parentNode.classList.add('kosong')">
+                    <figcaption>
+                        <strong>Nama Tempat</strong>
+                        <span class="when">📍 Kota · Bulan Tahun</span>
+                        <span class="story">Cerita singkat tentang liburan ini.</span>
+                    </figcaption>
+                </figure>
+
+                <!-- FOTO 2: ganti nama file, nama tempat, tanggal, dan cerita -->
+                <figure class="photo reveal">
+                    <img src="galeri/foto2.jpg" alt="Liburan ke Nama Tempat" loading="lazy" onerror="this.parentNode.classList.add('kosong')">
+                    <figcaption>
+                        <strong>Nama Tempat</strong>
+                        <span class="when">📍 Kota · Bulan Tahun</span>
+                        <span class="story">Cerita singkat tentang liburan ini.</span>
+                    </figcaption>
+                </figure>
+
+                <!-- FOTO 3: ganti nama file, nama tempat, tanggal, dan cerita -->
+                <figure class="photo reveal">
+                    <img src="galeri/foto3.jpg" alt="Liburan ke Nama Tempat" loading="lazy" onerror="this.parentNode.classList.add('kosong')">
+                    <figcaption>
+                        <strong>Nama Tempat</strong>
+                        <span class="when">📍 Kota · Bulan Tahun</span>
+                        <span class="story">Cerita singkat tentang liburan ini.</span>
+                    </figcaption>
+                </figure>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Tampilan foto besar (lightbox) -->
+    <div class="lightbox" id="lightbox" hidden>
+        <button class="lb-close" aria-label="Tutup">✕</button>
+        <button class="lb-prev" aria-label="Foto sebelumnya">‹</button>
+        <figure>
+            <img src="" alt="">
+            <figcaption></figcaption>
+        </figure>
+        <button class="lb-next" aria-label="Foto berikutnya">›</button>
+    </div>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <p>&copy; 2026 Keluarga Tri Waluyo · Dibuat dengan <span class="heart">♥</span> di Jakarta</p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=5"></script>
+</body>
+</html>
