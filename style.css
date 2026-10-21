@@ -54,7 +54,10 @@ body {
     color: var(--ink-soft);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    min-height: 100vh; display: flex; flex-direction: column;
 }
+/* Footer selalu di bawah walau isi halaman pendek */
+footer { margin-top: auto; }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; }
@@ -84,7 +87,13 @@ h1, h2, h3 { font-family: var(--serif); color: var(--ink); line-height: 1.2; fon
     padding: 8px 14px; border-radius: 999px; transition: background .2s, color .2s;
 }
 .nav-links a:hover { background: var(--bg-alt); color: var(--ink); }
-@media (max-width: 640px) { .nav-links { display: none; } }
+.nav-links a.active { background: var(--brand); color: #fff; }
+@media (prefers-color-scheme: dark) { .nav-links a.active { color: #1a1613; } }
+@media (max-width: 640px) {
+    .nav .wrap { flex-wrap: wrap; height: auto; padding-top: 12px; padding-bottom: 10px; gap: 8px; }
+    .nav-links { width: 100%; justify-content: space-between; }
+    .nav-links a { padding: 6px 10px; font-size: .85rem; }
+}
 
 /* ---------- Hero ---------- */
 .hero { padding: 88px 0 72px; text-align: center; position: relative; overflow: hidden; }
@@ -113,6 +122,14 @@ h1, h2, h3 { font-family: var(--serif); color: var(--ink); line-height: 1.2; fon
     background: transparent; color: var(--ink); border: 1px solid var(--line); box-shadow: none;
 }
 .btn-ghost:hover { background: var(--card); }
+
+/* ---------- Halaman per menu ---------- */
+.page { flex: 1; display: flex; flex-direction: column; }
+.page > section, .page > .hero { flex: 1; }
+.page > section { padding: 72px 0; }
+.page > section#motto, .page > .hero { display: flex; align-items: center; padding: 96px 0; }
+.page > section#motto > .wrap, .page > .hero > .wrap { width: 100%; }
+.page > .about { border-bottom: 0; }
 
 /* ---------- Section umum ---------- */
 section { padding: 64px 0; }
