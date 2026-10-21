@@ -3,80 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Keluarga Kami</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
-        header { background: linear-gradient(135deg, #4a90e2, #2c3e50); color: white; text-align: center; padding: 3rem 1rem; }
-        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-        .section { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; }
-        .section h2 { color: #2c3e50; border-bottom: 2px solid #4a90e2; padding-bottom: 0.5rem; margin-bottom: 1rem; }
-        .grid-keluarga { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-        .kartu-anggota { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; text-align: center; border: 1px solid #eee; transition: transform 0.2s; }
-        .kartu-anggota:hover { transform: translateY(-5px); }
-        .avatar { width: 80px; height: 80px; background: #4a90e2; color: white; font-size: 2rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 1rem; }
-        .peran { font-size: 0.9rem; color: #7f8c8d; font-weight: bold; margin-bottom: 1rem; }
-        .btn-profil { display: inline-block; background-color: #4a90e2; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 5px; font-size: 0.9rem; font-weight: bold; transition: background 0.2s; }
-        .btn-profil:hover { background-color: #357abd; }
-        footer { text-align: center; padding: 2rem; color: #7f8c8d; font-size: 0.9rem; }
-    </style>
+    <title>Keluarga Tri Waluyo</title>
+    <meta name="description" content="Rumah digital Keluarga Tri Waluyo — mengenal Ayah, Ibu, Sylda, dan Haidar.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Keluarga Besar Tri Waluyo</h1>
-        <p>Selamat datang di ruang digital tempat kami berbagi cerita.</p>
+    <nav class="nav">
+        <div class="wrap">
+            <a href="index.html" class="logo"><span class="logo-mark">TW</span> Keluarga Tri Waluyo</a>
+            <ul class="nav-links">
+                <li><a href="#anggota">Anggota</a></li>
+                <li><a href="#tentang">Tentang Kami</a></li>
+                <li><a href="#motto">Motto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="wrap">
+            <span class="eyebrow">🏡 Rumah Digital Kami</span>
+            <h1>Selamat datang di<br><em>Keluarga Tri Waluyo</em></h1>
+            <p>Tempat kami berbagi cerita, hobi, dan mimpi. Kenali kami satu per satu melalui profil di bawah ini.</p>
+            <a href="#anggota" class="btn">Kenali Kami ↓</a>
+        </div>
     </header>
 
-    <div class="container">
-        <div class="section">
-            <h2>Tentang Kami</h2>
-            <p>Halo! Ini adalah situs web resmi keluarga kami. Silakan klik profil di bawah untuk mengenal kami lebih jauh.</p>
-        </div>
+    <section id="anggota">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <h2>Anggota Keluarga</h2>
+                <p>Empat orang, empat cerita, satu rumah.</p>
+            </div>
 
-        <div class="section">
-            <h2>Anggota Keluarga</h2>
-            <div class="grid-keluarga">
-                
-                <!-- Kartu Ayah -->
-                <div class="kartu-anggota">
-                    <div class="avatar">👨‍💼</div>
+            <div class="members">
+                <a href="ayah.html" class="member ayah reveal">
+                    <div class="avatar"><img src="ayah.jpg" alt="Foto Tri Waluyo"></div>
+                    <div class="role">Ayah</div>
                     <h3>Tri Waluyo</h3>
-                    <p class="peran">Ayah</p>
-                    <a href="ayah.html" class="btn-profil">Lihat Profil</a>
-                </div>
+                    <p>Kepala keluarga dan karyawan swasta yang percaya pada kerja keras.</p>
+                    <span class="more">Lihat profil →</span>
+                </a>
 
-                <!-- Kartu Ibu -->
-                <div class="kartu-anggota">
+                <a href="ibu.html" class="member ibu reveal">
                     <div class="avatar">👩‍🍳</div>
+                    <div class="role">Ibu</div>
                     <h3>Siti Umiyati</h3>
-                    <p class="peran">Ibu</p>
-                    <a href="ibu.html" class="btn-profil">Lihat Profil</a>
-                </div>
+                    <p>Ibu rumah tangga, pemilik usaha katering, dan juru masak andalan keluarga.</p>
+                    <span class="more">Lihat profil →</span>
+                </a>
 
-                <!-- Kartu Anak -->
-                <div class="kartu-anggota">
-                    <div class="avatar">👨‍🎓</div>
+                <a href="anak1.html" class="member anak1 reveal">
+                    <div class="avatar">👩‍💻</div>
+                    <div class="role">Anak Pertama</div>
                     <h3>Sylda Frizqia Qiftiyani Putri</h3>
-                    <p class="peran">Anak Pertama</p>
-                    <a href="anak1.html" class="btn-profil">Lihat Profil</a>
-                </div>
+                    <p>Mahasiswi Teknik Informatika yang bercita-cita menjadi Software Engineer.</p>
+                    <span class="more">Lihat profil →</span>
+                </a>
 
-                <!-- Kartu Anak -->
-                <div class="kartu-anggota">
-                    <div class="avatar">👨‍🎓</div>
+                <a href="anak2.html" class="member anak2 reveal">
+                    <div class="avatar">👨‍🎨</div>
+                    <div class="role">Anak Kedua</div>
                     <h3>Haidar Fawaz Alhuzam Putra</h3>
-                    <p class="peran">Anak Kedua</p>
-                    <a href="anak2.html" class="btn-profil">Lihat Profil</a>
-                </div>
-                
+                    <p>Pelajar yang hobi menggambar dan bercita-cita menjadi desainer grafis.</p>
+                    <span class="more">Lihat profil →</span>
+                </a>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section id="tentang" class="about">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <h2>Tentang Kami</h2>
+                <p>Situs ini adalah ruang kecil kami di internet untuk mengenalkan diri dan menyimpan cerita keluarga.</p>
+            </div>
+
+            <div class="values">
+                <div class="value reveal">
+                    <div class="ico">🤝</div>
+                    <h3>Kebersamaan</h3>
+                    <p>Makan bersama, bercerita, dan saling mendukung di setiap langkah.</p>
+                </div>
+                <div class="value reveal">
+                    <div class="ico">💪</div>
+                    <h3>Kerja Keras</h3>
+                    <p>Kami percaya usaha yang sungguh-sungguh akan selalu membuahkan hasil.</p>
+                </div>
+                <div class="value reveal">
+                    <div class="ico">🌱</div>
+                    <h3>Terus Belajar</h3>
+                    <p>Dari dapur, kampus, hingga kanvas gambar, kami selalu ingin tumbuh.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="motto">
+        <div class="wrap">
+            <div class="quote reveal">
+                <blockquote>Kerja keras tidak akan mengkhianati hasil.</blockquote>
+                <cite>Motto Keluarga Tri Waluyo</cite>
+            </div>
+        </div>
+    </section>
 
     <footer>
-        <p>&copy; 2026 Keluarga Tri Waluyo.</p>
+        <div class="wrap">
+            <p>&copy; 2026 Keluarga Tri Waluyo · Dibuat dengan <span class="heart">♥</span> di Jakarta</p>
+        </div>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

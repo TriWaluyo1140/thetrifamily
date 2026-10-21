@@ -3,26 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Anak - Sylda Frizqia Qiftiyani Putri</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; padding: 2rem; }
-        .box-profil { max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h1 { color: #2c3e50; }
-        .back-link { display: inline-block; margin-top: 1.5rem; color: #4a90e2; text-decoration: none; font-weight: bold; }
-    </style>
+    <title>Profil Anak Pertama — Sylda Frizqia Qiftiyani Putri</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="box-profil">
-        <h1>👨‍🎓 Profil Anak: Sylda Frizqia Qiftiyani Putri</h1>
-        <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
-        <p><strong>Status:</strong> Mahasiswa Teknik Informatika</p>
-        <p><strong>Hobi:</strong> Bermain game online, belajar coding website, dan mendengarkan musik lo-fi.</p>
-        <p><strong>Cita-cita:</strong> Menjadi seorang Software Engineer di perusahaan teknologi dunia.</p>
-        
-        <a href="index.html" class="back-link">← Kembali ke Halaman Utama</a>
-    </div>
+    <nav class="nav">
+        <div class="wrap">
+            <a href="index.html" class="logo"><span class="logo-mark">TW</span> Keluarga Tri Waluyo</a>
+            <ul class="nav-links">
+                <li><a href="index.html#anggota">Anggota</a></li>
+                <li><a href="index.html#tentang">Tentang Kami</a></li>
+            </ul>
+        </div>
+    </nav>
 
+    <main class="profile-hero">
+        <div class="wrap">
+            <a href="index.html" class="back">← Kembali ke Beranda</a>
+
+            <article class="profile anak1 reveal">
+                <div class="profile-side">
+                    <div class="avatar">👩‍💻</div>
+                    <h1>Sylda Frizqia Qiftiyani Putri</h1>
+                    <span class="tag">Anak Pertama</span>
+                </div>
+
+                <div class="profile-main">
+                    <h2>Tentang Sylda</h2>
+                    <ul class="facts">
+                        <li><div class="fi">🎓</div><div><strong>Status</strong><span>Mahasiswi Teknik Informatika</span></div></li>
+                        <li><div class="fi">🚀</div><div><strong>Cita-cita</strong><span>Menjadi Software Engineer di perusahaan teknologi dunia</span></div></li>
+                    </ul>
+
+                    <h2>Hobi &amp; Minat</h2>
+                    <div class="chips">
+                        <span class="chip">Game online</span>
+                        <span class="chip">Coding website</span>
+                        <span class="chip">Musik lo-fi</span>
+                    </div>
+
+                    <p class="profile-quote">“Satu baris kode hari ini, satu langkah menuju mimpi.”</p>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <section class="siblings">
+        <div class="wrap">
+            <h2>Kenali anggota keluarga lainnya</h2>
+            <div class="sib-list">
+                <a href="ayah.html" class="sib ayah"><span class="mini"><img src="ayah.jpg" alt=""></span>Tri · Ayah</a>
+                <a href="ibu.html" class="sib ibu"><span class="mini">👩‍🍳</span>Siti · Ibu</a>
+                <a href="anak2.html" class="sib anak2"><span class="mini">👨‍🎨</span>Haidar · Anak Kedua</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wrap">
+            <p>&copy; 2026 Keluarga Tri Waluyo · Dibuat dengan <span class="heart">♥</span> di Jakarta</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
-

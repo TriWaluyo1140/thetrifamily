@@ -1,0 +1,280 @@
+/* ===== Keluarga Tri Waluyo — gaya bersama untuk semua halaman ===== */
+
+:root {
+    --bg: #fbf7f1;
+    --bg-alt: #f3ece1;
+    --card: #ffffff;
+    --ink: #2b2420;
+    --ink-soft: #5f554d;
+    --muted: #8a7f75;
+    --line: #e8dfd2;
+    --brand: #c2603d;
+    --brand-dark: #9e4a2c;
+    --shadow: 0 1px 2px rgba(60, 40, 20, .05), 0 8px 24px rgba(60, 40, 20, .07);
+    --shadow-lg: 0 2px 4px rgba(60, 40, 20, .06), 0 20px 40px rgba(60, 40, 20, .12);
+
+    /* Warna khas tiap anggota */
+    --ayah: #2f6f8f;
+    --ibu: #c2603d;
+    --anak1: #7a5bb5;
+    --anak2: #3d8b5f;
+
+    --radius: 20px;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #1a1613;
+        --bg-alt: #221d19;
+        --card: #2a2420;
+        --ink: #f3ece4;
+        --ink-soft: #cfc4b8;
+        --muted: #a0958a;
+        --line: #3a322c;
+        --brand: #e0825e;
+        --brand-dark: #f09a78;
+        --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+        --shadow-lg: 0 2px 4px rgba(0, 0, 0, .3), 0 20px 40px rgba(0, 0, 0, .35);
+        --ayah: #6fb3d4;
+        --ibu: #e0825e;
+        --anak1: #b39ae6;
+        --anak2: #74c497;
+    }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink-soft);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); line-height: 1.2; font-weight: 600; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+/* ---------- Navigasi ---------- */
+.nav {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+.logo { font-family: var(--serif); font-weight: 600; font-size: 1.2rem; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo-mark {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--brand); color: #fff;
+    display: grid; place-items: center; font-size: .95rem;
+}
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a {
+    text-decoration: none; font-size: .9rem; font-weight: 600; color: var(--ink-soft);
+    padding: 8px 14px; border-radius: 999px; transition: background .2s, color .2s;
+}
+.nav-links a:hover { background: var(--bg-alt); color: var(--ink); }
+@media (max-width: 640px) { .nav-links { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero { padding: 88px 0 72px; text-align: center; position: relative; overflow: hidden; }
+.hero::before, .hero::after {
+    content: ""; position: absolute; border-radius: 50%; filter: blur(60px); opacity: .35; z-index: -1;
+}
+.hero::before { width: 380px; height: 380px; background: var(--ibu); top: -120px; left: -80px; }
+.hero::after { width: 320px; height: 320px; background: var(--ayah); bottom: -140px; right: -60px; }
+.eyebrow {
+    display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--brand); background: var(--card); border: 1px solid var(--line);
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 22px;
+}
+.hero h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); margin-bottom: 18px; letter-spacing: -.01em; }
+.hero h1 em { font-style: italic; color: var(--brand); }
+.hero p { max-width: 560px; margin: 0 auto 32px; font-size: 1.1rem; }
+
+.btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--brand); color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem;
+    padding: 13px 24px; border-radius: 999px; transition: transform .2s, background .2s, box-shadow .2s;
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--brand) 35%, transparent);
+}
+.btn:hover { background: var(--brand-dark); transform: translateY(-2px); }
+.btn-ghost {
+    background: transparent; color: var(--ink); border: 1px solid var(--line); box-shadow: none;
+}
+.btn-ghost:hover { background: var(--card); }
+
+/* ---------- Section umum ---------- */
+section { padding: 64px 0; }
+.section-head { text-align: center; margin-bottom: 44px; }
+.section-head h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 10px; }
+.section-head p { max-width: 520px; margin: 0 auto; }
+
+/* ---------- Kartu anggota ---------- */
+.members { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 960px) { .members { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .members { grid-template-columns: 1fr; } }
+.member {
+    --c: var(--brand);
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 22px 26px; text-align: center; text-decoration: none;
+    box-shadow: var(--shadow); transition: transform .25s, box-shadow .25s;
+    position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center;
+}
+.member::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 86px;
+    background: color-mix(in srgb, var(--c) 14%, transparent);
+}
+.member:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.member.ayah { --c: var(--ayah); }
+.member.ibu { --c: var(--ibu); }
+.member.anak1 { --c: var(--anak1); }
+.member.anak2 { --c: var(--anak2); }
+
+.avatar {
+    position: relative; width: 104px; height: 104px; border-radius: 50%;
+    background: color-mix(in srgb, var(--c) 22%, var(--card));
+    border: 4px solid var(--card); box-shadow: 0 0 0 2px var(--c);
+    display: grid; place-items: center; font-size: 2.8rem; overflow: hidden; margin-bottom: 18px;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.role {
+    font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--c); margin-bottom: 6px;
+}
+.member h3 { font-size: 1.2rem; margin-bottom: 10px; }
+.member p { font-size: .9rem; margin-bottom: 18px; flex: 1; }
+.member .more { font-size: .88rem; font-weight: 700; color: var(--c); }
+.member:hover .more { text-decoration: underline; }
+
+/* ---------- Tentang & nilai ---------- */
+.about { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.values { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.value {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; box-shadow: var(--shadow);
+}
+.value .ico { font-size: 1.8rem; margin-bottom: 12px; }
+.value h3 { font-size: 1.15rem; margin-bottom: 6px; }
+.value p { font-size: .93rem; }
+
+/* ---------- Kutipan ---------- */
+.quote {
+    max-width: 760px; margin: 0 auto; text-align: center;
+}
+.quote blockquote {
+    font-family: var(--serif); font-style: italic; color: var(--ink);
+    font-size: clamp(1.4rem, 3.5vw, 2rem); line-height: 1.4;
+}
+.quote blockquote::before { content: "“"; display: block; font-size: 4rem; line-height: .6; color: var(--brand); margin-bottom: 8px; }
+.quote cite { display: block; margin-top: 16px; font-style: normal; font-weight: 600; color: var(--muted); }
+
+/* ---------- Footer ---------- */
+footer { border-top: 1px solid var(--line); padding: 32px 0; text-align: center; font-size: .9rem; color: var(--muted); }
+footer .heart { color: var(--brand); }
+
+/* ---------- Halaman profil ---------- */
+.profile-hero { padding: 48px 0 0; }
+.back {
+    display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    font-weight: 600; font-size: .9rem; color: var(--muted); margin-bottom: 28px;
+}
+.back:hover { color: var(--ink); }
+
+.profile {
+    --c: var(--brand);
+    background: var(--card); border: 1px solid var(--line); border-radius: 28px;
+    box-shadow: var(--shadow-lg); overflow: hidden;
+    display: grid; grid-template-columns: 320px 1fr;
+}
+.profile.ayah { --c: var(--ayah); }
+.profile.ibu { --c: var(--ibu); }
+.profile.anak1 { --c: var(--anak1); }
+.profile.anak2 { --c: var(--anak2); }
+
+.profile-side {
+    background: color-mix(in srgb, var(--c) 14%, var(--card));
+    padding: 40px 28px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.profile-side .avatar { width: 180px; height: 180px; font-size: 5rem; margin-bottom: 22px; }
+.profile-side h1 { font-size: 1.6rem; margin-bottom: 8px; }
+.tag {
+    display: inline-block; background: var(--c); color: #fff; font-size: .78rem; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px;
+}
+@media (prefers-color-scheme: dark) { .tag { color: #1a1613; } }
+
+.profile-main { padding: 40px; }
+.profile-main h2 { font-size: 1.3rem; margin-bottom: 18px; }
+.facts { list-style: none; display: grid; gap: 14px; margin-bottom: 30px; }
+.facts li {
+    display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start;
+    padding: 14px; border-radius: 14px; background: var(--bg);
+    border: 1px solid var(--line);
+}
+.facts .fi {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.3rem;
+    background: color-mix(in srgb, var(--c) 16%, var(--card));
+}
+.facts strong { display: block; color: var(--ink); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+.facts span { font-size: .97rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
+.chip {
+    font-size: .88rem; font-weight: 600; padding: 7px 14px; border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--c) 40%, var(--line));
+    color: var(--ink); background: color-mix(in srgb, var(--c) 8%, var(--card));
+}
+
+.profile-quote {
+    border-left: 4px solid var(--c); padding: 6px 0 6px 18px;
+    font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ink);
+}
+
+/* Navigasi antar profil */
+.siblings { padding: 40px 0 64px; }
+.siblings h2 { font-size: 1.1rem; text-align: center; margin-bottom: 18px; }
+.sib-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.sib {
+    --c: var(--brand);
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+    background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 18px 6px 6px; font-weight: 600; font-size: .9rem; color: var(--ink);
+    transition: border-color .2s, transform .2s;
+}
+.sib:hover { border-color: var(--c); transform: translateY(-2px); }
+.sib .mini {
+    width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; overflow: hidden;
+    background: color-mix(in srgb, var(--c) 20%, var(--card)); font-size: 1.1rem;
+}
+.sib .mini img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.sib.ayah { --c: var(--ayah); }
+.sib.ibu { --c: var(--ibu); }
+.sib.anak1 { --c: var(--anak1); }
+.sib.anak2 { --c: var(--anak2); }
+
+@media (max-width: 760px) {
+    .profile { grid-template-columns: 1fr; }
+    .profile-main { padding: 28px 22px; }
+    .profile-side { padding: 36px 22px; }
+    .profile-side .avatar { width: 150px; height: 150px; }
+}
+
+/* Animasi muncul */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.show { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+}
