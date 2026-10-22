@@ -6,14 +6,15 @@
       "nama": "Slamet Ranu Tirto",
       "jk": "L",
       "ket": "Wiraswasta",
-      "foto": "",
+      "foto": "silsilah/kakek-ayah-mvjbogew.jpg",
       "ortu": [],
       "pasangan": [
         "nenek-ayah"
       ],
       "nikah": {
         "nenek-ayah": {
-          "status": "menikah"
+          "status": "menikah",
+          "ke": 1
         }
       }
     },
