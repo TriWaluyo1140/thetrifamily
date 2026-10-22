@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=12">
+    <link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 
@@ -32,85 +32,72 @@
         <div class="wrap">
             <div class="section-head reveal">
                 <h2>Silsilah Keluarga</h2>
-                <p>Tiga generasi keluarga kami: kakek dan nenek dari pihak Ayah dan Ibu, orang tua, dan anak-anak.</p>
+                <p>Garis keturunan keluarga besar kami. Klik nama untuk melihat foto dan keterangannya.</p>
             </div>
 
-            <div class="tree reveal">
-                <!-- Generasi 1: kakek & nenek -->
-                <div class="gen gen-1">
-                    <div class="branch">
-                        <div class="branch-label">Keluarga Ayah</div>
-                        <div class="couple">
-                        <div class="person" data-key="ayah.bapak">
-                            <div class="p-ava">👴</div>
-                            <div class="p-role">Kakek</div>
-                            <div class="p-name">Belum diisi</div>
-                            <div class="p-ket"></div>
-                        </div>
-                            <span class="ring">💍</span>
-                        <div class="person" data-key="ayah.ibu">
-                            <div class="p-ava">👵</div>
-                            <div class="p-role">Nenek</div>
-                            <div class="p-name">Belum diisi</div>
-                            <div class="p-ket"></div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="branch">
-                        <div class="branch-label">Keluarga Ibu</div>
-                        <div class="couple">
-                        <div class="person" data-key="ibu.bapak">
-                            <div class="p-ava">👴</div>
-                            <div class="p-role">Kakek</div>
-                            <div class="p-name">Belum diisi</div>
-                            <div class="p-ket"></div>
-                        </div>
-                            <span class="ring">💍</span>
-                        <div class="person" data-key="ibu.ibu">
-                            <div class="p-ava">👵</div>
-                            <div class="p-role">Nenek</div>
-                            <div class="p-name">Belum diisi</div>
-                            <div class="p-ket"></div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Generasi 2: Ayah & Ibu -->
-                <div class="gen gen-2">
-                        <a href="ayah.html" class="person inti ayah">
-                            <div class="p-ava"><img src="ayah.jpg" alt="Foto Tri Waluyo" onerror="this.replaceWith('👨')"></div>
-                            <div class="p-role">Ayah</div>
-                            <div class="p-name">Tri Waluyo</div>
-                        </a>
-                    <span class="heart-line"><span>❤</span></span>
-                        <a href="ibu.html" class="person inti ibu">
-                            <div class="p-ava"><img src="ibu.jpg" alt="Foto Siti Umiyati" onerror="this.replaceWith('👩‍🍳')"></div>
-                            <div class="p-role">Ibu</div>
-                            <div class="p-name">Siti Umiyati</div>
-                        </a>
-                </div>
-
-                <!-- Generasi 3: anak-anak -->
-                <div class="gen gen-3">
-                        <a href="anak1.html" class="person inti anak1">
-                            <div class="p-ava"><img src="anak1.jpg" alt="Foto Sylda" onerror="this.replaceWith('👩‍💻')"></div>
-                            <div class="p-role">Anak Pertama</div>
-                            <div class="p-name">Sylda</div>
-                        </a>
-                        <a href="anak2.html" class="person inti anak2">
-                            <div class="p-ava"><img src="anak2.jpg" alt="Foto Haidar" onerror="this.replaceWith('👨‍🎨')"></div>
-                            <div class="p-role">Anak Kedua</div>
-                            <div class="p-name">Haidar</div>
-                        </a>
-                </div>
+            <div class="tree-bar">
+                <button type="button" class="btn btn-ghost" id="btn-kelola" aria-pressed="false">✏️ Kelola Silsilah</button>
+                <p class="hint" id="kelola-hint" hidden>Mode kelola aktif: klik seseorang untuk mengubah, menambah anak, pasangan, atau orang tua.</p>
             </div>
 
-            <div class="tree-actions reveal">
-                <button type="button" class="btn btn-ghost" id="btn-ubah">✏️ Ubah Silsilah</button>
-            </div>
+            <!-- Pohon digambar otomatis dari silsilah.json -->
+            <div id="pohon"><p class="hint" style="text-align:center">Memuat silsilah…</p></div>
         </div>
     </section>
+
+    <!-- Detail seseorang -->
+    <div class="modal" id="modal-detail" hidden>
+        <div class="modal-card detail-card">
+            <button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>
+            <div class="detail-ava" id="d-ava"></div>
+            <h2 id="d-nama"></h2>
+            <p class="d-ket" id="d-ket"></p>
+            <ul class="d-rel" id="d-rel"></ul>
+            <div class="d-aksi" id="d-aksi" hidden>
+                <button type="button" class="btn btn-ghost" data-aksi="ubah">✏️ Ubah / Foto</button>
+                <button type="button" class="btn btn-ghost" data-aksi="anak">＋ Anak</button>
+                <button type="button" class="btn btn-ghost" data-aksi="pasangan">＋ Pasangan</button>
+                <button type="button" class="btn btn-ghost" data-aksi="ortu">＋ Orang tua</button>
+                <button type="button" class="btn btn-ghost hapus" data-aksi="hapus">🗑 Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tambah / ubah seseorang -->
+    <div class="modal" id="modal-orang" hidden>
+        <form class="modal-card" id="form-orang">
+            <button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>
+            <h2 id="f-judul">Tambah Anggota</h2>
+            <p class="hint" id="f-sub"></p>
+
+            <label class="pick foto-pick">
+                <input type="file" name="foto" accept="image/*">
+                <span class="foto-prev" id="f-prev">📷</span>
+                <span id="f-pick-text">Pilih foto (opsional)</span>
+            </label>
+
+            <label>Nama lengkap <input name="nama" required placeholder="contoh: Slamet Ranu Tirto"></label>
+            <label>Jenis kelamin
+                <select name="jk">
+                    <option value="L">Laki-laki</option>
+                    <option value="P">Perempuan</option>
+                </select>
+            </label>
+            <label>Keterangan <input name="ket" placeholder="contoh: Solo, 1950 · Alm."></label>
+
+            <details class="kunci-box">
+                <summary>🔑 Kunci GitHub <span class="kunci-status"></span></summary>
+                <p class="hint">Kunci yang sama dengan di Galeri. Disimpan di perangkat ini saja.</p>
+                <input name="kunci" type="password" autocomplete="off" placeholder="github_pat_...">
+            </details>
+
+            <p class="pesan" role="status"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" data-tutup>Batal</button>
+                <button type="submit" class="btn">Simpan</button>
+            </div>
+        </form>
+    </div>
     </main>
 
     <footer>
@@ -120,6 +107,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
-    <script src="silsilah.js?v=1"></script>
+    <script src="silsilah.js?v=3"></script>
 </body>
 </html>

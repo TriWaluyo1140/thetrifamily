@@ -468,84 +468,80 @@ footer .heart { color: var(--brand); }
 .zoom input { flex: 1; accent-color: var(--brand); padding: 0; border: 0; background: none; }
 .kunci-status { font-weight: 400; color: var(--muted); }
 
-/* ---------- Silsilah keluarga ---------- */
-.tree { --tl: color-mix(in srgb, var(--brand) 45%, var(--line)); --gap: 32px; --w: 170px; max-width: 900px; margin: 0 auto; }
-.gen { position: relative; }
-.person {
-    --c: var(--muted);
-    width: var(--w); text-align: center; text-decoration: none; position: relative; z-index: 1;
-    background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 12px 14px;
-    box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 2px;
-}
-.person.ayah { --c: var(--ayah); } .person.ibu { --c: var(--ibu); }
-.person.anak1 { --c: var(--anak1); } .person.anak2 { --c: var(--anak2); }
-a.person { transition: transform .2s, box-shadow .2s; }
-a.person:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-.p-ava {
-    width: 64px; height: 64px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
-    font-size: 1.9rem; margin-bottom: 8px; border: 3px solid var(--card); box-shadow: 0 0 0 2px var(--c);
-    background: color-mix(in srgb, var(--c) 18%, var(--card));
-}
-.p-ava img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.p-role { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
-.p-name { font-family: var(--serif); font-weight: 600; color: var(--ink); line-height: 1.25; }
-.p-ket { font-size: .78rem; color: var(--muted); }
-.p-ket:empty { display: none; }
-.person.kosong .p-name { font-family: var(--sans); font-style: italic; font-weight: 400; font-size: .85rem; color: var(--muted); }
-
-/* Generasi 1: dua pasang kakek-nenek */
-.gen-1 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
-.branch { display: flex; flex-direction: column; align-items: center; padding-bottom: var(--gap); position: relative; }
-.branch::after { content: ""; position: absolute; bottom: 0; left: calc(50% - 1px); width: 2px; height: var(--gap); background: var(--tl); }
-.branch-label { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-.couple {
-    display: flex; align-items: center; gap: 6px; padding: 8px;
-    background: var(--bg-alt); border: 1px dashed var(--tl); border-radius: 24px;
-}
-.couple .person { --w: 150px; box-shadow: none; }
-.ring { font-size: 1rem; }
-
-/* Generasi 2: Ayah ❤ Ibu */
-.gen-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); padding-bottom: var(--gap); }
-.gen-2 .person { justify-self: center; }
-.heart-line {
-    position: absolute; left: 25%; right: 25%; top: calc((100% - var(--gap)) / 2); height: 2px; background: var(--tl);
-    display: grid; place-items: center;
-}
-.heart-line span {
-    background: var(--bg); color: var(--brand); width: 30px; height: 30px; border-radius: 50%;
-    display: grid; place-items: center; border: 2px solid var(--tl); font-size: .85rem; z-index: 2;
-}
-.gen-2::after { content: ""; position: absolute; left: calc(50% - 1px); width: 2px; top: calc((100% - var(--gap)) / 2); bottom: 0; background: var(--tl); }
-
-/* Generasi 3: anak-anak */
-.gen-3 { display: flex; justify-content: center; gap: var(--gap); padding-top: var(--gap); }
-.gen-3::before {
-    content: ""; position: absolute; top: 0; height: 2px; background: var(--tl);
-    left: calc(50% - (var(--w) + var(--gap)) / 2); width: calc(var(--w) + var(--gap));
-}
-.gen-3 .person::before { content: ""; position: absolute; top: calc(-1 * var(--gap)); left: calc(50% - 1px); width: 2px; height: var(--gap); background: var(--tl); }
-
-.tree-actions { display: flex; justify-content: center; margin-top: 40px; }
-.tree-actions .btn { cursor: pointer; font-family: inherit; }
-
-/* Formulir silsilah */
-.modal-card fieldset.orang { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px 12px; display: grid; gap: 8px; }
-.modal-card legend { font-size: .82rem; font-weight: 700; color: var(--ink); padding: 0 6px; }
-
-@media (max-width: 700px) {
-    .tree { --gap: 22px; --w: 140px; }
-    .couple { flex-direction: column; gap: 2px; }
-    .couple .person { --w: 130px; padding: 10px 8px; }
-    .person { padding: 12px 8px; }
-    .p-ava { width: 52px; height: 52px; font-size: 1.5rem; }
-    .p-name { font-size: .92rem; }
-}
-@media (max-width: 380px) { .tree { --gap: 14px; --w: 128px; } .couple .person { --w: 120px; } }
-
 /* Menu HP: 6 menu dibuat 2 baris */
 @media (max-width: 520px) {
     .nav-links { flex-wrap: wrap; justify-content: center; overflow: visible; gap: 2px 0; }
     .nav-links li { flex: 0 0 33.333%; text-align: center; }
     .nav-links a { display: block; }
 }
+
+/* ---------- Silsilah: pohon keturunan ---------- */
+.tree-bar { display: grid; justify-items: center; gap: 8px; margin: -12px 0 28px; }
+.tree-bar .btn { cursor: pointer; font-family: inherit; }
+.tree-bar .btn[aria-pressed="true"] { background: var(--brand); color: #fff; border-color: transparent; }
+.ft-blok { margin-bottom: 36px; }
+.ft-blok h3 { text-align: center; font-size: 1.15rem; margin-bottom: 4px; }
+.ft-scroll { overflow-x: auto; padding: 16px 4px 8px; -webkit-overflow-scrolling: touch; }
+
+/* Garis pohon (ul/li) */
+.ft, .ft ul { --tl: color-mix(in srgb, var(--brand) 45%, var(--line)); list-style: none; display: flex; justify-content: center; }
+.ft { min-width: max-content; margin: 0 auto; }
+.ft ul { padding-top: 24px; position: relative; }
+.ft li { position: relative; padding: 24px 8px 0; display: flex; flex-direction: column; align-items: center; }
+.ft > li { padding-top: 0; }
+.ft ul::before { content: ""; position: absolute; top: 0; left: 50%; height: 24px; border-left: 2px solid var(--tl); }
+.ft li::before, .ft li::after {
+    content: ""; position: absolute; top: 0; width: 50%; height: 24px; border-top: 2px solid var(--tl);
+}
+.ft li::before { right: 50%; }
+.ft li::after { left: 50%; border-left: 2px solid var(--tl); }
+.ft li:only-child::before, .ft li:only-child::after { border-top: 0; }
+.ft li:first-child::before, .ft li:last-child::after { border-top: 0; }
+.ft li:last-child::before { border-right: 2px solid var(--tl); border-radius: 0 8px 0 0; }
+.ft li:first-child::after { border-radius: 8px 0 0 0; }
+.ft > li::before, .ft > li::after { display: none; }
+.ft li:only-child::after { border-left: 2px solid var(--tl); }
+
+.fam {
+    display: flex; align-items: center; gap: 4px; padding: 6px;
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 18px; position: relative; z-index: 1;
+}
+.fam-ring { font-size: .85rem; }
+.pc {
+    width: 116px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; cursor: pointer;
+    font-family: inherit; color: inherit; transition: transform .15s, border-color .15s;
+}
+.pc:hover { transform: translateY(-2px); border-color: var(--brand); }
+.pc-ava {
+    width: 52px; height: 52px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; font-size: 1.5rem;
+    margin-bottom: 4px; background: color-mix(in srgb, var(--c) 18%, var(--card)); box-shadow: 0 0 0 2px var(--c);
+}
+.pc-l { --c: var(--ayah); } .pc-p { --c: var(--ibu); }
+.pc-ava img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.pc-nama { font-family: var(--serif); font-weight: 600; color: var(--ink); font-size: .85rem; line-height: 1.25; text-align: center; }
+.pc-ket { font-size: .7rem; color: var(--muted); text-align: center; line-height: 1.3; }
+body.kelola .pc { border-style: dashed; border-color: var(--brand); }
+
+/* Detail & formulir */
+.detail-card { text-align: center; justify-items: center; }
+.detail-ava {
+    width: 140px; height: 140px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+    font-size: 4rem; background: var(--bg-alt); box-shadow: 0 0 0 4px var(--card), 0 0 0 6px var(--brand);
+}
+.detail-ava img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.d-ket { color: var(--muted); margin-top: -8px; }
+.d-ket:empty { display: none; }
+.d-rel { list-style: none; display: grid; gap: 4px; font-size: .92rem; }
+.d-rel strong { color: var(--ink); margin-right: 4px; }
+.d-rel .link { font-size: .92rem; }
+.d-aksi { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding-top: 6px; border-top: 1px solid var(--line); width: 100%; }
+.d-aksi .btn { padding: 8px 14px; font-size: .85rem; cursor: pointer; font-family: inherit; }
+.d-aksi .hapus { color: #d9534f; }
+.foto-pick { display: flex !important; align-items: center; gap: 14px; min-height: 0; padding: 12px; text-align: left; }
+.foto-prev {
+    width: 64px; height: 64px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; font-size: 1.6rem;
+    background: var(--bg-alt); flex-shrink: 0;
+}
+.foto-prev img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+@media (max-width: 520px) { .pc { width: 100px; } .pc-ava { width: 44px; height: 44px; } }
