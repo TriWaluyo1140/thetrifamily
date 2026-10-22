@@ -124,6 +124,18 @@
       "nama": "Keliek Riyanto",
       "jk": "L",
       "ket": "Anak Kedua"
+    },
+    {
+      "id": "pmvj9gql3",
+      "foto": "",
+      "ortu": [
+        "kakek-ayah",
+        "nenek-ayah"
+      ],
+      "pasangan": [],
+      "nama": "Putri Utami",
+      "jk": "P",
+      "ket": "Anak Keempat"
     }
   ]
 }
