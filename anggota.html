@@ -9,9 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=22">
-    <script src="i18n.js?v=3"></script>
+    <link rel="stylesheet" href="style.css?v=23">
+    <script src="i18n.js?v=5"></script>
     <script src="admin.js?v=1"></script>
+    <script src="github.js?v=1"></script>
+    <script src="pengaturan.js?v=1"></script>
 </head>
 <body>
 
@@ -34,11 +36,20 @@
         <div class="wrap">
             <div class="section-head reveal">
                 <h2>Anggota Keluarga</h2>
-                <p>Empat orang, empat cerita, satu rumah.</p>
+                <p>Kenali keluarga besar kami, satu per satu.</p>
             </div>
 
-            <div class="members">
-                <a href="ayah.html" class="member ayah reveal">
+            <div class="tree-bar khusus-admin">
+                <button type="button" class="btn btn-ghost" id="btn-kelola-anggota" aria-pressed="false">✏️ Kelola Anggota</button>
+                <p class="hint" id="kelola-anggota-hint" hidden>Mode kelola aktif: tambah, ubah, hapus, atau geser urutan anggota dan kelompok.</p>
+            </div>
+
+            <!-- Kelompok anggota: digambar ulang dari anggota.json; isi di bawah ini adalah bawaan -->
+            <div id="grup-anggota">
+                <section class="grup" data-grup="inti" data-sub="Empat orang, empat cerita, satu rumah.">
+                    <div class="grup-head"><h3>Keluarga Inti</h3><p>Empat orang, empat cerita, satu rumah.</p></div>
+                    <div class="members">
+                <a href="ayah.html" class="member ayah">
                     <div class="avatar"><img src="ayah.jpg" alt="Foto Tri Waluyo"></div>
                     <div class="role">Ayah</div>
                     <h3>Tri Waluyo</h3>
@@ -46,7 +57,7 @@
                     <span class="more">Lihat profil →</span>
                 </a>
 
-                <a href="ibu.html" class="member ibu reveal">
+                <a href="ibu.html" class="member ibu">
                     <div class="avatar"><img src="ibu.jpg" alt="Foto Siti Umiyati" onerror="this.replaceWith('👩‍🍳')"></div>
                     <div class="role">Ibu</div>
                     <h3>Siti Umiyati</h3>
@@ -54,7 +65,7 @@
                     <span class="more">Lihat profil →</span>
                 </a>
 
-                <a href="anak1.html" class="member anak1 reveal">
+                <a href="anak1.html" class="member anak1">
                     <div class="avatar"><img src="anak1.jpg" alt="Foto Sylda" onerror="this.replaceWith('👩‍💻')"></div>
                     <div class="role">Anak Pertama</div>
                     <h3>Sylda Frizqia Qiftiyani Putri</h3>
@@ -62,13 +73,15 @@
                     <span class="more">Lihat profil →</span>
                 </a>
 
-                <a href="anak2.html" class="member anak2 reveal">
+                <a href="anak2.html" class="member anak2">
                     <div class="avatar"><img src="anak2.jpg" alt="Foto Haidar" onerror="this.replaceWith('👨‍🎨')"></div>
                     <div class="role">Anak Kedua</div>
                     <h3>Haidar Fawaz Alhuzam Putra</h3>
                     <p>Pelajar yang hobi menggambar dan bercita-cita menjadi desainer grafis.</p>
                     <span class="more">Lihat profil →</span>
                 </a>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
@@ -81,5 +94,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
+    <script src="anggota.js?v=3"></script>
 </body>
 </html>

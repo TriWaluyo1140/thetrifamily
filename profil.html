@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil — Keluarga Tri Waluyo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=23">
+    <script src="i18n.js?v=5"></script>
+    <script src="admin.js?v=1"></script>
+    <script src="github.js?v=1"></script>
+    <script src="pengaturan.js?v=1"></script>
+</head>
+<body data-profil-umum>
+
+    <nav class="nav">
+        <div class="wrap">
+            <a href="index.html" class="logo"><span class="logo-mark">TW</span> Keluarga Tri Waluyo</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="anggota.html" class="active" aria-current="page">Anggota</a></li>
+                <li><a href="silsilah.html">Silsilah</a></li>
+                <li><a href="galeri.html">Galeri</a></li>
+                <li><a href="tentang.html">Tentang Kami</a></li>
+                <li><a href="motto.html">Motto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="profile-hero">
+        <div class="wrap">
+            <a href="anggota.html" class="back">← Kembali ke Anggota</a>
+
+            <!-- Diisi otomatis dari anggota.json (profil.html?id=...) -->
+            <article class="profile" id="profil-umum">
+                <div class="profile-side">
+                    <div class="avatar" id="pu-foto">👤</div>
+                    <h1 id="pu-nama">Memuat…</h1>
+                    <span class="tag" id="pu-peran"></span>
+                    <div class="profil-aksi khusus-admin">
+                        <button type="button" class="ganti-foto" id="ubah-profil">✏️ Ubah profil</button>
+                    </div>
+                    <p class="hint khusus-admin pu-catatan">Foto, nama, dan hubungan diubah lewat ✏️ Kelola Anggota.</p>
+                </div>
+                <div class="profile-main"></div>
+            </article>
+        </div>
+    </main>
+
+    <section class="siblings" id="pu-saudara" hidden>
+        <div class="wrap">
+            <h2>Kenali anggota keluarga lainnya</h2>
+            <div class="sib-list"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wrap">
+            <p>&copy; 2026 Keluarga Tri Waluyo · Dibuat dengan <span class="heart">♥</span> di Jakarta</p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=6"></script>
+    <script src="profil-umum.js?v=1"></script>
+    <script src="profil.js?v=4"></script>
+</body>
+</html>

@@ -139,6 +139,39 @@
         'Keluar dari mode keluarga di perangkat ini?': 'Sign out of family mode on this device?',
         'Kunci GitHub akan dihapus dari browser ini, dan tombol ubah/tambah tidak tampil lagi.': 'The GitHub key will be removed from this browser, and the edit/add buttons will no longer appear.',
 
+        // Kelola anggota
+        'Kenali keluarga besar kami, satu per satu.': 'Get to know our extended family, one by one.',
+        'Keluarga Inti': 'Immediate Family', '✏️ Kelola Anggota': '✏️ Manage Members',
+        'Mode kelola aktif: tambah, ubah, hapus, atau geser urutan anggota dan kelompok.': 'Manage mode is on: add, edit, delete, or reorder members and groups.',
+        '＋ Anggota': '＋ Member', '✏️ Kelompok': '✏️ Group', 'Naikkan': 'Move up', 'Turunkan': 'Move down',
+        'Geser ke kiri': 'Move left', 'Geser ke kanan': 'Move right', 'Ubah': 'Edit', 'Hapus': 'Delete',
+        'Belum ada anggota di kelompok ini.': 'No members in this group yet.', '＋ Tambah Kelompok': '＋ Add Group',
+        'Kelompok': 'Group', 'Ubah Kelompok': 'Edit Group', 'Tambah Kelompok': 'Add Group', 'Nama kelompok': 'Group name',
+        'contoh: Keluarga Besar Siti Umiyati': 'e.g. The Siti Umiyati Family', 'contoh: Orang tua dan saudara kandung': 'e.g. Parents and siblings',
+        'Ubah Anggota': 'Edit Member', 'Ambil dari silsilah': 'Take from family tree', '— Pilih nama (opsional) —': '— Choose a name (optional) —',
+        'Foto anggota ini diganti lewat tombol 📷 Ganti foto di halaman profilnya.': 'This member’s photo is changed with the 📷 Change photo button on their profile page.',
+        'Hubungan / peran': 'Relationship / role', 'contoh: Bapak, Kakak, Adik': 'e.g. Father, Older sibling, Younger sibling',
+        'Deskripsi singkat': 'Short description', 'contoh: Pensiunan guru yang gemar berkebun.': 'e.g. A retired teacher who loves gardening.',
+        'Warna kartu': 'Card color', 'Biru': 'Blue', 'Oranye': 'Orange', 'Ungu': 'Purple', 'Hijau': 'Green', 'Merah muda': 'Pink', 'Emas': 'Gold', 'Toska': 'Teal', 'Data sedang diperbarui. Coba simpan lagi.': 'The data is being updated. Please try saving again.',
+        'Kelompok ini masih berisi anggota. Hapus atau pindahkan anggotanya dulu.': 'This group still has members. Delete or move its members first.',
+        'Bapak': 'Father', 'Kakak': 'Older sibling', 'Adik': 'Younger sibling', 'Kakek': 'Grandfather', 'Nenek': 'Grandmother',
+        'Paman': 'Uncle', 'Bibi': 'Aunt', 'Sepupu': 'Cousin', 'Keponakan': 'Nephew / Niece', 'Suami': 'Husband', 'Istri': 'Wife',
+        'Bapak Mertua': 'Father-in-law', 'Ibu Mertua': 'Mother-in-law', 'Kakak Ipar': 'Older sibling-in-law', 'Adik Ipar': 'Younger sibling-in-law',
+        'Memuat…': 'Loading…', 'Profil': 'Profile', 'Anggota tidak ditemukan': 'Member not found',
+        'Anggota ini mungkin sudah dihapus. Kembali ke halaman Anggota.': 'This member may have been deleted. Go back to the Members page.',
+        'Foto, nama, dan hubungan diubah lewat ✏️ Kelola Anggota.': 'Photo, name, and relationship are changed via ✏️ Manage Members.',
+
+        // Pengaturan situs
+        '⚙️ Pengaturan Situs': '⚙️ Site Settings', 'Pengaturan Situs': 'Site Settings',
+        'Berlaku untuk semua halaman. Perubahan langsung terlihat sebagai pratinjau; klik Simpan untuk menerapkannya bagi semua pengunjung.': 'Applies to every page. Changes show right away as a preview; click Save to apply them for all visitors.',
+        'Tema': 'Theme', 'Otomatis (mengikuti perangkat)': 'Automatic (follows the device)', 'Terang': 'Light', 'Gelap': 'Dark',
+        'Warna utama': 'Main color', 'Pakai warna bawaan': 'Use the default color', 'Latar belakang': 'Background',
+        'Bawaan': 'Default', 'Warna': 'Color', 'Gambar': 'Image', 'Warna lain': 'Other color',
+        '🖼 Pilih gambar latar': '🖼 Choose background image', '🖼 Ganti gambar latar': '🖼 Change background image',
+        'Gambar dibuat samar agar tulisan tetap mudah dibaca.': 'The image is faded so text stays easy to read.',
+        'Kembalikan ke bawaan': 'Reset to default', 'Pilih gambar latarnya dulu.': 'Please choose a background image first.',
+        'Pilih warna latarnya dulu.': 'Please choose a background color first.', 'Pengaturan tersimpan! 🎉': 'Settings saved! 🎉',
+
         // Judul halaman
         'Profil Ayah — Tri Waluyo': 'Father’s Profile — Tri Waluyo', 'Profil Ibu — Siti Umiyati': 'Mother’s Profile — Siti Umiyati',
         'Profil Anak Pertama — Sylda Frizqia Qiftiyani Putri': 'First Child’s Profile — Sylda Frizqia Qiftiyani Putri',
@@ -152,7 +185,13 @@
         ketujuh: 'Seventh', kedelapan: 'Eighth', kesembilan: 'Ninth', kesepuluh: 'Tenth' };
     function jamak(n, satu, banyak) { return n + ' ' + (+n === 1 ? satu : banyak); }
     var POLA = [
-        [/^(.+) — Keluarga Tri Waluyo$/, function (m) { return t(m[1]) + ' — Tri Waluyo Family'; }],
+        [/^(.+) — Keluarga Tri Waluyo$/, function (m) { return (t(m[1]) || m[1]) + ' — Tri Waluyo Family'; }],
+        [/^Profil (.+)$/, function (m) { return 'Profile: ' + m[1]; }],
+        [/^Orang tua dan saudara kandung (.+?)(\.?)$/, function (m) { return 'Parents and siblings of ' + m[1] + m[2]; }],
+        [/^Hapus "(.+)" dari halaman Anggota\?$/, function (m) { return 'Remove "' + m[1] + '" from the Members page?'; }],
+        [/^Hapus kelompok "(.+)"\?$/, function (m) { return 'Delete the group "' + m[1] + '"?'; }],
+        [/^Warna (utama|latar) (#[0-9a-f]+)$/i, function (m) { return (m[1] === 'utama' ? 'Main color ' : 'Background color ') + m[2]; }],
+        [/^Warna (\w+)$/, function (m) { return 'Color ' + m[1]; }],
         [/^Anak (pertama|kedua|ketiga|keempat|kelima|keenam|ketujuh|kedelapan|kesembilan|kesepuluh)$/i, function (m) { return URUT[m[1].toLowerCase()] + ' Child'; }],
         [/^Anak ke-(\d+)$/, function (m) { return 'Child no. ' + m[1]; }],
         [/^Anak (pertama|kedua|ketiga|keempat|kelima) dari (.+)$/i, function (m) { return URUT[m[1].toLowerCase()] + ' child of ' + m[2]; }],
