@@ -155,3 +155,183 @@
         });
     });
 })();
+
+// Ubah isi profil (nama, baris data, kata kunci, kutipan) — disimpan di profil.json
+(function () {
+    var OWNER = 'triwaluyo1140';
+    var REPO = 'thetrifamily';
+    var BRANCH = 'main';
+    var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/profil.json';
+    var KEY = 'galeri-kunci'; // kunci yang sama dengan Galeri
+
+    var tombol = document.getElementById('ubah-profil');
+    var foto = document.getElementById('ganti-foto');
+    if (!tombol || !foto) return;
+    var anggota = foto.getAttribute('data-anggota');
+    var main = document.querySelector('.profile-main');
+    var judulNama = document.querySelector('.profile-side h1');
+
+    function getKunci() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
+    function setKunci(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+    function toB64(str) { return btoa(unescape(encodeURIComponent(str))); }
+    function fromB64(b64) { return decodeURIComponent(escape(atob(b64.replace(/\n/g, '')))); }
+    function esc(s) {
+        return String(s || '').replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    // Isi awal diambil dari halaman ini (dipakai selama profil.json belum ada)
+    function dariHalaman() {
+        var h2 = main.querySelectorAll('h2');
+        return {
+            nama: judulNama.textContent.trim(),
+            panggilan: (h2[0] ? h2[0].textContent : '').replace(/^Tentang\s+/, '').trim(),
+            fakta: Array.prototype.map.call(main.querySelectorAll('.facts li'), function (li) {
+                var isi = li.querySelector('span');
+                return {
+                    ikon: li.querySelector('.fi').textContent.trim(),
+                    judul: li.querySelector('strong').textContent.trim(),
+                    isi: isi && !isi.classList.contains('kosong') ? isi.textContent.trim() : ''
+                };
+            }),
+            judulKata: h2[1] ? h2[1].textContent.trim() : 'Dikenal Sebagai',
+            kata: Array.prototype.map.call(main.querySelectorAll('.chip'), function (c) { return c.textContent.trim(); }),
+            kutipan: ((main.querySelector('.profile-quote') || {}).textContent || '').trim().replace(/^[“"]|[”"]$/g, '')
+        };
+    }
+    var data = dariHalaman();
+
+    function render() {
+        judulNama.textContent = data.nama;
+        main.innerHTML =
+            '<h2>Tentang ' + esc(data.panggilan || data.nama) + '</h2>' +
+            '<ul class="facts">' + data.fakta.map(function (f) {
+                return '<li><div class="fi">' + esc(f.ikon || '•') + '</div><div><strong>' + esc(f.judul) + '</strong>' +
+                    (f.isi ? '<span>' + esc(f.isi) + '</span>' : '<span class="kosong">Belum diisi</span>') + '</div></li>';
+            }).join('') + '</ul>' +
+            (data.kata.length ? '<h2>' + esc(data.judulKata || 'Dikenal Sebagai') + '</h2><div class="chips">' +
+                data.kata.map(function (k) { return '<span class="chip">' + esc(k) + '</span>'; }).join('') + '</div>' : '') +
+            (data.kutipan ? '<p class="profile-quote">“' + esc(data.kutipan) + '”</p>' : '');
+    }
+
+    function gh(opt, kunci) {
+        opt = opt || {};
+        opt.headers = { 'Authorization': 'Bearer ' + kunci, 'Accept': 'application/vnd.github+json' };
+        opt.cache = 'no-store';
+        return fetch(API + (opt.method ? '' : '?ref=' + BRANCH), opt).then(function (r) {
+            if (!r.ok) { var err = new Error('github'); err.status = r.status; throw err; }
+            return r.json();
+        });
+    }
+    // Dengan kunci: baca langsung dari GitHub (paling baru). Tanpa kunci: baca dari situs.
+    var kunci0 = getKunci();
+    (kunci0 ? gh(null, kunci0).then(function (d) { return JSON.parse(fromB64(d.content)); }) : Promise.reject())
+        .catch(function () { return fetch('profil.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : null; }); })
+        .catch(function () { return null; })
+        .then(function (semua) { if (semua && semua[anggota]) { data = semua[anggota]; render(); } });
+
+    // ---------- Formulir ----------
+    var modal = document.createElement('div');
+    modal.className = 'modal'; modal.hidden = true;
+    modal.innerHTML =
+        '<form class="modal-card">' +
+        '<button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>' +
+        '<h2>Ubah Profil</h2>' +
+        '<div class="row2"><label>Nama tampilan <input name="nama" required></label>' +
+        '<label>Nama panggilan <input name="panggilan" placeholder="untuk judul &quot;Tentang …&quot;"></label></div>' +
+        '<fieldset class="f-fakta"><legend>Data diri</legend><div class="fakta-isi"></div>' +
+        '<button type="button" class="link" data-tambah>＋ Tambah baris</button></fieldset>' +
+        '<label>Judul kata kunci <input name="judulKata" placeholder="contoh: Dikenal Sebagai / Hobi &amp; Minat"></label>' +
+        '<label>Kata kunci <textarea name="kata" rows="2" placeholder="Pisahkan dengan koma, contoh: Pekerja Keras, Suka Memasak"></textarea></label>' +
+        '<label>Kutipan / motto <input name="kutipan"></label>' +
+        '<details class="kunci-box"><summary>🔑 Kunci GitHub <span class="kunci-status"></span></summary>' +
+        '<p class="hint">Kunci yang sama dengan di Galeri. Disimpan di perangkat ini saja.</p>' +
+        '<input name="kunci" type="password" autocomplete="off" placeholder="github_pat_..."></details>' +
+        '<p class="pesan" role="status"></p>' +
+        '<div class="modal-actions"><button type="button" class="btn btn-ghost" data-tutup>Batal</button>' +
+        '<button type="submit" class="btn">Simpan</button></div>' +
+        '</form>';
+    document.body.appendChild(modal);
+    var form = modal.querySelector('form'), daftar = modal.querySelector('.fakta-isi');
+    var pesan = modal.querySelector('.pesan'), btnSimpan = form.querySelector('[type=submit]');
+    function info(t, jenis) { pesan.textContent = t; pesan.className = 'pesan ' + (jenis || ''); }
+
+    function baris(f) {
+        return '<div class="fakta-baris">' +
+            '<input data-f="ikon" value="' + esc(f.ikon) + '" placeholder="🙂" aria-label="Ikon">' +
+            '<input data-f="judul" value="' + esc(f.judul) + '" placeholder="Judul, contoh: Hobi" aria-label="Judul">' +
+            '<input data-f="isi" value="' + esc(f.isi) + '" placeholder="Isi" aria-label="Isi">' +
+            '<button type="button" data-hapus aria-label="Hapus baris">✕</button></div>';
+    }
+    function buka() {
+        form.nama.value = data.nama; form.panggilan.value = data.panggilan || '';
+        daftar.innerHTML = data.fakta.map(baris).join('');
+        form.judulKata.value = data.judulKata || ''; form.kata.value = data.kata.join(', ');
+        form.kutipan.value = data.kutipan || ''; form.kunci.value = ''; info('');
+        var ada = !!getKunci();
+        modal.querySelector('.kunci-status').textContent = ada ? '· tersimpan ✓' : '· wajib diisi';
+        modal.querySelector('.kunci-box').open = !ada;
+        modal.hidden = false; document.body.style.overflow = 'hidden';
+    }
+    function tutup() { if (btnSimpan.disabled) return; modal.hidden = true; document.body.style.overflow = ''; }
+    tombol.addEventListener('click', buka);
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal || e.target.hasAttribute('data-tutup')) return tutup();
+        if (e.target.hasAttribute('data-hapus')) e.target.parentNode.remove();
+        if (e.target.hasAttribute('data-tambah')) {
+            daftar.insertAdjacentHTML('beforeend', baris({ ikon: '', judul: '', isi: '' }));
+            daftar.lastChild.querySelector('[data-f=judul]').focus();
+        }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) tutup(); });
+
+    function alasan(err) {
+        var s = err && err.status;
+        if (s === 401) return 'Kunci GitHub salah atau sudah kedaluwarsa.';
+        if (s === 403 || s === 404) return 'Kunci tidak punya izin menulis ke repositori ' + REPO + '.';
+        if (s === 409 || s === 422) return 'Profil sedang diperbarui. Coba simpan lagi.';
+        return 'Gagal menyimpan. Periksa koneksi internet lalu coba lagi.';
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var kunci = form.kunci.value.trim() || getKunci();
+        if (!kunci) { modal.querySelector('.kunci-box').open = true; return info('Masukkan Kunci GitHub dulu.', 'error'); }
+        var baru = {
+            nama: form.nama.value.trim(),
+            panggilan: form.panggilan.value.trim(),
+            fakta: Array.prototype.map.call(daftar.querySelectorAll('.fakta-baris'), function (b) {
+                return {
+                    ikon: b.querySelector('[data-f=ikon]').value.trim(),
+                    judul: b.querySelector('[data-f=judul]').value.trim(),
+                    isi: b.querySelector('[data-f=isi]').value.trim()
+                };
+            }).filter(function (f) { return f.judul || f.isi; }),
+            judulKata: form.judulKata.value.trim(),
+            kata: form.kata.value.split(/[,\n]/).map(function (k) { return k.trim(); }).filter(Boolean),
+            kutipan: form.kutipan.value.trim().replace(/^[“"]|[”"]$/g, '')
+        };
+        if (!baru.nama) return info('Isi nama tampilan dulu.', 'error');
+
+        btnSimpan.disabled = true; info('Menyimpan…');
+        // Baca profil.json terbaru, ganti bagian anggota ini saja, lalu simpan
+        gh(null, kunci).then(function (d) {
+            return { sha: d.sha, semua: JSON.parse(fromB64(d.content)) };
+        }, function (err) {
+            if (err.status === 404) return { sha: null, semua: {} }; throw err;
+        }).then(function (x) {
+            x.semua[anggota] = baru;
+            var body = { message: 'Ubah profil: ' + baru.nama, content: toB64(JSON.stringify(x.semua, null, 2) + '\n'), branch: BRANCH };
+            if (x.sha) body.sha = x.sha;
+            return gh({ method: 'PUT', body: JSON.stringify(body) }, kunci);
+        }).then(function () {
+            setKunci(kunci);
+            data = baru; render();
+            btnSimpan.disabled = false; tutup();
+            alert('Profil tersimpan! 🎉\n\nPengunjung lain akan melihatnya dalam 1–2 menit, setelah GitHub selesai memperbarui situs.');
+        }).catch(function (err) {
+            btnSimpan.disabled = false; info(alasan(err), 'error');
+        });
+    });
+})();

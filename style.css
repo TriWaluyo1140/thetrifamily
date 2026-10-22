@@ -590,3 +590,20 @@ body.kelola .pc { border-style: dashed; border-color: var(--brand); }
 .photo .dots i.on { background: #fff; width: 16px; border-radius: 999px; }
 .photo .count { z-index: 1; }
 @media (prefers-reduced-motion: reduce) { .photo .cover .slide { transition: none; } .photo .cover.berjalan .slide.on { transform: none; } }
+
+/* Ubah profil */
+.profil-aksi { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 6px; }
+.facts .kosong { color: var(--muted); font-style: italic; }
+.modal-card fieldset.f-fakta { border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px 12px; display: grid; gap: 8px; }
+.modal-card .f-fakta legend { font-size: .85rem; font-weight: 600; color: var(--ink); padding: 0 6px; }
+.fakta-isi { display: grid; gap: 8px; }
+.fakta-baris { display: grid; grid-template-columns: 44px 1.3fr 1.7fr 30px; gap: 6px; align-items: center; }
+.modal-card .fakta-baris input { padding: 8px 10px; }
+.modal-card .fakta-baris input[data-f=ikon] { text-align: center; padding: 8px 4px; }
+.fakta-baris button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: var(--bg-alt); color: var(--muted); cursor: pointer; }
+.fakta-baris button:hover { color: #d9534f; }
+@media (max-width: 520px) {
+    .fakta-baris { grid-template-columns: 44px 1fr 30px; padding-bottom: 8px; border-bottom: 1px dashed var(--line); }
+    .fakta-baris button { grid-row: 1; grid-column: 3; }
+    .fakta-baris input[data-f=isi] { grid-column: 1 / -1; }
+}
