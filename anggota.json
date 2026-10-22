@@ -6,16 +6,6 @@
       "sub": "Empat orang, empat cerita, satu rumah.",
       "anggota": [
         {
-          "id": "ibu",
-          "profil": "ibu.html",
-          "nama": "Siti Umiyati",
-          "peran": "Ibu",
-          "desk": "Ibu rumah tangga, pemilik usaha katering, dan juru masak andalan keluarga.",
-          "foto": "ibu.jpg",
-          "warna": "ibu",
-          "jk": "P"
-        },
-        {
           "id": "ayah",
           "profil": "ayah.html",
           "nama": "Tri Waluyo",
@@ -24,6 +14,16 @@
           "foto": "ayah.jpg",
           "warna": "ayah",
           "jk": "L"
+        },
+        {
+          "id": "ibu",
+          "profil": "ibu.html",
+          "nama": "Siti Umiyati",
+          "peran": "Ibu",
+          "desk": "Ibu rumah tangga, pemilik usaha katering, dan juru masak andalan keluarga.",
+          "foto": "ibu.jpg",
+          "warna": "ibu",
+          "jk": "P"
         },
         {
           "id": "anak1",
