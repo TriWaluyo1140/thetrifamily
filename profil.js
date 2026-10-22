@@ -181,23 +181,25 @@
         });
     }
 
-    // Isi awal diambil dari halaman ini (dipakai selama profil.json belum ada)
+    // Isi awal diambil dari halaman ini (dipakai selama profil.json belum ada).
+    // Selalu baca teks asli berbahasa Indonesia, walau halaman sedang tampil dalam bahasa Inggris.
+    function teks(el) { return el ? (window.teksAsli ? window.teksAsli(el) : el.textContent) : ''; }
     function dariHalaman() {
         var h2 = main.querySelectorAll('h2');
         return {
-            nama: judulNama.textContent.trim(),
-            panggilan: (h2[0] ? h2[0].textContent : '').replace(/^Tentang\s+/, '').trim(),
+            nama: teks(judulNama).trim(),
+            panggilan: teks(h2[0]).replace(/^Tentang\s+/, '').trim(),
             fakta: Array.prototype.map.call(main.querySelectorAll('.facts li'), function (li) {
                 var isi = li.querySelector('span');
                 return {
-                    ikon: li.querySelector('.fi').textContent.trim(),
-                    judul: li.querySelector('strong').textContent.trim(),
-                    isi: isi && !isi.classList.contains('kosong') ? isi.textContent.trim() : ''
+                    ikon: teks(li.querySelector('.fi')).trim(),
+                    judul: teks(li.querySelector('strong')).trim(),
+                    isi: isi && !isi.classList.contains('kosong') ? teks(isi).trim() : ''
                 };
             }),
-            judulKata: h2[1] ? h2[1].textContent.trim() : 'Dikenal Sebagai',
-            kata: Array.prototype.map.call(main.querySelectorAll('.chip'), function (c) { return c.textContent.trim(); }),
-            kutipan: ((main.querySelector('.profile-quote') || {}).textContent || '').trim().replace(/^[“"]|[”"]$/g, '')
+            judulKata: h2[1] ? teks(h2[1]).trim() : 'Dikenal Sebagai',
+            kata: Array.prototype.map.call(main.querySelectorAll('.chip'), function (c) { return teks(c).trim(); }),
+            kutipan: teks(main.querySelector('.profile-quote')).trim().replace(/^[“"]|[”"]$/g, '')
         };
     }
     var data = dariHalaman();

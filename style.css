@@ -615,3 +615,16 @@ html:not(.admin) .khusus-admin { display: none !important; }
     cursor: pointer; opacity: .7; padding: 4px 8px; border-radius: 999px;
 }
 .kunci-link:hover { opacity: 1; color: var(--ink); background: var(--bg-alt); }
+
+/* Pilihan bahasa ID / EN */
+.pilih-bahasa { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; flex-shrink: 0; }
+.pilih-bahasa button {
+    font: 700 .72rem var(--sans); letter-spacing: .04em; color: var(--muted); background: none; border: 0;
+    padding: 4px 9px; border-radius: 999px; cursor: pointer;
+}
+.pilih-bahasa button.on { background: var(--ink); color: var(--bg); }
+@media (max-width: 820px) {
+    .nav .logo { margin-right: auto; }
+    .pilih-bahasa { order: 1; }
+    .nav-links { order: 2; }
+}
