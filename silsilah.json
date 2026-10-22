@@ -111,7 +111,8 @@
         "nenek-ayah"
       ],
       "pasangan": [
-        "pmvj9hnqf"
+        "pmvj9hnqf",
+        "pmvja2dvi"
       ],
       "nama": "Liliek Riyono",
       "jk": "L",
@@ -212,6 +213,17 @@
       "nama": "Aira",
       "jk": "P",
       "ket": "Anak Kedua"
+    },
+    {
+      "id": "pmvja2dvi",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "pmvj5qdhu"
+      ],
+      "nama": "Agustriani",
+      "jk": "P",
+      "ket": ""
     }
   ]
 }
