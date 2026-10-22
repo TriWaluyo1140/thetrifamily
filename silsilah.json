@@ -138,6 +138,9 @@
       "nikah": {
         "pmvj9hnqf": {
           "status": "menikah"
+        },
+        "pmvja2dvi": {
+          "status": "menikah"
         }
       }
     },
@@ -261,7 +264,12 @@
       "nama": "Agustriani",
       "jk": "P",
       "ket": "",
-      "nikah": {}
+      "nikah": {
+        "pmvj5qdhu": {
+          "status": "menikah",
+          "ke": 1
+        }
+      }
     }
   ]
 }
