@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 
@@ -34,43 +34,13 @@
                 <p>Tempat-tempat yang pernah kami kunjungi bersama. Klik foto untuk melihat lebih besar.</p>
             </div>
 
-            <!--
-                CARA MENAMBAH FOTO:
-                1. Unggah foto ke folder "galeri" di GitHub (contoh: galeri/foto4.jpg).
-                2. Salin satu blok <figure> ... </figure> di bawah, tempel, lalu ganti isinya.
-            -->
-            <div class="gallery">
-                <!-- FOTO 1: ganti nama file, nama tempat, tanggal, dan cerita -->
-                <figure class="photo reveal">
-                    <img src="galeri/foto1.jpg" alt="Liburan ke Nama Tempat" loading="lazy" onerror="this.parentNode.classList.add('kosong')">
-                    <figcaption>
-                        <strong>Nama Tempat</strong>
-                        <span class="when">📍 Kota · Bulan Tahun</span>
-                        <span class="story">Cerita singkat tentang liburan ini.</span>
-                    </figcaption>
-                </figure>
-
-                <!-- FOTO 2: ganti nama file, nama tempat, tanggal, dan cerita -->
-                <figure class="photo reveal">
-                    <img src="galeri/foto2.jpg" alt="Liburan ke Nama Tempat" loading="lazy" onerror="this.parentNode.classList.add('kosong')">
-                    <figcaption>
-                        <strong>Nama Tempat</strong>
-                        <span class="when">📍 Kota · Bulan Tahun</span>
-                        <span class="story">Cerita singkat tentang liburan ini.</span>
-                    </figcaption>
-                </figure>
-
-                <!-- FOTO 3: ganti nama file, nama tempat, tanggal, dan cerita -->
-                <figure class="photo reveal">
-                    <img src="galeri/foto3.jpg" alt="Liburan ke Nama Tempat" loading="lazy" onerror="this.parentNode.classList.add('kosong')">
-                    <figcaption>
-                        <strong>Nama Tempat</strong>
-                        <span class="when">📍 Kota · Bulan Tahun</span>
-                        <span class="story">Cerita singkat tentang liburan ini.</span>
-                    </figcaption>
-                </figure>
-
+            <div class="gallery-bar reveal">
+                <button type="button" class="btn" id="btn-tambah">＋ Tambah Foto</button>
             </div>
+
+            <!-- Foto diambil otomatis dari file galeri.json -->
+            <div class="gallery" id="gallery"></div>
+            <p class="gallery-empty" id="gallery-empty" hidden>📷 Belum ada foto. Klik <strong>＋ Tambah Foto</strong> untuk menambahkan kenangan liburan pertama.</p>
         </div>
     </section>
 
@@ -84,6 +54,40 @@
         </figure>
         <button class="lb-next" aria-label="Foto berikutnya">›</button>
     </div>
+
+    <!-- Formulir tambah foto -->
+    <div class="modal" id="modal-tambah" hidden>
+        <form class="modal-card" id="form-tambah">
+            <button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>
+            <h2>Tambah Foto Liburan</h2>
+
+            <label class="pick" id="pick">
+                <input type="file" name="foto" accept="image/*" required>
+                <img id="preview" alt="" hidden>
+                <span id="pick-text">📷 Klik untuk memilih foto</span>
+            </label>
+
+            <label>Nama tempat <input name="tempat" required placeholder="contoh: Pantai Kuta"></label>
+            <div class="row2">
+                <label>Kota <input name="kota" placeholder="contoh: Bali"></label>
+                <label>Waktu <input name="waktu" placeholder="contoh: Juli 2024"></label>
+            </div>
+            <label>Cerita singkat <textarea name="cerita" rows="3" placeholder="Apa yang paling berkesan?"></textarea></label>
+
+            <details id="kunci-box">
+                <summary>🔑 Kunci GitHub <span id="kunci-status"></span></summary>
+                <p class="hint">Hanya keluarga yang punya kunci ini yang bisa menambah foto. Kunci disimpan di perangkat ini saja.</p>
+                <input name="kunci" type="password" autocomplete="off" placeholder="github_pat_...">
+                <button type="button" class="link" id="lupakan-kunci" hidden>Hapus kunci dari perangkat ini</button>
+            </details>
+
+            <p class="pesan" id="pesan" role="status"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" data-tutup>Batal</button>
+                <button type="submit" class="btn" id="btn-simpan">Simpan Foto</button>
+            </div>
+        </form>
+    </div>
     </main>
 
     <footer>
@@ -92,6 +96,7 @@
         </div>
     </footer>
 
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=6"></script>
+    <script src="galeri.js?v=1"></script>
 </body>
 </html>

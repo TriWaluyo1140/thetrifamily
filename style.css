@@ -60,6 +60,7 @@ body {
 footer { margin-top: auto; }
 
 img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
 a { color: inherit; }
 
 h1, h2, h3 { font-family: var(--serif); color: var(--ink); line-height: 1.2; font-weight: 600; }
@@ -354,3 +355,58 @@ footer .heart { color: var(--brand); }
     .nav-links { justify-content: space-between; gap: 0; }
     .nav-links a { padding: 6px 7px; font-size: .78rem; }
 }
+
+/* ---------- Tambah foto galeri ---------- */
+.gallery-bar { display: flex; justify-content: center; margin: -16px 0 32px; }
+.gallery-bar .btn { border: 0; cursor: pointer; font-family: inherit; }
+.gallery-empty {
+    text-align: center; padding: 48px 20px; border: 2px dashed var(--line); border-radius: var(--radius);
+    color: var(--muted);
+}
+.modal {
+    position: fixed; inset: 0; z-index: 60; background: rgba(15, 12, 10, .7);
+    display: flex; align-items: flex-start; justify-content: center; padding: 32px 16px; overflow-y: auto;
+}
+.modal[hidden] { display: none; }
+.modal-card {
+    position: relative; width: 100%; max-width: 520px; background: var(--card); color: var(--ink-soft);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 24px 24px;
+    box-shadow: var(--shadow-lg); display: grid; gap: 14px;
+}
+.modal-card h2 { font-size: 1.4rem; margin-bottom: 4px; }
+.modal-x {
+    position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%;
+    border: 0; background: var(--bg-alt); color: var(--ink); cursor: pointer; font-size: 1rem;
+}
+.modal-card label { display: grid; gap: 6px; font-size: .85rem; font-weight: 600; color: var(--ink); }
+.modal-card input, .modal-card textarea {
+    font: inherit; font-weight: 400; font-size: .95rem; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; width: 100%;
+}
+.modal-card input:focus, .modal-card textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: transparent; }
+.modal-card textarea { resize: vertical; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
+
+.pick {
+    position: relative; display: grid !important; place-items: center; min-height: 170px; cursor: pointer;
+    border: 2px dashed var(--line); border-radius: 14px; background: var(--bg); overflow: hidden;
+    color: var(--muted) !important; transition: border-color .2s;
+}
+.pick:hover { border-color: var(--brand); }
+.pick input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.pick img { width: 100%; max-height: 280px; object-fit: contain; }
+
+.modal-card details { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--bg); }
+.modal-card summary { cursor: pointer; font-size: .88rem; font-weight: 600; color: var(--ink); }
+#kunci-status { font-weight: 400; color: var(--muted); }
+.modal-card details[open] { display: grid; gap: 8px; }
+.hint { font-size: .82rem; color: var(--muted); }
+.link { background: none; border: 0; color: var(--brand); font: inherit; font-size: .82rem; cursor: pointer; justify-self: start; padding: 0; }
+
+.pesan { font-size: .88rem; min-height: 1.2em; }
+.pesan.error { color: #d9534f; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.modal-actions .btn { border: 0; cursor: pointer; font-family: inherit; }
+.modal-actions .btn-ghost { border: 1px solid var(--line); }
+.btn:disabled { opacity: .6; cursor: wait; transform: none; }
