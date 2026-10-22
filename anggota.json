@@ -1,0 +1,63 @@
+{
+  "grup": [
+    {
+      "id": "inti",
+      "judul": "Keluarga Inti",
+      "sub": "Empat orang, empat cerita, satu rumah.",
+      "anggota": [
+        {
+          "id": "ibu",
+          "profil": "ibu.html",
+          "nama": "Siti Umiyati",
+          "peran": "Ibu",
+          "desk": "Ibu rumah tangga, pemilik usaha katering, dan juru masak andalan keluarga.",
+          "foto": "ibu.jpg",
+          "warna": "ibu",
+          "jk": "P"
+        },
+        {
+          "id": "ayah",
+          "profil": "ayah.html",
+          "nama": "Tri Waluyo",
+          "peran": "Ayah",
+          "desk": "Kepala keluarga dan karyawan swasta yang percaya pada kerja keras.",
+          "foto": "ayah.jpg",
+          "warna": "ayah",
+          "jk": "L"
+        },
+        {
+          "id": "anak1",
+          "profil": "anak1.html",
+          "nama": "Sylda Frizqia Qiftiyani Putri",
+          "peran": "Anak Pertama",
+          "desk": "Mahasiswi Teknik Informatika yang bercita-cita menjadi Software Engineer.",
+          "foto": "anak1.jpg",
+          "warna": "anak1",
+          "jk": "P"
+        },
+        {
+          "id": "anak2",
+          "profil": "anak2.html",
+          "nama": "Haidar Fawaz Alhuzam Putra",
+          "peran": "Anak Kedua",
+          "desk": "Pelajar yang hobi menggambar dan bercita-cita menjadi desainer grafis.",
+          "foto": "anak2.jpg",
+          "warna": "anak2",
+          "jk": "L"
+        }
+      ]
+    },
+    {
+      "id": "keluarga-ayah",
+      "judul": "Keluarga Besar Tri Waluyo",
+      "sub": "Orang tua dan saudara kandung Tri Waluyo.",
+      "anggota": []
+    },
+    {
+      "id": "keluarga-ibu",
+      "judul": "Keluarga Besar Siti Umiyati",
+      "sub": "Orang tua dan saudara kandung Siti Umiyati.",
+      "anggota": []
+    }
+  ]
+}
