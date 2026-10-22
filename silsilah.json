@@ -135,7 +135,11 @@
       "nama": "Liliek Riyono",
       "jk": "L",
       "ket": "Anak Pertama",
-      "nikah": {}
+      "nikah": {
+        "pmvj9hnqf": {
+          "status": "menikah"
+        }
+      }
     },
     {
       "id": "pmvj9fh8z",
@@ -188,7 +192,12 @@
       "nama": "Yeti",
       "jk": "P",
       "ket": "Istri dari Liliek Riyono",
-      "nikah": {}
+      "nikah": {
+        "pmvj5qdhu": {
+          "status": "menikah",
+          "ke": 2
+        }
+      }
     },
     {
       "id": "pmvj9i563",
