@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -31,7 +31,7 @@
         <div class="wrap">
             <div class="section-head reveal">
                 <h2>Galeri Liburan</h2>
-                <p>Tempat-tempat yang pernah kami kunjungi bersama. Klik foto untuk melihat lebih besar.</p>
+                <p>Tempat-tempat yang pernah kami kunjungi bersama. Klik album untuk melihat semua fotonya.</p>
             </div>
 
             <div class="gallery-bar reveal">
@@ -61,18 +61,26 @@
             <button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>
             <h2>Tambah Foto Liburan</h2>
 
-            <label class="pick" id="pick">
-                <input type="file" name="foto" accept="image/*" required>
-                <img id="preview" alt="" hidden>
-                <span id="pick-text">📷 Klik untuk memilih foto</span>
+            <label>Simpan ke album
+                <select name="album" id="pilih-album">
+                    <option value="">＋ Liburan baru</option>
+                </select>
             </label>
 
-            <label>Nama tempat <input name="tempat" required placeholder="contoh: Pantai Kuta"></label>
-            <div class="row2">
-                <label>Kota <input name="kota" placeholder="contoh: Bali"></label>
-                <label>Waktu <input name="waktu" placeholder="contoh: Juli 2024"></label>
+            <label class="pick" id="pick">
+                <input type="file" name="foto" accept="image/*" multiple>
+                <span id="pick-text">📷 Klik untuk memilih foto<br><small>Bisa pilih banyak foto sekaligus</small></span>
+            </label>
+            <div class="thumbs" id="thumbs"></div>
+
+            <div class="info-baru" id="info-baru">
+                <label>Nama tempat <input name="tempat" placeholder="contoh: Pantai Kuta"></label>
+                <div class="row2">
+                    <label>Kota <input name="kota" placeholder="contoh: Bali"></label>
+                    <label>Waktu <input name="waktu" placeholder="contoh: Juli 2024"></label>
+                </div>
+                <label>Cerita singkat <textarea name="cerita" rows="3" placeholder="Apa yang paling berkesan?"></textarea></label>
             </div>
-            <label>Cerita singkat <textarea name="cerita" rows="3" placeholder="Apa yang paling berkesan?"></textarea></label>
 
             <details id="kunci-box">
                 <summary>🔑 Kunci GitHub <span id="kunci-status"></span></summary>
@@ -81,6 +89,7 @@
                 <button type="button" class="link" id="lupakan-kunci" hidden>Hapus kunci dari perangkat ini</button>
             </details>
 
+            <progress id="progres" max="1" value="0" hidden></progress>
             <p class="pesan" id="pesan" role="status"></p>
             <div class="modal-actions">
                 <button type="button" class="btn btn-ghost" data-tutup>Batal</button>
@@ -97,6 +106,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
-    <script src="galeri.js?v=1"></script>
+    <script src="galeri.js?v=2"></script>
 </body>
 </html>

@@ -410,3 +410,34 @@ footer .heart { color: var(--brand); }
 .modal-actions .btn { border: 0; cursor: pointer; font-family: inherit; }
 .modal-actions .btn-ghost { border: 1px solid var(--line); }
 .btn:disabled { opacity: .6; cursor: wait; transform: none; }
+
+/* ---------- Album & unggah banyak foto ---------- */
+.photo .cover { position: relative; }
+.photo .count {
+    position: absolute; right: 10px; bottom: 10px; background: rgba(15, 12, 10, .75); color: #fff;
+    font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+}
+.lightbox.single .lb-prev, .lightbox.single .lb-next { visibility: hidden; }
+.lb-num { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: rgba(255, 255, 255, .15); font-size: .8rem; }
+
+.modal-card select {
+    font: inherit; font-weight: 400; font-size: .95rem; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; width: 100%;
+}
+.info-baru { display: grid; gap: 14px; }
+.pick { text-align: center; }
+.pick small { font-weight: 400; color: var(--muted); }
+.pick.kecil { min-height: 54px; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+.thumbs:empty { display: none; }
+.thumb { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--bg-alt); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb button {
+    position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%; border: 0;
+    background: rgba(15, 12, 10, .7); color: #fff; font-size: .7rem; cursor: pointer;
+}
+.thumb span {
+    position: absolute; left: 4px; bottom: 4px; background: var(--brand); color: #fff;
+    font-size: .65rem; font-weight: 700; padding: 1px 6px; border-radius: 999px;
+}
+#progres { width: 100%; height: 8px; accent-color: var(--brand); }

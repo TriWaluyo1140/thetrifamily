@@ -1,22 +1,23 @@
-// Galeri liburan: tampilkan foto dari galeri.json dan tambah foto baru lewat GitHub
+// Galeri liburan: album foto dari galeri.json, tambah banyak foto sekaligus lewat GitHub
 (function () {
     // Repositori tempat situs ini disimpan
     var OWNER = 'triwaluyo1140';
     var REPO = 'thetrifamily';
     var BRANCH = 'main';
-    var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/';
+    var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/';
     var RAW = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/';
     var KEY = 'galeri-kunci';
+    var MAKS_FOTO = 50;
 
-    var grid = document.getElementById('gallery');
-    var empty = document.getElementById('gallery-empty');
-    var modal = document.getElementById('modal-tambah');
-    var form = document.getElementById('form-tambah');
-    var pesan = document.getElementById('pesan');
-    var preview = document.getElementById('preview');
-    var pickText = document.getElementById('pick-text');
-    var btnSimpan = document.getElementById('btn-simpan');
-    var fotoBaru = null; // { base64, dataUrl }
+    var $ = function (id) { return document.getElementById(id); };
+    var grid = $('gallery'), empty = $('gallery-empty');
+    var modal = $('modal-tambah'), form = $('form-tambah'), pesan = $('pesan');
+    var thumbs = $('thumbs'), pickText = $('pick-text'), progres = $('progres');
+    var pilihAlbum = $('pilih-album'), infoBaru = $('info-baru'), btnSimpan = $('btn-simpan');
+
+    var daftar = [];   // isi galeri.json
+    var lokal = {};    // foto yang baru diunggah: path -> dataUrl (tampil sebelum situs diperbarui)
+    var antre = [];    // foto yang dipilih di formulir: { base64, dataUrl }
 
     function getKunci() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
     function setKunci(v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} }
@@ -26,55 +27,111 @@
     function fromB64(b64) { return decodeURIComponent(escape(atob(b64.replace(/\n/g, '')))); }
 
     function esc(s) {
-        return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+        return String(s || '').replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
     }
+    // Album lama hanya punya "file"; album baru punya "files"
+    function fotoAlbum(a) { return a.files || (a.file ? [a.file] : []); }
+    function src(path) { return lokal[path] || path; }
+    function imgTag(path, alt, extra) {
+        return '<img src="' + esc(src(path)) + '" alt="' + esc(alt) + '"' + (extra || '') +
+            ' onerror="this.onerror=null;this.src=\'' + RAW + esc(path) + '\'">';
+    }
+    function keterangan(a) { return [a.kota, a.waktu].filter(Boolean).join(' · '); }
 
     // ---------- Tampilkan galeri ----------
-    function render(list) {
-        grid.innerHTML = list.slice().reverse().map(function (f) {
-            var when = [f.kota, f.waktu].filter(Boolean).join(' · ');
-            return '<figure class="photo show">' +
-                '<img src="' + esc(f.src || f.file) + '" alt="Liburan ke ' + esc(f.tempat) + '" loading="lazy"' +
-                ' onerror="this.onerror=null;this.src=\'' + RAW + esc(f.file) + '\'">' +
-                '<figcaption><strong>' + esc(f.tempat) + '</strong>' +
+    function render() {
+        grid.innerHTML = daftar.map(function (a, i) {
+            var foto = fotoAlbum(a), when = keterangan(a);
+            if (!foto.length) return '';
+            return '<figure class="photo" data-i="' + i + '">' +
+                '<div class="cover">' + imgTag(foto[0], 'Liburan ke ' + a.tempat, ' loading="lazy"') +
+                (foto.length > 1 ? '<span class="count">📷 ' + foto.length + ' foto</span>' : '') + '</div>' +
+                '<figcaption><strong>' + esc(a.tempat) + '</strong>' +
                 '<span class="when">' + (when ? '📍 ' + esc(when) : '') + '</span>' +
-                (f.cerita ? '<span class="story">' + esc(f.cerita) + '</span>' : '') +
+                (a.cerita ? '<span class="story">' + esc(a.cerita) + '</span>' : '') +
                 '</figcaption></figure>';
-        }).join('');
-        empty.hidden = list.length > 0;
+        }).reverse().join('');
+        empty.hidden = daftar.length > 0;
     }
 
-    var daftar = [];
     function muat() {
         // Dengan kunci: baca langsung dari GitHub (paling baru). Tanpa kunci: baca dari situs.
         var kunci = getKunci();
-        var req = kunci
-            ? fetch(API + 'galeri.json?ref=' + BRANCH, { headers: header(kunci), cache: 'no-store' })
-                .then(function (r) { if (!r.ok) throw r; return r.json(); })
-                .then(function (d) { return JSON.parse(fromB64(d.content)); })
-            : Promise.reject();
+        var req = kunci ? bacaJson(kunci, BRANCH) : Promise.reject();
         return req.catch(function () {
             return fetch('galeri.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : []; });
-        }).catch(function () { return []; }).then(function (list) { daftar = list; render(daftar); });
+        }).catch(function () { return []; }).then(function (list) { daftar = list; render(); });
     }
 
-    // ---------- GitHub ----------
-    function header(kunci) {
-        return { 'Authorization': 'Bearer ' + kunci, 'Accept': 'application/vnd.github+json' };
+    // ---------- Lihat album (lightbox) ----------
+    var box = $('lightbox'), lbImg = box.querySelector('img'), lbCap = box.querySelector('figcaption');
+    var album = null, pos = 0;
+    function tampil(n) {
+        var foto = fotoAlbum(album);
+        pos = (n + foto.length) % foto.length;
+        lbImg.onerror = function () { lbImg.onerror = null; lbImg.src = RAW + foto[pos]; };
+        lbImg.src = src(foto[pos]); lbImg.alt = album.tempat;
+        var when = keterangan(album);
+        lbCap.innerHTML = '<strong>' + esc(album.tempat) + '</strong>' + (when ? '📍 ' + esc(when) : '') +
+            (foto.length > 1 ? ' <span class="lb-num">' + (pos + 1) + ' / ' + foto.length + '</span>' : '');
+        box.classList.toggle('single', foto.length < 2);
     }
-    function ambil(path, kunci) {
-        return fetch(API + path + '?ref=' + BRANCH, { headers: header(kunci), cache: 'no-store' }).then(function (r) {
-            if (r.status === 404) return null;
-            if (!r.ok) throw r;
+    function bukaAlbum(i) { album = daftar[i]; tampil(0); box.hidden = false; document.body.style.overflow = 'hidden'; }
+    function tutupAlbum() { box.hidden = true; document.body.style.overflow = ''; }
+
+    grid.addEventListener('click', function (e) {
+        var p = e.target.closest('.photo');
+        if (p) bukaAlbum(+p.getAttribute('data-i'));
+    });
+    box.querySelector('.lb-close').onclick = tutupAlbum;
+    box.querySelector('.lb-prev').onclick = function () { tampil(pos - 1); };
+    box.querySelector('.lb-next').onclick = function () { tampil(pos + 1); };
+    box.addEventListener('click', function (e) { if (e.target === box) tutupAlbum(); });
+    // Geser (swipe) di HP
+    var x0 = null;
+    box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 50) tampil(pos + (dx < 0 ? 1 : -1));
+    });
+
+    // ---------- GitHub ----------
+    function gh(path, opt, kunci) {
+        opt = opt || {};
+        opt.headers = { 'Authorization': 'Bearer ' + kunci, 'Accept': 'application/vnd.github+json' };
+        opt.cache = 'no-store';
+        if (opt.body && typeof opt.body !== 'string') opt.body = JSON.stringify(opt.body);
+        return fetch(API + path, opt).then(function (r) {
+            if (!r.ok) { var err = new Error('github'); err.status = r.status; throw err; }
             return r.json();
         });
     }
-    function simpan(path, base64, message, sha, kunci) {
-        var body = { message: message, content: base64, branch: BRANCH };
-        if (sha) body.sha = sha;
-        return fetch(API + path, { method: 'PUT', headers: header(kunci), body: JSON.stringify(body) }).then(function (r) {
-            if (!r.ok) throw r;
-            return r.json();
+    function bacaJson(kunci, ref) {
+        return gh('contents/galeri.json?ref=' + ref, null, kunci)
+            .then(function (d) { return JSON.parse(fromB64(d.content)); })
+            .catch(function (err) { if (err.status === 404) return []; throw err; });
+    }
+    // Semua foto + galeri.json disimpan dalam SATU commit, jadi situs hanya diperbarui sekali
+    function simpanSemua(kunci, blobs, ubahDaftar, pesanCommit, coba) {
+        var head;
+        return gh('git/ref/heads/' + BRANCH, null, kunci).then(function (ref) {
+            head = ref.object.sha;
+            return Promise.all([gh('git/commits/' + head, null, kunci), bacaJson(kunci, head)]);
+        }).then(function (r) {
+            var list = ubahDaftar(r[1]);
+            var tree = blobs.map(function (b) { return { path: b.path, mode: '100644', type: 'blob', sha: b.sha }; });
+            tree.push({ path: 'galeri.json', mode: '100644', type: 'blob', content: JSON.stringify(list, null, 2) + '\n' });
+            return gh('git/trees', { method: 'POST', body: { base_tree: r[0].tree.sha, tree: tree } }, kunci)
+                .then(function (t) { return gh('git/commits', { method: 'POST', body: { message: pesanCommit, tree: t.sha, parents: [head] } }, kunci); })
+                .then(function (c) { return gh('git/refs/heads/' + BRANCH, { method: 'PATCH', body: { sha: c.sha } }, kunci); })
+                .then(function () { return list; });
+        }).catch(function (err) {
+            // Ada perubahan lain di saat yang sama: ulangi sekali dengan data terbaru
+            if (err.status === 422 && !coba) return simpanSemua(kunci, blobs, ubahDaftar, pesanCommit, true);
+            throw err;
         });
     }
     function alasan(err) {
@@ -99,7 +156,7 @@
                 var dataUrl = c.toDataURL('image/jpeg', 0.85);
                 ok({ dataUrl: dataUrl, base64: dataUrl.split(',')[1] });
             };
-            img.onerror = function () { gagal(new Error('format')); };
+            img.onerror = function () { URL.revokeObjectURL(img.src); gagal(new Error('format')); };
             img.src = URL.createObjectURL(file);
         });
     }
@@ -107,75 +164,132 @@
     // ---------- Formulir ----------
     function info(teks, jenis) { pesan.textContent = teks; pesan.className = 'pesan ' + (jenis || ''); }
 
-    function bukaForm() {
-        form.reset(); fotoBaru = null;
-        preview.hidden = true; pickText.hidden = false; info('');
+    function gambarThumbs() {
+        thumbs.innerHTML = antre.map(function (f, i) {
+            return '<div class="thumb"><img src="' + f.dataUrl + '" alt="">' +
+                '<button type="button" data-hapus="' + i + '" aria-label="Batalkan foto ini">✕</button>' +
+                (i === 0 && !pilihAlbum.value ? '<span>Sampul</span>' : '') + '</div>';
+        }).join('');
+        pickText.innerHTML = antre.length
+            ? '＋ Tambah foto lagi <small>(' + antre.length + ' dipilih)</small>'
+            : '📷 Klik untuk memilih foto<br><small>Bisa pilih banyak foto sekaligus</small>';
+        $('pick').classList.toggle('kecil', antre.length > 0);
+    }
+
+    function bukaForm(albumIndex) {
+        form.reset(); antre = []; gambarThumbs(); info('');
+        progres.hidden = true;
+        pilihAlbum.innerHTML = '<option value="">＋ Liburan baru</option>' + daftar.map(function (a, i) {
+            return '<option value="' + i + '">' + esc(a.tempat) + (a.waktu ? ' (' + esc(a.waktu) + ')' : '') + '</option>';
+        }).reverse().join('');
+        if (albumIndex != null) pilihAlbum.value = albumIndex;
+        infoBaru.hidden = !!pilihAlbum.value;
         var ada = !!getKunci();
-        document.getElementById('kunci-status').textContent = ada ? '· tersimpan ✓' : '· wajib diisi';
-        document.getElementById('kunci-box').open = !ada;
-        document.getElementById('lupakan-kunci').hidden = !ada;
+        $('kunci-status').textContent = ada ? '· tersimpan ✓' : '· wajib diisi';
+        $('kunci-box').open = !ada;
+        $('lupakan-kunci').hidden = !ada;
         modal.hidden = false; document.body.style.overflow = 'hidden';
     }
-    function tutupForm() { modal.hidden = true; document.body.style.overflow = ''; }
+    function tutupForm() {
+        if (btnSimpan.disabled) return; // sedang mengunggah
+        modal.hidden = true; document.body.style.overflow = '';
+    }
 
-    document.getElementById('btn-tambah').addEventListener('click', bukaForm);
+    $('btn-tambah').addEventListener('click', function () { bukaForm(null); });
     modal.addEventListener('click', function (e) {
         if (e.target === modal || e.target.hasAttribute('data-tutup')) tutupForm();
     });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) tutupForm(); });
-    document.getElementById('lupakan-kunci').addEventListener('click', function () {
-        setKunci(''); bukaForm(); info('Kunci dihapus dari perangkat ini.');
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { if (!modal.hidden) tutupForm(); else if (!box.hidden) tutupAlbum(); }
+        if (!box.hidden && e.key === 'ArrowLeft') tampil(pos - 1);
+        if (!box.hidden && e.key === 'ArrowRight') tampil(pos + 1);
+    });
+    $('lupakan-kunci').addEventListener('click', function () {
+        setKunci(''); $('kunci-status').textContent = '· wajib diisi'; this.hidden = true;
+        info('Kunci dihapus dari perangkat ini.');
+    });
+    pilihAlbum.addEventListener('change', function () { infoBaru.hidden = !!pilihAlbum.value; gambarThumbs(); });
+    thumbs.addEventListener('click', function (e) {
+        var i = e.target.getAttribute('data-hapus');
+        if (i !== null) { antre.splice(+i, 1); gambarThumbs(); }
     });
 
     form.foto.addEventListener('change', function () {
-        var file = form.foto.files[0];
-        if (!file) return;
-        info('Menyiapkan foto…');
-        perkecil(file).then(function (f) {
-            fotoBaru = f; preview.src = f.dataUrl; preview.hidden = false; pickText.hidden = true; info('');
-        }).catch(function () {
-            fotoBaru = null; form.foto.value = '';
-            info('Format foto ini tidak bisa dibuka. Gunakan foto JPG atau PNG.', 'error');
+        var files = Array.prototype.slice.call(form.foto.files);
+        form.foto.value = '';
+        if (!files.length) return;
+        var sisa = MAKS_FOTO - antre.length;
+        if (files.length > sisa) info('Maksimal ' + MAKS_FOTO + ' foto sekali simpan. ' + (files.length - sisa) + ' foto tidak ikut.', 'error');
+        files = files.slice(0, Math.max(0, sisa));
+        var gagal = 0, selesai = 0;
+        btnSimpan.disabled = true;
+        // Satu per satu agar HP tidak kehabisan memori
+        files.reduce(function (p, file) {
+            return p.then(function () {
+                info('Menyiapkan foto ' + (++selesai) + ' dari ' + files.length + '…');
+                return perkecil(file).then(function (f) { antre.push(f); gambarThumbs(); }, function () { gagal++; });
+            });
+        }, Promise.resolve()).then(function () {
+            btnSimpan.disabled = false;
+            info(gagal ? gagal + ' foto tidak bisa dibuka (gunakan JPG atau PNG).' : '', gagal ? 'error' : '');
         });
     });
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         var kunci = form.kunci.value.trim() || getKunci();
-        if (!fotoBaru) return info('Pilih fotonya dulu.', 'error');
-        if (!kunci) { document.getElementById('kunci-box').open = true; return info('Masukkan Kunci GitHub dulu.', 'error'); }
+        var idx = pilihAlbum.value === '' ? null : +pilihAlbum.value;
+        var tempat = idx === null ? form.tempat.value.trim() : daftar[idx].tempat;
+        if (!antre.length) return info('Pilih fotonya dulu.', 'error');
+        if (!tempat) { form.tempat.focus(); return info('Isi nama tempatnya dulu.', 'error'); }
+        if (!kunci) { $('kunci-box').open = true; return info('Masukkan Kunci GitHub dulu.', 'error'); }
 
-        var item = {
-            file: 'galeri/' + new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14) + '.jpg',
-            tempat: form.tempat.value.trim(),
-            kota: form.kota.value.trim(),
-            waktu: form.waktu.value.trim(),
-            cerita: form.cerita.value.trim()
-        };
+        var stamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+        var foto = antre.map(function (f, i) { return { path: 'galeri/' + stamp + '-' + (i + 1) + '.jpg', f: f }; });
+        var albumAsli = idx === null ? null : daftar[idx];
+
         btnSimpan.disabled = true;
-        info('Mengunggah foto…');
+        progres.hidden = false; progres.max = foto.length + 1; progres.value = 0;
 
-        simpan(item.file, fotoBaru.base64, 'Tambah foto galeri: ' + item.tempat, null, kunci)
-            .then(function () {
-                info('Memperbarui daftar galeri…');
-                return ambil('galeri.json', kunci);
-            })
-            .then(function (d) {
-                var list = d ? JSON.parse(fromB64(d.content)) : [];
-                list.push(item);
-                return simpan('galeri.json', toB64(JSON.stringify(list, null, 2) + '\n'),
-                    'Perbarui galeri: ' + item.tempat, d && d.sha, kunci).then(function () { return list; });
-            })
-            .then(function (list) {
-                setKunci(kunci);
-                // Tampilkan langsung; situs untuk pengunjung lain diperbarui GitHub dalam 1–2 menit
-                var lokal = list.map(function (f) { return f.file === item.file ? Object.assign({ src: fotoBaru.dataUrl }, f) : f; });
-                daftar = list; render(lokal);
-                tutupForm();
-                alert('Foto tersimpan! 🎉\n\nPengunjung lain akan melihatnya dalam 1–2 menit, setelah GitHub selesai memperbarui situs.');
-            })
-            .catch(function (err) { info(alasan(err), 'error'); })
-            .then(function () { btnSimpan.disabled = false; });
+        // 1) Unggah foto satu per satu
+        var blobs = [];
+        foto.reduce(function (p, x, i) {
+            return p.then(function () {
+                info('Mengunggah foto ' + (i + 1) + ' dari ' + foto.length + '…');
+                return gh('git/blobs', { method: 'POST', body: { content: x.f.base64, encoding: 'base64' } }, kunci)
+                    .then(function (b) { blobs.push({ path: x.path, sha: b.sha }); progres.value = i + 1; });
+            });
+        }, Promise.resolve()).then(function () {
+            // 2) Simpan semua foto + daftar galeri sekaligus
+            info('Menyimpan album…');
+            var paths = foto.map(function (x) { return x.path; });
+            return simpanSemua(kunci, blobs, function (list) {
+                var target = albumAsli && list.filter(function (a) {
+                    return fotoAlbum(a)[0] === fotoAlbum(albumAsli)[0];
+                })[0];
+                if (target) {
+                    target.files = fotoAlbum(target).concat(paths);
+                    delete target.file;
+                } else {
+                    list.push({
+                        tempat: tempat, kota: form.kota.value.trim(), waktu: form.waktu.value.trim(),
+                        cerita: form.cerita.value.trim(), files: paths
+                    });
+                }
+                return list;
+            }, (albumAsli ? 'Tambah foto ke ' : 'Album baru: ') + tempat + ' (' + foto.length + ' foto)');
+        }).then(function (list) {
+            progres.value = progres.max;
+            setKunci(kunci);
+            foto.forEach(function (x) { lokal[x.path] = x.f.dataUrl; });
+            daftar = list; render();
+            btnSimpan.disabled = false;
+            tutupForm();
+            alert(foto.length + ' foto tersimpan! 🎉\n\nPengunjung lain akan melihatnya dalam 1–2 menit, setelah GitHub selesai memperbarui situs.');
+        }).catch(function (err) {
+            btnSimpan.disabled = false; progres.hidden = true;
+            info(alasan(err), 'error');
+        });
     });
 
     muat();
