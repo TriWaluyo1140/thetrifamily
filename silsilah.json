@@ -129,16 +129,12 @@
         "nenek-ayah"
       ],
       "pasangan": [
-        "pmvj9hnqf",
         "pmvja2dvi"
       ],
       "nama": "Liliek Riyono",
       "jk": "L",
       "ket": "Anak Pertama",
       "nikah": {
-        "pmvj9hnqf": {
-          "status": "menikah"
-        },
         "pmvja2dvi": {
           "status": "menikah"
         }
@@ -186,23 +182,6 @@
       "nikah": {}
     },
     {
-      "id": "pmvj9hnqf",
-      "foto": "",
-      "ortu": [],
-      "pasangan": [
-        "pmvj5qdhu"
-      ],
-      "nama": "Yeti",
-      "jk": "P",
-      "ket": "Istri dari Liliek Riyono",
-      "nikah": {
-        "pmvj5qdhu": {
-          "status": "menikah",
-          "ke": 2
-        }
-      }
-    },
-    {
       "id": "pmvj9i563",
       "foto": "",
       "ortu": [],
@@ -218,8 +197,7 @@
       "id": "pmvj9iwd7",
       "foto": "",
       "ortu": [
-        "pmvj5qdhu",
-        "pmvj9hnqf"
+        "pmvj5qdhu"
       ],
       "pasangan": [],
       "nama": "Ayu Nuraini",
@@ -245,8 +223,7 @@
       "id": "pmvj9mcd4",
       "foto": "",
       "ortu": [
-        "pmvj5qdhu",
-        "pmvj9hnqf"
+        "pmvj5qdhu"
       ],
       "pasangan": [],
       "nama": "Aira",
