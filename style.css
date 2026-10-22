@@ -464,7 +464,7 @@ footer .heart { color: var(--brand); }
     box-shadow: 0 0 0 4px var(--card), 0 0 0 6px var(--brand);
 }
 .crop canvas:active { cursor: grabbing; }
-.zoom { display: flex !important; align-items: center; gap: 10px; }
+.zoom:not([hidden]) { display: flex !important; align-items: center; gap: 10px; }
 .zoom input { flex: 1; accent-color: var(--brand); padding: 0; border: 0; background: none; }
 .kunci-status { font-weight: 400; color: var(--muted); }
 

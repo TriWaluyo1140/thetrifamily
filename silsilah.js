@@ -286,30 +286,73 @@
         if (a === 'hapus') hapus(aktif); else bukaForm(a, aktif);
     });
 
-    // ---------- Foto: potong persegi & perkecil ----------
-    function perkecil(file) {
-        return new Promise(function (ok, gagal) {
-            var img = new Image();
-            img.onload = function () {
-                var w = img.naturalWidth, h = img.naturalHeight, s = Math.min(w, h), out = 500;
-                // Foto tegak: ambil bagian atas (biasanya wajah)
-                var sx = (w - s) / 2, sy = h > w ? Math.min((h - s) / 2, h * 0.08) : (h - s) / 2;
-                var c = document.createElement('canvas'); c.width = c.height = Math.min(out, s);
-                c.getContext('2d').drawImage(img, sx, sy, s, s, 0, 0, c.width, c.height);
-                URL.revokeObjectURL(img.src);
-                var dataUrl = c.toDataURL('image/jpeg', 0.88);
-                ok({ dataUrl: dataUrl, base64: dataUrl.split(',')[1] });
-            };
-            img.onerror = function () { URL.revokeObjectURL(img.src); gagal(new Error('format')); };
-            img.src = URL.createObjectURL(file);
-        });
-    }
-
     // ---------- Formulir tambah / ubah ----------
     var form = $('form-orang'), pesan = form.querySelector('.pesan'), btnSimpan = form.querySelector('[type=submit]');
     var mode = null, fotoBaru = null, sibuk = false;
     function info(t, jenis) { pesan.textContent = t; pesan.className = 'pesan ' + (jenis || ''); }
     function lawan(jk) { return jk === 'L' ? 'P' : 'L'; }
+
+    // ---------- Foto: atur posisi & perbesar (seperti ganti foto profil) ----------
+    var UKURAN = 500, VIEW = 260;
+    var potong = (function () {
+        var canvas = $('f-crop').querySelector('canvas'), ctx = canvas.getContext('2d');
+        var img = null, zoom = 1, cx = 0, cy = 0, seret = null;
+        // Sisi potongan persegi (dalam piksel foto): zoom 1 = sisi terpendek foto
+        function sisi() { return Math.min(img.naturalWidth, img.naturalHeight) / zoom; }
+        function batasi() {
+            var h = sisi() / 2;
+            cx = Math.min(Math.max(cx, h), img.naturalWidth - h);
+            cy = Math.min(Math.max(cy, h), img.naturalHeight - h);
+        }
+        function gambar(c, ukuran) {
+            var s = sisi();
+            c.getContext('2d').drawImage(img, cx - s / 2, cy - s / 2, s, s, 0, 0, ukuran, ukuran);
+        }
+        function ulang() { batasi(); ctx.clearRect(0, 0, VIEW, VIEW); gambar(canvas, VIEW); }
+        function tampil(ada) {
+            ['f-crop', 'f-zoom', 'f-crop-hint'].forEach(function (id) { $(id).hidden = !ada; });
+        }
+        function pratinjau() { $('f-prev').innerHTML = '<img src="' + canvas.toDataURL('image/jpeg', 0.7) + '" alt="">'; }
+
+        form.zoom.addEventListener('input', function () { zoom = +form.zoom.value; ulang(); });
+        form.zoom.addEventListener('change', pratinjau);
+        canvas.addEventListener('pointerdown', function (e) { seret = { x: e.clientX, y: e.clientY }; canvas.setPointerCapture(e.pointerId); });
+        canvas.addEventListener('pointermove', function (e) {
+            if (!seret || !img) return;
+            var k = sisi() / VIEW; // piksel foto per piksel layar
+            cx -= (e.clientX - seret.x) * k; cy -= (e.clientY - seret.y) * k;
+            seret = { x: e.clientX, y: e.clientY }; ulang();
+        });
+        canvas.addEventListener('pointerup', function () { seret = null; pratinjau(); });
+        canvas.addEventListener('pointercancel', function () { seret = null; });
+
+        return {
+            muat: function (file) {
+                return new Promise(function (ok, gagal) {
+                    var baru = new Image();
+                    baru.onload = function () {
+                        img = baru; zoom = 1; form.zoom.value = 1;
+                        cx = img.naturalWidth / 2;
+                        // Foto tegak: mulai dari bagian atas (biasanya wajah ada di atas)
+                        cy = img.naturalHeight > img.naturalWidth ? img.naturalWidth / 2 : img.naturalHeight / 2;
+                        tampil(true); ulang(); pratinjau(); ok();
+                    };
+                    baru.onerror = function () { gagal(new Error('format')); };
+                    baru.src = URL.createObjectURL(file);
+                });
+            },
+            ada: function () { return !!img; },
+            hasil: function () {
+                var out = document.createElement('canvas');
+                out.width = out.height = Math.min(UKURAN, Math.round(sisi()));
+                gambar(out, out.width);
+                var dataUrl = out.toDataURL('image/jpeg', 0.88);
+                return { dataUrl: dataUrl, base64: dataUrl.split(',')[1] };
+            },
+            reset: function () { if (img) URL.revokeObjectURL(img.src); img = null; tampil(false); }
+        };
+    })();
+
 
     // "Anak dari": pilihan pasangan orang tua (berguna bila seseorang menikah lebih dari sekali)
     function isiDari(tipe, p) {
@@ -370,7 +413,7 @@
     }
 
     function bukaForm(tipe, p) {
-        form.reset(); fotoBaru = null; info('');
+        form.reset(); fotoBaru = null; potong.reset(); info('');
         mode = { tipe: tipe, id: p.id };
         var judul = { ubah: 'Ubah Data', anak: 'Tambah Anak', pasangan: 'Tambah Pasangan', ortu: 'Tambah Orang Tua' }[tipe];
         var ps = pasangan(p);
@@ -410,8 +453,8 @@
 
     form.foto.addEventListener('change', function () {
         var f = form.foto.files[0]; if (!f) return;
-        perkecil(f).then(function (x) {
-            fotoBaru = x; $('f-prev').innerHTML = '<img src="' + x.dataUrl + '" alt="">'; $('f-pick-text').textContent = 'Ganti foto';
+        potong.muat(f).then(function () {
+            $('f-pick-text').textContent = 'Ganti foto'; info('');
         }).catch(function () { info('Format foto ini tidak bisa dibuka. Gunakan foto JPG atau PNG.', 'error'); });
     });
 
@@ -428,6 +471,7 @@
         var nikahBaru = bacaNikah();
         if (!isi.nama) return info('Isi namanya dulu.', 'error');
 
+        fotoBaru = potong.ada() ? potong.hasil() : null;
         var m = mode, idBaru = 'p' + Date.now().toString(36);
         var targetId = m.tipe === 'ubah' ? m.id : idBaru;
         var fotoPath = fotoBaru ? FOLDER + targetId + '-' + Date.now().toString(36) + '.jpg' : null;

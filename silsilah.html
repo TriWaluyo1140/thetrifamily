@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
 
@@ -75,6 +75,10 @@
                 <span class="foto-prev" id="f-prev">📷</span>
                 <span id="f-pick-text">Pilih foto (opsional)</span>
             </label>
+            <!-- Atur posisi foto, sama seperti ganti foto profil -->
+            <div class="crop" id="f-crop" hidden><canvas width="260" height="260"></canvas></div>
+            <label class="zoom" id="f-zoom" hidden>🔍 Perbesar <input type="range" name="zoom" min="1" max="3" step="0.01" value="1"></label>
+            <p class="hint" id="f-crop-hint" hidden>Geser foto di dalam lingkaran untuk mengatur posisi wajah.</p>
 
             <label>Nama lengkap <input name="nama" required placeholder="contoh: Slamet Ranu Tirto"></label>
             <label>Jenis kelamin
@@ -120,6 +124,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
-    <script src="silsilah.js?v=6"></script>
+    <script src="silsilah.js?v=7"></script>
 </body>
 </html>
