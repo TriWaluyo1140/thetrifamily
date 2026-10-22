@@ -441,3 +441,12 @@ footer .heart { color: var(--brand); }
     font-size: .65rem; font-weight: 700; padding: 1px 6px; border-radius: 999px;
 }
 #progres { width: 100%; height: 8px; accent-color: var(--brand); }
+
+/* Tombol hapus di tampilan album */
+.lb-tools { display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.lightbox .lb-tools button {
+    width: auto; height: auto; border-radius: 999px; padding: 7px 14px;
+    font: 600 .82rem var(--sans); background: rgba(217, 83, 79, .2); color: #ffb4b0;
+}
+.lightbox .lb-tools button:hover { background: rgba(217, 83, 79, .4); color: #fff; }
+.lightbox .lb-tools button:disabled { opacity: .5; cursor: wait; }

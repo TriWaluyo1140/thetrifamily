@@ -77,6 +77,8 @@
         lbCap.innerHTML = '<strong>' + esc(album.tempat) + '</strong>' + (when ? '📍 ' + esc(when) : '') +
             (foto.length > 1 ? ' <span class="lb-num">' + (pos + 1) + ' / ' + foto.length + '</span>' : '');
         box.classList.toggle('single', foto.length < 2);
+        $('lb-tools').hidden = !getKunci();
+        $('hapus-album').hidden = foto.length < 2;
     }
     function bukaAlbum(i) { album = daftar[i]; tampil(0); box.hidden = false; document.body.style.overflow = 'hidden'; }
     function tutupAlbum() { box.hidden = true; document.body.style.overflow = ''; }
@@ -122,6 +124,7 @@
             return Promise.all([gh('git/commits/' + head, null, kunci), bacaJson(kunci, head)]);
         }).then(function (r) {
             var list = ubahDaftar(r[1]);
+            // sha null = file dihapus dari repositori
             var tree = blobs.map(function (b) { return { path: b.path, mode: '100644', type: 'blob', sha: b.sha }; });
             tree.push({ path: 'galeri.json', mode: '100644', type: 'blob', content: JSON.stringify(list, null, 2) + '\n' });
             return gh('git/trees', { method: 'POST', body: { base_tree: r[0].tree.sha, tree: tree } }, kunci)
@@ -141,6 +144,45 @@
         if (s === 409 || s === 422) return 'Galeri sedang diperbarui. Coba simpan lagi.';
         return 'Gagal menyimpan. Periksa koneksi internet lalu coba lagi.';
     }
+
+    // ---------- Hapus foto / album ----------
+    function hapus(semua) {
+        var kunci = getKunci();
+        var foto = fotoAlbum(album), path = foto[pos];
+        var tanya = semua
+            ? 'Hapus album "' + album.tempat + '" beserta ' + foto.length + ' fotonya?'
+            : 'Hapus foto ini dari album "' + album.tempat + '"?' + (foto.length === 1 ? '\nIni foto terakhir, jadi albumnya ikut terhapus.' : '');
+        if (!confirm(tanya + '\n\nFoto yang dihapus tidak bisa dikembalikan dari halaman ini.')) return;
+
+        var tombol = $('lb-tools').querySelectorAll('button');
+        Array.prototype.forEach.call(tombol, function (b) { b.disabled = true; });
+        var dibuang = semua ? foto.slice() : [path];
+        var pesanCommit = (semua ? 'Hapus album: ' : 'Hapus foto dari ') + album.tempat;
+
+        simpanSemua(kunci, dibuang.map(function (p) { return { path: p, sha: null }; }), function (list) {
+            // Cari album berdasarkan foto yang dimilikinya (aman walau urutan berubah)
+            return list.map(function (a) {
+                var sisa = fotoAlbum(a).filter(function (p) { return dibuang.indexOf(p) < 0; });
+                if (sisa.length === fotoAlbum(a).length) return a;
+                if (!sisa.length) return null;
+                var baru = Object.assign({}, a, { files: sisa }); delete baru.file;
+                return baru;
+            }).filter(Boolean);
+        }, pesanCommit).then(function (list) {
+            daftar = list; render();
+            var sisa = foto.filter(function (p) { return dibuang.indexOf(p) < 0; });
+            var masih = sisa.length && daftar.filter(function (a) { return fotoAlbum(a).indexOf(sisa[0]) >= 0; })[0];
+            if (masih) { album = masih; tampil(Math.min(pos, fotoAlbum(masih).length - 1)); }
+            else tutupAlbum();
+        }).catch(function (err) {
+            // Foto sudah tidak ada di GitHub (mis. dihapus dari perangkat lain)
+            alert(err.status === 422 ? 'Foto ini sudah terhapus sebelumnya. Muat ulang halaman.' : alasan(err).replace('menyimpan', 'menghapus'));
+        }).then(function () {
+            Array.prototype.forEach.call(tombol, function (b) { b.disabled = false; });
+        });
+    }
+    $('hapus-foto').addEventListener('click', function () { hapus(false); });
+    $('hapus-album').addEventListener('click', function () { hapus(true); });
 
     // ---------- Perkecil foto (maks 1600px, JPEG) ----------
     function perkecil(file) {
