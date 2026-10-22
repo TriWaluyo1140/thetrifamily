@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20">
+    <link rel="stylesheet" href="style.css?v=21">
+    <script src="admin.js?v=1"></script>
 </head>
 <body>
 
@@ -35,13 +36,13 @@
                 <p>Tempat-tempat yang pernah kami kunjungi bersama. Klik album untuk melihat semua fotonya.</p>
             </div>
 
-            <div class="gallery-bar reveal">
+            <div class="gallery-bar reveal khusus-admin">
                 <button type="button" class="btn" id="btn-tambah">＋ Tambah Foto</button>
             </div>
 
             <!-- Foto diambil otomatis dari file galeri.json -->
             <div class="gallery" id="gallery"></div>
-            <p class="gallery-empty" id="gallery-empty" hidden>📷 Belum ada foto. Klik <strong>＋ Tambah Foto</strong> untuk menambahkan kenangan liburan pertama.</p>
+            <p class="gallery-empty" id="gallery-empty" hidden>📷 Belum ada foto.<span class="khusus-admin"> Klik <strong>＋ Tambah Foto</strong> untuk menambahkan kenangan liburan pertama.</span></p>
         </div>
     </section>
 
@@ -53,7 +54,7 @@
             <img src="" alt="">
             <figcaption></figcaption>
             <!-- Hanya muncul di perangkat yang menyimpan Kunci GitHub -->
-            <div class="lb-tools" id="lb-tools" hidden>
+            <div class="lb-tools khusus-admin" id="lb-tools" hidden>
                 <button type="button" id="hapus-foto">🗑 Hapus foto ini</button>
                 <button type="button" id="hapus-album">Hapus album</button>
             </div>

@@ -607,3 +607,11 @@ body.kelola .pc { border-style: dashed; border-color: var(--brand); }
     .fakta-baris button { grid-row: 1; grid-column: 3; }
     .fakta-baris input[data-f=isi] { grid-column: 1 / -1; }
 }
+
+/* Mode keluarga: tombol ubah/tambah hanya untuk perangkat yang sudah masuk */
+html:not(.admin) .khusus-admin { display: none !important; }
+.kunci-link {
+    margin-top: 10px; background: none; border: 0; font: 600 .78rem var(--sans); color: var(--muted);
+    cursor: pointer; opacity: .7; padding: 4px 8px; border-radius: 999px;
+}
+.kunci-link:hover { opacity: 1; color: var(--ink); background: var(--bg-alt); }
