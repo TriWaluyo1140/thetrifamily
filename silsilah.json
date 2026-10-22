@@ -108,7 +108,9 @@
         "kakek-ayah",
         "nenek-ayah"
       ],
-      "pasangan": [],
+      "pasangan": [
+        "pmvj9hnqf"
+      ],
       "nama": "Liliek Riyono",
       "jk": "L",
       "ket": "Anak Pertama"
@@ -148,6 +150,17 @@
       "nama": "Rahmat Widayat",
       "jk": "L",
       "ket": "Anak Kelima"
+    },
+    {
+      "id": "pmvj9hnqf",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "pmvj5qdhu"
+      ],
+      "nama": "Yeti",
+      "jk": "P",
+      "ket": "Istri dari Liliek Riyono"
     }
   ]
 }
