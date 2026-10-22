@@ -73,7 +73,8 @@
       "pasangan": [
         "ayah"
       ],
-      "profil": "ibu.html"
+      "profil": "ibu.html",
+      "urutan": 1
     },
     {
       "id": "sylda",
