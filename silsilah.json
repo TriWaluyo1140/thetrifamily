@@ -134,7 +134,9 @@
         "kakek-ayah",
         "nenek-ayah"
       ],
-      "pasangan": [],
+      "pasangan": [
+        "pmvj9i563"
+      ],
       "nama": "Putri Utami",
       "jk": "P",
       "ket": "Anak Keempat"
@@ -161,6 +163,17 @@
       "nama": "Yeti",
       "jk": "P",
       "ket": "Istri dari Liliek Riyono"
+    },
+    {
+      "id": "pmvj9i563",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "pmvj9gql3"
+      ],
+      "nama": "Faiz",
+      "jk": "L",
+      "ket": "Suami dari Putri Utami"
     }
   ]
 }
