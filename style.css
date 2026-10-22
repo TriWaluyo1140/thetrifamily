@@ -574,3 +574,19 @@ body.kelola .pc { border-style: dashed; border-color: var(--brand); }
 .modal-card .nikah-baris select { width: auto; padding: 8px 10px; }
 .modal-card .nikah-ke { display: flex !important; align-items: center; gap: 4px; font-weight: 400; color: var(--muted); }
 .modal-card .nikah-ke input { width: 56px; padding: 8px; }
+
+/* Foto berjalan di sampul album */
+.photo .cover { aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg-alt); }
+.photo .cover .slide {
+    position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover;
+    opacity: 0; transition: opacity .9s ease, transform 4s ease;
+}
+.photo .cover .slide.on { opacity: 1; }
+.photo .cover.berjalan .slide.on { transform: scale(1.04); }
+.photo .dots {
+    position: absolute; left: 12px; bottom: 14px; display: flex; gap: 5px; z-index: 1;
+}
+.photo .dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, .5); transition: background .3s, width .3s; }
+.photo .dots i.on { background: #fff; width: 16px; border-radius: 999px; }
+.photo .count { z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .photo .cover .slide { transition: none; } .photo .cover.berjalan .slide.on { transform: none; } }

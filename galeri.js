@@ -45,8 +45,17 @@
         grid.innerHTML = daftar.map(function (a, i) {
             var foto = fotoAlbum(a), when = keterangan(a);
             if (!foto.length) return '';
+            // Album berisi banyak foto: semua foto ditumpuk, lalu berganti otomatis (foto berjalan)
+            var slides = foto.map(function (f, n) {
+                return n === 0
+                    ? imgTag(f, 'Liburan ke ' + a.tempat, ' class="slide on" loading="lazy"')
+                    : '<img class="slide" alt="" data-src="' + esc(src(f)) + '" data-raw="' + esc(RAW + f) + '">';
+            }).join('');
+            var titik = foto.length > 1 && foto.length <= 12
+                ? '<span class="dots">' + foto.map(function (f, n) { return '<i' + (n === 0 ? ' class="on"' : '') + '></i>'; }).join('') + '</span>'
+                : '';
             return '<figure class="photo" data-i="' + i + '">' +
-                '<div class="cover">' + imgTag(foto[0], 'Liburan ke ' + a.tempat, ' loading="lazy"') +
+                '<div class="cover' + (foto.length > 1 ? ' berjalan' : '') + '">' + slides + titik +
                 (foto.length > 1 ? '<span class="count">📷 ' + foto.length + ' foto</span>' : '') + '</div>' +
                 '<figcaption><strong>' + esc(a.tempat) + '</strong>' +
                 '<span class="when">' + (when ? '📍 ' + esc(when) : '') + '</span>' +
@@ -80,13 +89,56 @@
         $('lb-tools').hidden = !getKunci();
         $('hapus-album').hidden = foto.length < 2;
     }
-    function bukaAlbum(i) { album = daftar[i]; tampil(0); box.hidden = false; document.body.style.overflow = 'hidden'; }
+    function bukaAlbum(i, mulai) { album = daftar[i]; tampil(mulai || 0); box.hidden = false; document.body.style.overflow = 'hidden'; }
     function tutupAlbum() { box.hidden = true; document.body.style.overflow = ''; }
 
     grid.addEventListener('click', function (e) {
         var p = e.target.closest('.photo');
-        if (p) bukaAlbum(+p.getAttribute('data-i'));
+        // Buka album tepat di foto yang sedang tampil di sampul
+        if (p) bukaAlbum(+p.getAttribute('data-i'), +(p.querySelector('.cover').getAttribute('data-pos') || 0));
     });
+
+    // ---------- Foto berjalan di sampul album ----------
+    var JEDA = 3500;
+    var gerakDikurangi = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function geser(cover) {
+        var slides = cover.querySelectorAll('.slide');
+        var pos = +(cover.getAttribute('data-pos') || 0), next = (pos + 1) % slides.length;
+        // Lewati foto yang gagal dimuat
+        for (var k = 0; k < slides.length && slides[next].classList.contains('rusak'); k++) next = (next + 1) % slides.length;
+        if (next === pos) return;
+        var img = slides[next];
+        // Foto dimuat saat akan tampil (hemat kuota), lalu foto setelahnya disiapkan
+        function siapkan(el) {
+            if (el && el.getAttribute('data-src')) {
+                el.onerror = function () { el.onerror = null; el.src = el.getAttribute('data-raw'); };
+                el.src = el.getAttribute('data-src'); el.removeAttribute('data-src');
+            }
+        }
+        siapkan(img); siapkan(slides[(next + 1) % slides.length]);
+        function tukar() {
+            slides[pos].classList.remove('on'); img.classList.add('on');
+            cover.setAttribute('data-pos', next);
+            var dots = cover.querySelectorAll('.dots i');
+            if (dots.length) { dots[pos].classList.remove('on'); dots[next].classList.add('on'); }
+        }
+        tukar();
+    }
+    // Foto yang tetap gagal (juga dari cadangan GitHub) ditandai agar dilewati
+    grid.addEventListener('error', function (e) {
+        var el = e.target;
+        if (el.classList && el.classList.contains('slide') && el.src.indexOf(RAW) === 0) el.classList.add('rusak');
+    }, true);
+    setInterval(function () {
+        if (document.hidden || !box.hidden || !modal.hidden || gerakDikurangi) return;
+        Array.prototype.forEach.call(grid.querySelectorAll('.cover.berjalan'), function (cover, n) {
+            var r = cover.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > innerHeight) return;            // tidak terlihat di layar
+            if (cover.matches(':hover')) return;                        // berhenti saat disorot mouse
+            // Beri jeda berbeda tiap album agar tidak berganti bersamaan
+            setTimeout(function () { geser(cover); }, (n % 4) * 400);
+        });
+    }, JEDA);
     box.querySelector('.lb-close').onclick = tutupAlbum;
     box.querySelector('.lb-prev').onclick = function () { tampil(pos - 1); };
     box.querySelector('.lb-next').onclick = function () { tampil(pos + 1); };
