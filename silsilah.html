@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silsilah — Keluarga Tri Waluyo</title>
+    <meta name="description" content="Rumah digital Keluarga Tri Waluyo — mengenal Ayah, Ibu, Sylda, dan Haidar.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=12">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="wrap">
+            <a href="index.html" class="logo"><span class="logo-mark">TW</span> Keluarga Tri Waluyo</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="anggota.html">Anggota</a></li>
+                <li><a href="silsilah.html" class="active" aria-current="page">Silsilah</a></li>
+                <li><a href="galeri.html">Galeri</a></li>
+                <li><a href="tentang.html">Tentang Kami</a></li>
+                <li><a href="motto.html">Motto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page">
+    <section id="silsilah">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <h2>Silsilah Keluarga</h2>
+                <p>Tiga generasi keluarga kami: kakek dan nenek dari pihak Ayah dan Ibu, orang tua, dan anak-anak.</p>
+            </div>
+
+            <div class="tree reveal">
+                <!-- Generasi 1: kakek & nenek -->
+                <div class="gen gen-1">
+                    <div class="branch">
+                        <div class="branch-label">Keluarga Ayah</div>
+                        <div class="couple">
+                        <div class="person" data-key="ayah.bapak">
+                            <div class="p-ava">👴</div>
+                            <div class="p-role">Kakek</div>
+                            <div class="p-name">Belum diisi</div>
+                            <div class="p-ket"></div>
+                        </div>
+                            <span class="ring">💍</span>
+                        <div class="person" data-key="ayah.ibu">
+                            <div class="p-ava">👵</div>
+                            <div class="p-role">Nenek</div>
+                            <div class="p-name">Belum diisi</div>
+                            <div class="p-ket"></div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="branch">
+                        <div class="branch-label">Keluarga Ibu</div>
+                        <div class="couple">
+                        <div class="person" data-key="ibu.bapak">
+                            <div class="p-ava">👴</div>
+                            <div class="p-role">Kakek</div>
+                            <div class="p-name">Belum diisi</div>
+                            <div class="p-ket"></div>
+                        </div>
+                            <span class="ring">💍</span>
+                        <div class="person" data-key="ibu.ibu">
+                            <div class="p-ava">👵</div>
+                            <div class="p-role">Nenek</div>
+                            <div class="p-name">Belum diisi</div>
+                            <div class="p-ket"></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generasi 2: Ayah & Ibu -->
+                <div class="gen gen-2">
+                        <a href="ayah.html" class="person inti ayah">
+                            <div class="p-ava"><img src="ayah.jpg" alt="Foto Tri Waluyo" onerror="this.replaceWith('👨')"></div>
+                            <div class="p-role">Ayah</div>
+                            <div class="p-name">Tri Waluyo</div>
+                        </a>
+                    <span class="heart-line"><span>❤</span></span>
+                        <a href="ibu.html" class="person inti ibu">
+                            <div class="p-ava"><img src="ibu.jpg" alt="Foto Siti Umiyati" onerror="this.replaceWith('👩‍🍳')"></div>
+                            <div class="p-role">Ibu</div>
+                            <div class="p-name">Siti Umiyati</div>
+                        </a>
+                </div>
+
+                <!-- Generasi 3: anak-anak -->
+                <div class="gen gen-3">
+                        <a href="anak1.html" class="person inti anak1">
+                            <div class="p-ava"><img src="anak1.jpg" alt="Foto Sylda" onerror="this.replaceWith('👩‍💻')"></div>
+                            <div class="p-role">Anak Pertama</div>
+                            <div class="p-name">Sylda</div>
+                        </a>
+                        <a href="anak2.html" class="person inti anak2">
+                            <div class="p-ava"><img src="anak2.jpg" alt="Foto Haidar" onerror="this.replaceWith('👨‍🎨')"></div>
+                            <div class="p-role">Anak Kedua</div>
+                            <div class="p-name">Haidar</div>
+                        </a>
+                </div>
+            </div>
+
+            <div class="tree-actions reveal">
+                <button type="button" class="btn btn-ghost" id="btn-ubah">✏️ Ubah Silsilah</button>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <p>&copy; 2026 Keluarga Tri Waluyo · Dibuat dengan <span class="heart">♥</span> di Jakarta</p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=6"></script>
+    <script src="silsilah.js?v=1"></script>
+</body>
+</html>

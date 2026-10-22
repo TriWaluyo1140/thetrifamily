@@ -1,0 +1,10 @@
+{
+  "ayah": {
+    "bapak": { "nama": "", "ket": "" },
+    "ibu": { "nama": "", "ket": "" }
+  },
+  "ibu": {
+    "bapak": { "nama": "", "ket": "" },
+    "ibu": { "nama": "", "ket": "" }
+  }
+}
