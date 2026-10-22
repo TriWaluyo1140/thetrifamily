@@ -1,10 +1,22 @@
 {
   "ayah": {
-    "bapak": { "nama": "", "ket": "" },
-    "ibu": { "nama": "", "ket": "" }
+    "bapak": {
+      "nama": "Slamet Ranu Tirto",
+      "ket": ""
+    },
+    "ibu": {
+      "nama": "Khotijah",
+      "ket": ""
+    }
   },
   "ibu": {
-    "bapak": { "nama": "", "ket": "" },
-    "ibu": { "nama": "", "ket": "" }
+    "bapak": {
+      "nama": "H. Endjum Bin H. Aceng",
+      "ket": ""
+    },
+    "ibu": {
+      "nama": "Hj. Siam Binti H. Entong",
+      "ket": ""
+    }
   }
 }
