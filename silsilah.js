@@ -48,8 +48,23 @@
     }
     function nama(id) { return byId[id] ? byId[id].nama : ''; }
     function pasangan(p) { return p.pasangan.map(function (id) { return byId[id]; }).filter(Boolean); }
+    // Urutan kelahiran: dari kolom "Anak ke-", atau dibaca dari keterangan ("Anak Pertama", "Anak ke-3")
+    var KATA = ['pertama', 'kedua', 'ketiga', 'keempat', 'kelima', 'keenam', 'ketujuh', 'kedelapan', 'kesembilan', 'kesepuluh'];
+    function urutan(p) {
+        if (p.urutan) return +p.urutan;
+        var t = (p.ket || '').toLowerCase();
+        var m = t.match(/anak\s*(?:ke[-\s]*)?(\d+)/);
+        if (m) return +m[1];
+        if (/anak\s+(sulung|tertua)/.test(t)) return 1;
+        for (var i = 0; i < KATA.length; i++) if (new RegExp('anak\\s+' + KATA[i] + '\\b').test(t)) return i + 1;
+        return 0;
+    }
     function anakDari(ids) {
-        return orang.filter(function (c) { return c.ortu.some(function (o) { return ids.indexOf(o) >= 0; }); });
+        var anak = orang.filter(function (c) { return c.ortu.some(function (o) { return ids.indexOf(o) >= 0; }); });
+        // Yang punya nomor urut di depan (kecil ke besar); yang belum, di belakang sesuai urutan ditambahkan
+        return anak.map(function (c, i) { return { c: c, u: urutan(c) || 1000 + i }; })
+            .sort(function (a, b) { return a.u - b.u; })
+            .map(function (x) { return x.c; });
     }
 
     // Akar pohon: orang tanpa orang tua yang bukan "menantu" (pasangannya juga tanpa orang tua)
@@ -99,9 +114,12 @@
             var judul = 'Keluarga Besar ' + r.nama + (ps.length ? ' & ' + ps[0].nama : '');
             return '<div class="ft-blok"><h3>' + esc(judul) + '</h3><div class="ft-scroll"><ul class="ft">' + simpul(r, []) + '</ul></div></div>';
         }).join('') : '<p class="hint" style="text-align:center">Silsilah masih kosong.</p>';
-        // Pohon lebar: mulai dari tengah agar akar terlihat
+        // Pohon lebar: mulai dari tengah agar akar terlihat, dan beri petunjuk untuk menggeser
         Array.prototype.forEach.call(document.querySelectorAll('.ft-scroll'), function (el) {
             el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+            if (el.scrollWidth > el.clientWidth + 4) {
+                el.insertAdjacentHTML('beforebegin', '<p class="ft-geser">↔ Geser ke samping untuk melihat semua</p>');
+            }
         });
     }
 
@@ -255,8 +273,16 @@
             ortu: 'Ayah atau ibu dari ' + p.nama
         }[tipe];
         $('f-judul').textContent = judul; $('f-sub').textContent = sub;
+        // "Anak ke-" hanya untuk orang yang punya orang tua di silsilah
+        $('f-urutan').hidden = tipe === 'pasangan' || tipe === 'ortu' || (tipe === 'ubah' && !p.ortu.length);
+        if (tipe === 'anak') {
+            // Usulkan nomor berikutnya
+            var saudara = anakDari([p.id].concat(ps.map(function (s) { return s.id; })));
+            form.urutan.value = saudara.length + 1;
+        }
         if (tipe === 'ubah') {
             form.nama.value = p.nama; form.jk.value = p.jk; form.ket.value = p.ket || '';
+            form.urutan.value = urutan(p) || '';
             $('f-prev').innerHTML = ava(p);
             $('f-pick-text').textContent = p.foto ? 'Ganti foto' : 'Pilih foto (opsional)';
         } else {
@@ -287,6 +313,7 @@
         var kunci = form.kunci.value.trim() || getKunci();
         if (!kunci) { form.querySelector('.kunci-box').open = true; return info('Masukkan Kunci GitHub dulu.', 'error'); }
         var isi = { nama: form.nama.value.trim(), jk: form.jk.value, ket: form.ket.value.trim() };
+        if (!$('f-urutan').hidden) isi.urutan = parseInt(form.urutan.value, 10) || 0;
         if (!isi.nama) return info('Isi namanya dulu.', 'error');
 
         var m = mode, idBaru = 'p' + Date.now().toString(36);
