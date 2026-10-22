@@ -450,3 +450,20 @@ footer .heart { color: var(--brand); }
 }
 .lightbox .lb-tools button:hover { background: rgba(217, 83, 79, .4); color: #fff; }
 .lightbox .lb-tools button:disabled { opacity: .5; cursor: wait; }
+
+/* ---------- Ganti foto profil ---------- */
+.ganti-foto {
+    margin-top: 14px; font: 600 .82rem var(--sans); color: var(--ink-soft); cursor: pointer;
+    background: color-mix(in srgb, var(--card) 70%, transparent); border: 1px solid var(--line);
+    padding: 6px 14px; border-radius: 999px; transition: border-color .2s, color .2s;
+}
+.ganti-foto:hover { border-color: var(--c); color: var(--ink); }
+.crop { display: grid; place-items: center; }
+.crop canvas {
+    width: 260px; height: 260px; max-width: 100%; border-radius: 50%; cursor: grab; touch-action: none;
+    box-shadow: 0 0 0 4px var(--card), 0 0 0 6px var(--brand);
+}
+.crop canvas:active { cursor: grabbing; }
+.zoom { display: flex !important; align-items: center; gap: 10px; }
+.zoom input { flex: 1; accent-color: var(--brand); padding: 0; border: 0; background: none; }
+.kunci-status { font-weight: 400; color: var(--muted); }
