@@ -10,18 +10,29 @@
       "ortu": [],
       "pasangan": [
         "nenek-ayah"
-      ]
+      ],
+      "nikah": {
+        "nenek-ayah": {
+          "status": "menikah"
+        }
+      }
     },
     {
       "id": "nenek-ayah",
       "nama": "Khotijah",
       "jk": "P",
-      "ket": "",
+      "ket": "Ibu Rumah Tangga",
       "foto": "",
       "ortu": [],
       "pasangan": [
         "kakek-ayah"
-      ]
+      ],
+      "nikah": {
+        "kakek-ayah": {
+          "status": "menikah",
+          "ke": 1
+        }
+      }
     },
     {
       "id": "ayah",
@@ -36,7 +47,8 @@
       "pasangan": [
         "ibu"
       ],
-      "profil": "ayah.html"
+      "profil": "ayah.html",
+      "nikah": {}
     },
     {
       "id": "kakek-ibu",
@@ -47,7 +59,8 @@
       "ortu": [],
       "pasangan": [
         "nenek-ibu"
-      ]
+      ],
+      "nikah": {}
     },
     {
       "id": "nenek-ibu",
@@ -58,7 +71,8 @@
       "ortu": [],
       "pasangan": [
         "kakek-ibu"
-      ]
+      ],
+      "nikah": {}
     },
     {
       "id": "ibu",
@@ -74,7 +88,8 @@
         "ayah"
       ],
       "profil": "ibu.html",
-      "urutan": 1
+      "urutan": 1,
+      "nikah": {}
     },
     {
       "id": "sylda",
@@ -88,7 +103,8 @@
       ],
       "pasangan": [],
       "profil": "anak1.html",
-      "urutan": 1
+      "urutan": 1,
+      "nikah": {}
     },
     {
       "id": "haidar",
@@ -102,7 +118,8 @@
       ],
       "pasangan": [],
       "profil": "anak2.html",
-      "urutan": 2
+      "urutan": 2,
+      "nikah": {}
     },
     {
       "id": "pmvj5qdhu",
@@ -117,7 +134,8 @@
       ],
       "nama": "Liliek Riyono",
       "jk": "L",
-      "ket": "Anak Pertama"
+      "ket": "Anak Pertama",
+      "nikah": {}
     },
     {
       "id": "pmvj9fh8z",
@@ -129,7 +147,8 @@
       "pasangan": [],
       "nama": "Keliek Riyanto",
       "jk": "L",
-      "ket": "Anak Kedua"
+      "ket": "Anak Kedua",
+      "nikah": {}
     },
     {
       "id": "pmvj9gql3",
@@ -143,7 +162,8 @@
       ],
       "nama": "Putri Utami",
       "jk": "P",
-      "ket": "Anak Keempat"
+      "ket": "Anak Keempat",
+      "nikah": {}
     },
     {
       "id": "pmvj9h680",
@@ -155,7 +175,8 @@
       "pasangan": [],
       "nama": "Rahmat Widayat",
       "jk": "L",
-      "ket": "Anak Kelima"
+      "ket": "Anak Kelima",
+      "nikah": {}
     },
     {
       "id": "pmvj9hnqf",
@@ -166,7 +187,8 @@
       ],
       "nama": "Yeti",
       "jk": "P",
-      "ket": "Istri dari Liliek Riyono"
+      "ket": "Istri dari Liliek Riyono",
+      "nikah": {}
     },
     {
       "id": "pmvj9i563",
@@ -177,7 +199,8 @@
       ],
       "nama": "Faiz",
       "jk": "L",
-      "ket": "Suami dari Putri Utami"
+      "ket": "Suami dari Putri Utami",
+      "nikah": {}
     },
     {
       "id": "pmvj9iwd7",
@@ -189,7 +212,8 @@
       "pasangan": [],
       "nama": "Ayu Nuraini",
       "jk": "P",
-      "ket": "Anak Pertama"
+      "ket": "Anak Pertama",
+      "nikah": {}
     },
     {
       "id": "pmvj9kbk7",
@@ -202,7 +226,8 @@
       "nama": "Saquel",
       "jk": "L",
       "ket": "",
-      "urutan": 1
+      "urutan": 1,
+      "nikah": {}
     },
     {
       "id": "pmvj9mcd4",
@@ -214,7 +239,8 @@
       "pasangan": [],
       "nama": "Aira",
       "jk": "P",
-      "ket": "Anak Kedua"
+      "ket": "Anak Kedua",
+      "nikah": {}
     },
     {
       "id": "pmvja2dvi",
@@ -225,7 +251,8 @@
       ],
       "nama": "Agustriani",
       "jk": "P",
-      "ket": ""
+      "ket": "",
+      "nikah": {}
     }
   ]
 }
