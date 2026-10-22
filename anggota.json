@@ -1,6 +1,12 @@
 {
   "grup": [
     {
+      "id": "keluarga-ayah",
+      "judul": "Keluarga Besar Tri Waluyo",
+      "sub": "Orang tua dan saudara kandung Tri Waluyo.",
+      "anggota": []
+    },
+    {
       "id": "inti",
       "judul": "Keluarga Inti",
       "sub": "Empat orang, empat cerita, satu rumah.",
@@ -46,12 +52,6 @@
           "jk": "L"
         }
       ]
-    },
-    {
-      "id": "keluarga-ayah",
-      "judul": "Keluarga Besar Tri Waluyo",
-      "sub": "Orang tua dan saudara kandung Tri Waluyo.",
-      "anggota": []
     },
     {
       "id": "keluarga-ibu",
