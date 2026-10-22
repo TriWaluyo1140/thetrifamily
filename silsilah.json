@@ -1,22 +1,117 @@
 {
-  "ayah": {
-    "bapak": {
+  "versi": 2,
+  "orang": [
+    {
+      "id": "kakek-ayah",
       "nama": "Slamet Ranu Tirto",
-      "ket": ""
+      "jk": "L",
+      "ket": "",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "nenek-ayah"
+      ]
     },
-    "ibu": {
+    {
+      "id": "nenek-ayah",
       "nama": "Khotijah",
-      "ket": ""
-    }
-  },
-  "ibu": {
-    "bapak": {
-      "nama": "H. Endjum Bin H. Aceng",
-      "ket": ""
+      "jk": "P",
+      "ket": "",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "kakek-ayah"
+      ]
     },
-    "ibu": {
+    {
+      "id": "ayah",
+      "nama": "Tri Waluyo",
+      "jk": "L",
+      "ket": "",
+      "foto": "ayah.jpg",
+      "ortu": [
+        "kakek-ayah",
+        "nenek-ayah"
+      ],
+      "pasangan": [
+        "ibu"
+      ],
+      "profil": "ayah.html"
+    },
+    {
+      "id": "kakek-ibu",
+      "nama": "H. Endjum Bin H. Aceng",
+      "jk": "L",
+      "ket": "",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "nenek-ibu"
+      ]
+    },
+    {
+      "id": "nenek-ibu",
       "nama": "Hj. Siam Binti H. Entong",
+      "jk": "P",
+      "ket": "",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "kakek-ibu"
+      ]
+    },
+    {
+      "id": "ibu",
+      "nama": "Siti Umiyati",
+      "jk": "P",
+      "ket": "",
+      "foto": "ibu.jpg",
+      "ortu": [
+        "kakek-ibu",
+        "nenek-ibu"
+      ],
+      "pasangan": [
+        "ayah"
+      ],
+      "profil": "ibu.html"
+    },
+    {
+      "id": "sylda",
+      "nama": "Sylda Frizqia Qiftiyani Putri",
+      "jk": "P",
+      "ket": "",
+      "foto": "anak1.jpg",
+      "ortu": [
+        "ayah",
+        "ibu"
+      ],
+      "pasangan": [],
+      "profil": "anak1.html"
+    },
+    {
+      "id": "haidar",
+      "nama": "Haidar Fawaz Alhuzam Putra",
+      "jk": "L",
+      "ket": "",
+      "foto": "anak2.jpg",
+      "ortu": [
+        "ayah",
+        "ibu"
+      ],
+      "pasangan": [],
+      "profil": "anak2.html"
+    },
+    {
+      "id": "pmvj5qdhu",
+      "foto": "",
+      "ortu": [
+        "kakek-ayah",
+        "nenek-ayah"
+      ],
+      "pasangan": [],
+      "nama": "Liliek Riyono",
+      "jk": "L",
       "ket": ""
     }
-  }
+  ]
 }
