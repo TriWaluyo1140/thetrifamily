@@ -128,11 +128,18 @@
         "kakek-ayah",
         "nenek-ayah"
       ],
-      "pasangan": [],
+      "pasangan": [
+        "pmvjaqxvd"
+      ],
       "nama": "Liliek Riyono",
       "jk": "L",
       "ket": "Anak Pertama",
-      "nikah": {}
+      "nikah": {
+        "pmvjaqxvd": {
+          "status": "cerai",
+          "ke": 1
+        }
+      }
     },
     {
       "id": "pmvj9fh8z",
@@ -200,6 +207,22 @@
       "ket": "",
       "urutan": 1,
       "nikah": {}
+    },
+    {
+      "id": "pmvjaqxvd",
+      "foto": "",
+      "ortu": [],
+      "pasangan": [
+        "pmvj5qdhu"
+      ],
+      "nikah": {
+        "pmvj5qdhu": {
+          "status": "cerai"
+        }
+      },
+      "nama": "Agustina",
+      "jk": "P",
+      "ket": ""
     }
   ]
 }
