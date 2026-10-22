@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=15">
+    <link rel="stylesheet" href="style.css?v=16">
 </head>
 <body>
 
@@ -83,8 +83,20 @@
                     <option value="P">Perempuan</option>
                 </select>
             </label>
+            <label>Status
+                <select name="wafat">
+                    <option value="">Masih hidup</option>
+                    <option value="1">Sudah meninggal</option>
+                </select>
+            </label>
+            <label id="f-dari">Anak dari <select name="dari"></select></label>
             <label id="f-urutan">Anak ke- <input name="urutan" type="number" min="1" max="30" inputmode="numeric" placeholder="contoh: 1 untuk anak pertama"></label>
-            <label>Keterangan <input name="ket" placeholder="contoh: Solo, 1950 · Alm."></label>
+            <!-- Status & urutan pernikahan (diisi otomatis lewat JS) -->
+            <fieldset class="f-nikah" id="f-nikah" hidden>
+                <legend>Pernikahan</legend>
+                <div id="f-nikah-isi"></div>
+            </fieldset>
+            <label>Keterangan <input name="ket" placeholder="contoh: Solo, 1950"></label>
 
             <details class="kunci-box">
                 <summary>🔑 Kunci GitHub <span class="kunci-status"></span></summary>
@@ -108,6 +120,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
-    <script src="silsilah.js?v=5"></script>
+    <script src="silsilah.js?v=6"></script>
 </body>
 </html>

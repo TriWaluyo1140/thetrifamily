@@ -9,7 +9,8 @@
     var FOLDER = 'silsilah/';  // foto yang diunggah dari halaman ini
 
     var $ = function (id) { return document.getElementById(id); };
-    var orang = [];   // [{ id, nama, jk, ket, foto, profil, ortu: [id], pasangan: [id] }]
+    // [{ id, nama, jk, ket, foto, profil, wafat, urutan, ortu: [id], pasangan: [id], nikah: { idPasangan: { status, ke } } }]
+    var orang = [];
     var byId = {};
     var lokal = {};   // foto baru: path -> dataUrl (tampil sebelum situs diperbarui)
     var kelola = false;
@@ -44,10 +45,21 @@
     }
     function pakai(list) {
         orang = list; byId = {};
-        orang.forEach(function (p) { p.ortu = p.ortu || []; p.pasangan = p.pasangan || []; byId[p.id] = p; });
+        orang.forEach(function (p) { p.ortu = p.ortu || []; p.pasangan = p.pasangan || []; p.nikah = p.nikah || {}; byId[p.id] = p; });
     }
     function nama(id) { return byId[id] ? byId[id].nama : ''; }
-    function pasangan(p) { return p.pasangan.map(function (id) { return byId[id]; }).filter(Boolean); }
+    // Data pernikahan p dengan pasangan sId: status ('menikah' / 'cerai') dan urutan (istri/suami ke-)
+    function nikah(p, sId) { return (p.nikah && p.nikah[sId]) || {}; }
+    function cerai(p, sId) { return nikah(p, sId).status === 'cerai'; }
+    // Pasangan diurutkan menurut "pasangan ke-", lalu urutan ditambahkan
+    function pasangan(p) {
+        return p.pasangan.map(function (id, i) { return { s: byId[id], k: +nikah(p, id).ke || 100 + i }; })
+            .filter(function (x) { return x.s; })
+            .sort(function (a, b) { return a.k - b.k; })
+            .map(function (x) { return x.s; });
+    }
+    function sebutan(s) { return s.jk === 'P' ? 'Istri' : 'Suami'; }
+    function almarhum(p) { return p.jk === 'P' ? 'Almarhumah' : 'Almarhum'; }
     // Urutan kelahiran: dari kolom "Anak ke-", atau dibaca dari keterangan ("Anak Pertama", "Anak ke-3")
     var KATA = ['pertama', 'kedua', 'ketiga', 'keempat', 'kelima', 'keenam', 'ketujuh', 'kedelapan', 'kesembilan', 'kesepuluh'];
     function urutan(p) {
@@ -58,6 +70,9 @@
         if (/anak\s+(sulung|tertua)/.test(t)) return 1;
         for (var i = 0; i < KATA.length; i++) if (new RegExp('anak\\s+' + KATA[i] + '\\b').test(t)) return i + 1;
         return 0;
+    }
+    function labelUrutan(n) {
+        return 'Anak ' + (KATA[n - 1] ? KATA[n - 1].charAt(0).toUpperCase() + KATA[n - 1].slice(1) : 'ke-' + n);
     }
     function anakDari(ids) {
         var anak = orang.filter(function (c) { return c.ortu.some(function (o) { return ids.indexOf(o) >= 0; }); });
@@ -93,19 +108,44 @@
         return '<img src="' + esc(lokal[p.foto] || p.foto) + '" alt="" data-path="' + esc(p.foto) + '" data-jk="' + p.jk +
             '" onerror="silsilahFotoGagal(this)">';
     }
-    function kartu(p) {
-        return '<button type="button" class="pc ' + (p.jk === 'P' ? 'pc-p' : 'pc-l') + '" data-id="' + esc(p.id) + '">' +
+    function kartu(p, tag) {
+        // "Anak Pertama" dst. dari nomor urut, kecuali keterangan sudah menyebutkannya
+        var urut = p.urutan && !/anak/i.test(p.ket || '') ? labelUrutan(+p.urutan) : '';
+        return '<button type="button" class="pc ' + (p.jk === 'P' ? 'pc-p' : 'pc-l') + (p.wafat ? ' pc-alm' : '') + '" data-id="' + esc(p.id) + '">' +
+            (tag ? '<span class="pc-tag' + (/Cerai/.test(tag) ? ' pc-tag-cerai' : '') + '">' + esc(tag) + '</span>' : '') +
             '<span class="pc-ava">' + ava(p) + '</span>' +
             '<span class="pc-nama">' + esc(p.nama) + '</span>' +
+            (p.wafat ? '<span class="pc-wafat">🕊 ' + almarhum(p) + '</span>' : '') +
+            (urut ? '<span class="pc-ket">' + urut + '</span>' : '') +
             (p.ket ? '<span class="pc-ket">' + esc(p.ket) + '</span>' : '') + '</button>';
+    }
+    function cincin(p, s) {
+        return cerai(p, s.id) ? '<span class="fam-ring" title="Cerai">💔</span>' : '<span class="fam-ring" title="Menikah">💍</span>';
+    }
+    function cabang(anak, jalur) {
+        return anak.length ? '<ul>' + anak.map(function (c) { return simpul(c, jalur); }).join('') + '</ul>' : '';
     }
     function simpul(p, jalur) {
         if (jalur.indexOf(p.id) >= 0 || jalur.length > 12) return '';
         jalur = jalur.concat(p.id);
         var ps = pasangan(p);
-        var anak = anakDari([p.id].concat(ps.map(function (s) { return s.id; })));
-        return '<li><div class="fam">' + kartu(p) + ps.map(function (s) { return '<span class="fam-ring">💍</span>' + kartu(s); }).join('') + '</div>' +
-            (anak.length ? '<ul>' + anak.map(function (c) { return simpul(c, jalur); }).join('') + '</ul>' : '') + '</li>';
+        if (ps.length <= 1) {
+            // Satu pasangan: tampil berdampingan, anak-anak di bawahnya
+            var s = ps[0];
+            return '<li><div class="fam">' + kartu(p) +
+                (s ? cincin(p, s) + kartu(s, cerai(p, s.id) ? 'Cerai' : '') : '') + '</div>' +
+                cabang(anakDari([p.id].concat(s ? [s.id] : [])), jalur) + '</li>';
+        }
+        // Lebih dari satu pasangan: tiap pernikahan jadi cabang sendiri dengan anak-anaknya
+        var semua = anakDari([p.id]);
+        var tanpa = semua.filter(function (c) { return !ps.some(function (s) { return c.ortu.indexOf(s.id) >= 0; }); });
+        return '<li><div class="fam">' + kartu(p) + '</div><ul>' +
+            ps.map(function (s, i) {
+                var tag = sebutan(s) + ' ke-' + (+nikah(p, s.id).ke || i + 1) + (cerai(p, s.id) ? ' · Cerai' : '');
+                var anak = semua.filter(function (c) { return c.ortu.indexOf(s.id) >= 0; });
+                return '<li><div class="fam fam-nikah">' + cincin(p, s) + kartu(s, tag) + '</div>' + cabang(anak, jalur.concat(s.id)) + '</li>';
+            }).join('') +
+            tanpa.map(function (c) { return simpul(c, jalur); }).join('') + '</ul></li>';
     }
     function render() {
         var roots = akar();
@@ -212,11 +252,21 @@
         aktif = p;
         $('d-ava').innerHTML = ava(p);
         $('d-nama').textContent = p.nama;
-        $('d-ket').textContent = p.ket || '';
+        var baris = [];
+        if (p.wafat) baris.push('🕊 ' + almarhum(p));
+        if (p.urutan && !/anak/i.test(p.ket || '')) baris.push(labelUrutan(+p.urutan));
+        if (p.ket) baris.push(p.ket);
+        $('d-ket').textContent = baris.join(' · ');
         var anak = anakDari([p.id]).map(function (c) { return c.id; });
+        var ps = pasangan(p);
         var rel = [];
         if (p.ortu.length) rel.push(['Orang tua', daftarNama(p.ortu)]);
-        if (p.pasangan.length) rel.push(['Pasangan', daftarNama(p.pasangan)]);
+        if (ps.length) rel.push(['Pasangan', ps.map(function (x, i) {
+            var ket = [];
+            if (ps.length > 1) ket.push(sebutan(x).toLowerCase() + ' ke-' + (+nikah(p, x.id).ke || i + 1));
+            if (cerai(p, x.id)) ket.push('cerai');
+            return daftarNama([x.id]) + (ket.length ? ' <small>(' + ket.join(', ') + ')</small>' : '');
+        }).join(', ')]);
         if (anak.length) rel.push(['Anak', daftarNama(anak)]);
         $('d-rel').innerHTML = rel.map(function (r) { return '<li><strong>' + r[0] + '</strong> ' + r[1] + '</li>'; }).join('') +
             (p.profil ? '<li><a href="' + esc(p.profil) + '">Lihat halaman profil →</a></li>' : '');
@@ -261,6 +311,64 @@
     function info(t, jenis) { pesan.textContent = t; pesan.className = 'pesan ' + (jenis || ''); }
     function lawan(jk) { return jk === 'L' ? 'P' : 'L'; }
 
+    // "Anak dari": pilihan pasangan orang tua (berguna bila seseorang menikah lebih dari sekali)
+    function isiDari(tipe, p) {
+        var pilihan = [], sudah = {};
+        function tambah(ids) {
+            ids = ids.filter(function (id) { return byId[id]; });
+            var k = ids.slice().sort().join('|');
+            if (!ids.length || sudah[k]) return;
+            sudah[k] = 1;
+            pilihan.push({ v: ids.join('|'), t: ids.map(nama).join(' & ') + (ids.length === 1 ? ' (saja)' : '') });
+        }
+        var dasar = tipe === 'anak' ? [p.id] : tipe === 'ubah' ? p.ortu : [];
+        dasar.forEach(function (o) {
+            var po = byId[o]; if (!po) return;
+            pasangan(po).forEach(function (s) { tambah([o, s.id]); });
+        });
+        if (tipe === 'ubah') tambah(p.ortu);
+        dasar.forEach(function (o) { tambah([o]); });
+        form.dari.innerHTML = pilihan.map(function (x) { return '<option value="' + esc(x.v) + '">' + esc(x.t) + '</option>'; }).join('');
+        if (tipe === 'ubah') {
+            var kini = p.ortu.slice().sort().join('|');
+            pilihan.forEach(function (x) { if (x.v.split('|').sort().join('|') === kini) form.dari.value = x.v; });
+        } else if (tipe === 'anak') {
+            // Bawaan: pasangan yang masih menikah dengan urutan terakhir
+            var aktifS = pasangan(p).filter(function (s) { return !cerai(p, s.id); }).pop();
+            if (aktifS) form.dari.value = p.id + '|' + aktifS.id;
+        }
+        $('f-dari').hidden = pilihan.length < 2;
+    }
+    // Bagian "Pernikahan": status & urutan tiap pasangan
+    function barisNikah(id, label, status, ke) {
+        return '<div class="nikah-baris" data-id="' + esc(id) + '"><span class="nikah-nama">' + esc(label) + '</span>' +
+            '<select data-f="status"><option value="menikah">Menikah</option><option value="cerai"' + (status === 'cerai' ? ' selected' : '') + '>Cerai</option></select>' +
+            '<label class="nikah-ke">ke- <input data-f="ke" type="number" min="1" max="9" value="' + (ke || '') + '"></label></div>';
+    }
+    function isiNikah(tipe, p) {
+        var isi = '';
+        if (tipe === 'pasangan') {
+            isi = barisNikah('', 'Pasangan baru', 'menikah', pasangan(p).length + 1);
+            $('f-nikah').querySelector('legend').textContent = 'Pernikahan dengan ' + p.nama;
+        } else if (tipe === 'ubah' && p.pasangan.length) {
+            isi = pasangan(p).map(function (s, i) {
+                return barisNikah(s.id, s.nama, nikah(p, s.id).status, +nikah(p, s.id).ke || i + 1);
+            }).join('');
+            $('f-nikah').querySelector('legend').textContent = 'Pernikahan';
+        }
+        $('f-nikah-isi').innerHTML = isi;
+        $('f-nikah').hidden = !isi;
+    }
+    function bacaNikah() {
+        return Array.prototype.map.call($('f-nikah-isi').querySelectorAll('.nikah-baris'), function (b) {
+            return {
+                id: b.getAttribute('data-id'),
+                status: b.querySelector('[data-f=status]').value,
+                ke: parseInt(b.querySelector('[data-f=ke]').value, 10) || 0
+            };
+        });
+    }
+
     function bukaForm(tipe, p) {
         form.reset(); fotoBaru = null; info('');
         mode = { tipe: tipe, id: p.id };
@@ -273,6 +381,7 @@
             ortu: 'Ayah atau ibu dari ' + p.nama
         }[tipe];
         $('f-judul').textContent = judul; $('f-sub').textContent = sub;
+        isiDari(tipe, p); isiNikah(tipe, p);
         // "Anak ke-" hanya untuk orang yang punya orang tua di silsilah
         $('f-urutan').hidden = tipe === 'pasangan' || tipe === 'ortu' || (tipe === 'ubah' && !p.ortu.length);
         if (tipe === 'anak') {
@@ -282,6 +391,7 @@
         }
         if (tipe === 'ubah') {
             form.nama.value = p.nama; form.jk.value = p.jk; form.ket.value = p.ket || '';
+            form.wafat.value = p.wafat ? '1' : '';
             form.urutan.value = urutan(p) || '';
             $('f-prev').innerHTML = ava(p);
             $('f-pick-text').textContent = p.foto ? 'Ganti foto' : 'Pilih foto (opsional)';
@@ -312,8 +422,10 @@
         e.preventDefault();
         var kunci = form.kunci.value.trim() || getKunci();
         if (!kunci) { form.querySelector('.kunci-box').open = true; return info('Masukkan Kunci GitHub dulu.', 'error'); }
-        var isi = { nama: form.nama.value.trim(), jk: form.jk.value, ket: form.ket.value.trim() };
+        var isi = { nama: form.nama.value.trim(), jk: form.jk.value, ket: form.ket.value.trim(), wafat: form.wafat.value === '1' };
         if (!$('f-urutan').hidden) isi.urutan = parseInt(form.urutan.value, 10) || 0;
+        var dari = $('f-dari').hidden ? null : form.dari.value.split('|');
+        var nikahBaru = bacaNikah();
         if (!isi.nama) return info('Isi namanya dulu.', 'error');
 
         var m = mode, idBaru = 'p' + Date.now().toString(36);
@@ -336,12 +448,32 @@
                 pakai(list);
                 var t = byId[m.id];
                 if (!t) { var err = new Error('hilang'); err.status = 410; throw err; }
+                // Simpan status & urutan pernikahan: status berlaku untuk keduanya, urutan dari sisi t
+                function aturNikah(a, b, n) {
+                    if (!byId[b]) return;
+                    a.nikah = a.nikah || {}; byId[b].nikah = byId[b].nikah || {};
+                    a.nikah[b] = { status: n.status, ke: n.ke || undefined };
+                    var balik = byId[b].nikah[a.id] || {};
+                    byId[b].nikah[a.id] = { status: n.status, ke: balik.ke };
+                }
+                function pilihOrtu(ids) { return (ids || []).filter(function (id) { return byId[id]; }); }
+                if (!isi.wafat) delete isi.wafat;
                 if (m.tipe === 'ubah') {
                     Object.assign(t, isi); if (fotoPath) t.foto = fotoPath;
+                    if (!isi.wafat) delete t.wafat;
+                    if (dari) t.ortu = pilihOrtu(dari);
+                    nikahBaru.forEach(function (n) { aturNikah(t, n.id, n); });
                 } else {
-                    var p = Object.assign({ id: idBaru, foto: fotoPath || '', ortu: [], pasangan: [] }, isi);
-                    if (m.tipe === 'anak') p.ortu = [t.id].concat(t.pasangan.filter(function (id) { return byId[id]; }).slice(0, 1));
-                    if (m.tipe === 'pasangan') { p.pasangan = [t.id]; t.pasangan.push(p.id); }
+                    var p = Object.assign({ id: idBaru, foto: fotoPath || '', ortu: [], pasangan: [], nikah: {} }, isi);
+                    byId[p.id] = p;
+                    if (m.tipe === 'anak') {
+                        p.ortu = dari ? pilihOrtu(dari)
+                            : [t.id].concat(pasangan(t).filter(function (x) { return !cerai(t, x.id); }).slice(-1).map(function (x) { return x.id; }));
+                    }
+                    if (m.tipe === 'pasangan') {
+                        p.pasangan = [t.id]; t.pasangan.push(p.id);
+                        if (nikahBaru[0]) aturNikah(t, p.id, nikahBaru[0]);
+                    }
                     if (m.tipe === 'ortu') {
                         // Orang tua kedua otomatis jadi pasangan orang tua pertama
                         var lain = byId[t.ortu[0]];
@@ -387,6 +519,7 @@
             return list.filter(function (o) { return ids.indexOf(o.id) < 0; }).map(function (o) {
                 o.ortu = (o.ortu || []).filter(function (id) { return ids.indexOf(id) < 0; });
                 o.pasangan = (o.pasangan || []).filter(function (id) { return ids.indexOf(id) < 0; });
+                ids.forEach(function (id) { if (o.nikah) delete o.nikah[id]; });
                 return o;
             });
         }, 'Hapus dari silsilah: ' + p.nama).then(function (list) {

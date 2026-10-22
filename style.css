@@ -483,24 +483,26 @@ footer .heart { color: var(--brand); }
 .ft-blok h3 { text-align: center; font-size: 1.15rem; margin-bottom: 4px; }
 .ft-scroll { overflow-x: auto; padding: 16px 4px 8px; -webkit-overflow-scrolling: touch; }
 
-/* Garis pohon (ul/li) */
+/* Garis pohon (ul/li): semua garis tegak tepat di tengah (50% - 1px) */
 .ft, .ft ul { --tl: color-mix(in srgb, var(--brand) 45%, var(--line)); list-style: none; display: flex; justify-content: center; }
 .ft { min-width: max-content; margin: 0 auto; }
 .ft ul { padding-top: 24px; position: relative; }
+.ft ul::before { content: ""; position: absolute; top: 0; left: calc(50% - 1px); height: 24px; border-left: 2px solid var(--tl); }
 .ft li { position: relative; padding: 24px 8px 0; display: flex; flex-direction: column; align-items: center; }
-.ft > li { padding-top: 0; }
-.ft ul::before { content: ""; position: absolute; top: 0; left: 50%; height: 24px; border-left: 2px solid var(--tl); }
 .ft li::before, .ft li::after {
-    content: ""; position: absolute; top: 0; width: 50%; height: 24px; border-top: 2px solid var(--tl);
+    content: ""; position: absolute; top: 0; height: 24px; border-top: 2px solid var(--tl);
 }
-.ft li::before { right: 50%; }
-.ft li::after { left: 50%; border-left: 2px solid var(--tl); }
-.ft li:only-child::before, .ft li:only-child::after { border-top: 0; }
-.ft li:first-child::before, .ft li:last-child::after { border-top: 0; }
-.ft li:last-child::before { border-right: 2px solid var(--tl); border-radius: 0 8px 0 0; }
-.ft li:first-child::after { border-radius: 8px 0 0 0; }
+.ft li::before { left: 0; right: calc(50% - 1px); }
+.ft li::after { left: calc(50% - 1px); right: 0; border-left: 2px solid var(--tl); }
+/* Anak pertama & terakhir: garis mendatar hanya ke arah tengah */
+.ft li:first-child::before, .ft li:last-child::after { border: 0; }
+.ft li:last-child::before { border-right: 2px solid var(--tl); border-top-right-radius: 8px; }
+.ft li:first-child::after { border-top-left-radius: 8px; }
+/* Anak tunggal: cukup satu garis lurus dari atas */
+.ft li:only-child { padding-top: 0; }
+.ft li:only-child::before, .ft li:only-child::after { display: none; }
+.ft > li { padding-top: 0; }
 .ft > li::before, .ft > li::after { display: none; }
-.ft li:only-child::after { border-left: 2px solid var(--tl); }
 
 .fam {
     display: flex; align-items: center; gap: 4px; padding: 6px;
@@ -549,3 +551,26 @@ body.kelola .pc { border-style: dashed; border-color: var(--brand); }
 .ft-scroll { width: 100vw; margin-left: calc(50% - 50vw); padding-left: 16px; padding-right: 16px; }
 .ft-geser { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2px; }
 .page { overflow-x: clip; }
+
+/* Status pernikahan & almarhum di silsilah */
+.pc { position: relative; }
+.pc-tag {
+    position: absolute; top: -9px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    font-size: .62rem; font-weight: 700; letter-spacing: .03em; padding: 1px 8px; border-radius: 999px;
+    background: var(--c); color: #fff;
+}
+@media (prefers-color-scheme: dark) { .pc-tag { color: #1a1613; } }
+.pc-tag-cerai { background: var(--muted); }
+.pc-wafat { font-size: .68rem; font-weight: 600; color: var(--muted); }
+.pc-alm .pc-ava { filter: grayscale(.85); opacity: .85; }
+.pc-alm .pc-ava { box-shadow: 0 0 0 2px var(--muted); }
+.fam-nikah { background: transparent; border-style: dashed; }
+.d-rel small { color: var(--muted); }
+
+.modal-card fieldset.f-nikah { border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px 12px; display: grid; gap: 8px; }
+.modal-card .f-nikah legend { font-size: .85rem; font-weight: 600; color: var(--ink); padding: 0 6px; }
+.nikah-baris { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; }
+.nikah-nama { font-size: .9rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.modal-card .nikah-baris select { width: auto; padding: 8px 10px; }
+.modal-card .nikah-ke { display: flex !important; align-items: center; gap: 4px; font-weight: 400; color: var(--muted); }
+.modal-card .nikah-ke input { width: 56px; padding: 8px; }
