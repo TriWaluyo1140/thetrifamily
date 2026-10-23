@@ -59,6 +59,7 @@
     var data = salin(BAWAAN);
     var lokal = {};       // foto baru: path -> dataUrl
     var kelola = false;
+    var silsilah = [];    // orang di silsilah (untuk menautkan & menyamakan foto)
 
     // ---------- Tampilkan ----------
     window.anggotaFotoGagal = function (img) {
@@ -66,9 +67,11 @@
         if (p && img.src.indexOf(RAW) !== 0 && !/^data:/.test(img.src)) { img.src = RAW + p; return; }
         img.replaceWith(EMOJI[img.getAttribute('data-jk')] || '👤');
     };
+    // Foto anggota yang tertaut ke silsilah selalu diambil dari silsilah, agar keduanya sama
     function avatar(m) {
-        if (!m.foto) return EMOJI[m.jk] || '👤';
-        return '<img src="' + esc(lokal[m.foto] || m.foto) + '" alt="Foto ' + esc(m.nama) + '" data-path="' + esc(m.foto) +
+        var foto = window.GH.fotoAnggota(m, silsilah);
+        if (!foto) return EMOJI[m.jk] || '👤';
+        return '<img src="' + esc(lokal[foto] || foto) + '" alt="Foto ' + esc(m.nama) + '" data-path="' + esc(foto) +
             '" data-jk="' + esc(m.jk) + '" onerror="anggotaFotoGagal(this)">';
     }
     function kartu(m, gi, mi, n) {
@@ -115,14 +118,31 @@
     // ---------- Simpan ----------
     var sibuk = false;
     // ubah(d) mengubah data terbaru; dipakai juga untuk tampilan langsung
-    function simpan(ubah, pesan, foto, hapus) {
+    // ubahSilsilah(orang) (opsional): perubahan pada silsilah.json di commit yang sama
+    function simpan(ubah, pesan, foto, hapus, ubahSilsilah) {
         if (sibuk) return Promise.reject(new Error('sibuk'));
         sibuk = true;
-        return window.GH.simpan({
-            json: 'anggota.json', foto: foto || [], hapus: hapus || [], pesan: pesan,
-            ubah: function (terbaru) { var d = terbaru && terbaru.grup ? terbaru : salin(BAWAAN); ubah(d); return d; }
-        }).then(function (d) {
-            sibuk = false; data = d; render(); return d;
+        var berkas = [{
+            json: 'anggota.json',
+            ubah: function (terbaru, semua) {
+                var d = terbaru && terbaru.grup ? terbaru : salin(BAWAAN);
+                ubah(d);
+                // Simpan tautan ke silsilah untuk anggota yang namanya cocok
+                var orang = semua[1] && semua[1].orang || silsilah;
+                d.grup.forEach(function (g) {
+                    g.anggota.forEach(function (m) { var t = window.GH.tautan(m, orang); if (t && !m.silsilah) m.silsilah = t.id; });
+                });
+                return d;
+            }
+        }];
+        if (ubahSilsilah) berkas.push({
+            json: 'silsilah.json',
+            ubah: function (d) { ubahSilsilah(d.orang); return d; }
+        });
+        return window.GH.simpan({ berkas: berkas, foto: foto || [], hapus: hapus || [], pesan: pesan }).then(function (r) {
+            sibuk = false; data = r[0];
+            if (r[1]) silsilah = r[1].orang;
+            render(); return r[0];
         }, function (err) { sibuk = false; throw err; });
     }
     function cariGrup(d, id) { return d.grup.filter(function (g) { return g.id === id; })[0]; }
@@ -218,7 +238,8 @@
     // ---------- Formulir anggota ----------
     var mAng = modal('<form class="modal-card"><button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>' +
         '<h2 class="f-judul">Anggota</h2><p class="hint f-sub"></p>' +
-        '<label class="f-silsilah">Ambil dari silsilah <select name="silsilah"><option value="">— Pilih nama (opsional) —</option></select></label>' +
+        '<label class="f-silsilah">Tautkan ke silsilah <select name="silsilah"><option value="">— Pilih nama (opsional) —</option></select></label>' +
+        '<p class="hint f-tautan" hidden>🔗 Foto anggota ini sama dengan foto di Silsilah. Mengganti foto di sini juga mengganti foto di Silsilah.</p>' +
         '<label class="pick foto-pick"><input type="file" name="foto" accept="image/*"><span class="foto-prev">📷</span><span class="foto-teks">Pilih foto (opsional)</span></label>' +
         '<div class="crop" hidden><canvas width="260" height="260"></canvas></div>' +
         '<label class="zoom" hidden>🔍 Perbesar <input type="range" name="zoom" min="1" max="3" step="0.01" value="1"></label>' +
@@ -231,8 +252,7 @@
         '<fieldset class="f-nikah"><legend>Warna kartu</legend><div class="swatches pilih-warna">' +
         WARNA.map(function (w) { return '<button type="button" class="sw" data-w="' + w + '" style="--w:var(--' + w + ')" aria-label="' + NAMA_WARNA[w] + '" title="' + NAMA_WARNA[w] + '"></button>'; }).join('') +
         '</div></fieldset>' + AKSI + '</form>');
-    var fAng = mAng.querySelector('form'), anggotaAktif = null, grupTujuan = null, warnaPilih = 'ayah', fotoDari = '';
-    var silsilah = null;
+    var fAng = mAng.querySelector('form'), anggotaAktif = null, grupTujuan = null, warnaPilih = 'ayah';
 
     // Pemotong foto (geser & perbesar), sama seperti di profil
     var potong = (function () {
@@ -276,34 +296,33 @@
         warnaPilih = w;
         Array.prototype.forEach.call(mAng.querySelectorAll('.pilih-warna .sw'), function (b) { b.classList.toggle('on', b.getAttribute('data-w') === w); });
     }
-    function isiSilsilah() {
-        var sel = fAng.silsilah;
-        (silsilah ? Promise.resolve(silsilah) : window.GH.bacaJson('silsilah.json').then(function (d) {
-            silsilah = d && d.versi === 2 ? d.orang : []; return silsilah;
-        })).then(function (orang) {
-            sel.innerHTML = '<option value="">— Pilih nama (opsional) —</option>' + orang.map(function (o, i) {
-                return '<option value="' + i + '">' + esc(o.nama) + (o.ket ? ' — ' + esc(o.ket) : '') + '</option>';
-            }).join('');
-            mAng.querySelector('.f-silsilah').hidden = !orang.length;
-        });
+    function isiSilsilah(pilih) {
+        fAng.silsilah.innerHTML = '<option value="">— Pilih nama (opsional) —</option>' + silsilah.map(function (o) {
+            return '<option value="' + esc(o.id) + '">' + esc(o.nama) + (o.ket ? ' — ' + esc(o.ket) : '') + '</option>';
+        }).join('');
+        fAng.silsilah.value = pilih || '';
+        mAng.querySelector('.f-silsilah').hidden = !silsilah.length;
+        mAng.querySelector('.f-tautan').hidden = !pilih;
     }
+    function orangSilsilah(id) { return silsilah.filter(function (o) { return o.id === id; })[0]; }
     fAng.silsilah.addEventListener('change', function () {
-        var o = silsilah && silsilah[+fAng.silsilah.value]; if (!o) return;
-        fAng.nama.value = o.nama; fAng.jk.value = o.jk || 'L';
+        var o = orangSilsilah(fAng.silsilah.value);
+        mAng.querySelector('.f-tautan').hidden = !o;
+        if (!o) return;
+        if (!anggotaAktif) { fAng.nama.value = o.nama; fAng.jk.value = o.jk || 'L'; }
         if (o.foto && !potong.ada()) {
-            fotoDari = o.foto;
-            mAng.querySelector('.foto-prev').innerHTML = '<img src="' + esc(o.foto) + '" alt="" onerror="this.onerror=null;this.src=\'' + RAW + esc(o.foto) + '\'">';
+            mAng.querySelector('.foto-prev').innerHTML = '<img src="' + esc(lokal[o.foto] || o.foto) + '" alt="" onerror="this.onerror=null;this.src=\'' + RAW + esc(o.foto) + '\'">';
         }
     });
     mAng.querySelector('.pilih-warna').addEventListener('click', function (e) { var b = e.target.closest('.sw'); if (b) pilihWarna(b.getAttribute('data-w')); });
     fAng.foto.addEventListener('change', function () {
         var f = fAng.foto.files[0]; if (!f) return;
-        potong.muat(f).then(function () { fotoDari = ''; mAng.querySelector('.foto-teks').textContent = 'Ganti foto'; },
+        potong.muat(f).then(function () { mAng.querySelector('.foto-teks').textContent = 'Ganti foto'; },
             function () { info(mAng, 'Format foto ini tidak bisa dibuka. Gunakan foto JPG atau PNG.', 'error'); });
     });
 
     function bukaAnggota(g, m) {
-        grupTujuan = g; anggotaAktif = m; fotoDari = '';
+        grupTujuan = g; anggotaAktif = m;
         fAng.reset(); potong.reset(); info(mAng, '');
         mAng.querySelector('.f-judul').textContent = m ? 'Ubah Anggota' : 'Tambah Anggota';
         mAng.querySelector('.f-sub').textContent = g.judul;
@@ -311,16 +330,17 @@
         fAng.desk.value = m ? m.desk || '' : ''; fAng.jk.value = m ? m.jk || 'L' : 'L';
         pilihWarna(m ? m.warna || 'ayah' : WARNA[(g.anggota.length) % WARNA.length]);
         mAng.querySelector('.foto-prev').innerHTML = m ? avatar(m) : '📷';
-        mAng.querySelector('.foto-teks').textContent = m && m.foto ? 'Ganti foto' : 'Pilih foto (opsional)';
+        mAng.querySelector('.foto-teks').textContent = m && window.GH.fotoAnggota(m, silsilah) ? 'Ganti foto' : 'Pilih foto (opsional)';
         // Anggota yang punya halaman profil sendiri (Ayah, Ibu, Sylda, Haidar) mengganti foto di halaman profilnya
         var tetap = !!(m && m.profil);
         mAng.querySelector('.foto-pick').hidden = tetap; mAng.querySelector('.foto-catatan').hidden = !tetap;
-        mAng.querySelector('.f-silsilah').hidden = !!m;
+        var t = m ? window.GH.tautan(m, silsilah) : null;
+        isiSilsilah(t ? t.id : '');
+        mAng.querySelector('.f-silsilah').hidden = tetap || !silsilah.length;
         // Pilihan kelompok: untuk memindahkan anggota ke kelompok lain
         fAng.kelompok.innerHTML = data.grup.map(function (x) {
             return '<option value="' + esc(x.id) + '"' + (x.id === g.id ? ' selected' : '') + '>' + esc(x.judul) + '</option>';
         }).join('');
-        if (!m) isiSilsilah();
         buka(mAng); fAng.nama.focus();
     }
 
@@ -329,13 +349,30 @@
         var isi = { nama: fAng.nama.value.trim(), peran: fAng.peran.value.trim(), desk: fAng.desk.value.trim(), jk: fAng.jk.value, warna: warnaPilih };
         if (!isi.nama) return info(mAng, 'Isi namanya dulu.', 'error');
         var m = anggotaAktif, g = grupTujuan, id = m ? m.id : 'm' + Date.now().toString(36);
-        var foto = [], hapus = [], baru = potong.ada() ? potong.hasil() : null;
-        if (baru) {
+        var foto = [], hapus = [], baru = potong.ada() ? potong.hasil() : null, ubahSilsilah = null;
+        var orang = m && m.profil ? null : orangSilsilah(fAng.silsilah.value);
+        // Tidak memilih nama padahal ada nama yang cocok di silsilah = sengaja tidak ditautkan
+        isi.silsilah = orang ? orang.id : (window.GH.tautan({ nama: isi.nama }, silsilah) ? '-' : '');
+        if (baru && orang) {
+            // Anggota tertaut: foto disimpan di Silsilah, sehingga kedua halaman memakai foto yang sama
+            var path = 'silsilah/' + orang.id + '-' + Date.now().toString(36) + '.jpg';
+            foto.push({ path: path, base64: baru.base64 });
+            lokal[path] = baru.dataUrl;
+            ubahSilsilah = function (daftar) {
+                daftar.forEach(function (o) {
+                    if (o.id !== orang.id) return;
+                    if (o.foto && o.foto.indexOf('silsilah/') === 0) hapus.push(o.foto);
+                    o.foto = path;
+                });
+            };
+            isi.foto = '';
+            if (m && m.foto && m.foto.indexOf('anggota/') === 0) hapus.push(m.foto);
+        } else if (baru) {
             isi.foto = 'anggota/' + id + '-' + Date.now().toString(36) + '.jpg';
             foto.push({ path: isi.foto, base64: baru.base64 });
             lokal[isi.foto] = baru.dataUrl;
             if (m && m.foto && m.foto.indexOf('anggota/') === 0) hapus.push(m.foto);
-        } else if (fotoDari) isi.foto = fotoDari;
+        }
         var btn = fAng.querySelector('[type=submit]'); btn.disabled = true; info(mAng, baru ? 'Mengunggah foto…' : 'Menyimpan…');
         var tujuan = fAng.kelompok.value || g.id;
         simpan(function (d) {
@@ -346,11 +383,20 @@
                 // Pindah kelompok: taruh di akhir kelompok tujuan
                 if (t && t !== x.g) { x.g.anggota.splice(x.i, 1); t.anggota.push(x.m); }
             } else if (t) t.anggota.push(Object.assign({ id: id, foto: '' }, isi));
-        }, (m ? 'Ubah anggota: ' : 'Tambah anggota: ') + isi.nama, foto, hapus).then(function () {
+        }, (m ? 'Ubah anggota: ' : 'Tambah anggota: ') + isi.nama, foto, hapus, ubahSilsilah).then(function () {
             btn.disabled = false; tutup(mAng);
         }, function (err) { btn.disabled = false; info(mAng, window.GH.alasan(err), 'error'); });
     });
 
     // ---------- Muat ----------
-    window.GH.bacaJson('anggota.json').then(function (d) { if (d && d.grup) { data = d; } render(); });
+    Promise.all([window.GH.bacaJson('anggota.json'), window.GH.bacaSilsilah()]).then(function (r) {
+        if (r[0] && r[0].grup) data = r[0];
+        silsilah = r[1];
+        render();
+        var ubahId = new URLSearchParams(location.search).get('ubah');
+        if (ubahId && document.documentElement.classList.contains('admin')) {
+            var x = cariAnggota(data, ubahId);
+            if (x) { $('btn-kelola-anggota').click(); bukaAnggota(x.g, x.m); }
+        }
+    });
 })();

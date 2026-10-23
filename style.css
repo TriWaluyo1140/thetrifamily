@@ -669,3 +669,4 @@ html:not(.admin) .khusus-admin { display: none !important; }
 .modal-card .pilih-latar input { width: auto; }
 .sib.w5 { --c: var(--w5); } .sib.w6 { --c: var(--w6); } .sib.w7 { --c: var(--w7); }
 .pu-catatan { margin-top: 10px; font-size: .78rem; }
+a.ganti-foto { text-decoration: none; display: inline-block; }

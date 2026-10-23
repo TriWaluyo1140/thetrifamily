@@ -211,10 +211,16 @@
         }
         var data = dariHalaman();
 
+        // Nama untuk judul "Tentang …": nama panggilan, kecuali isinya hanya gelar (mis. "H."); lalu kata pertama yang bukan gelar
+        function sebutan() {
+            if (data.panggilan && !/\.$/.test(data.panggilan)) return data.panggilan;
+            var kata = String(data.nama || '').split(/\s+/);
+            return kata.filter(function (k) { return !/\.$/.test(k); })[0] || data.nama;
+        }
         function render() {
             judulNama.textContent = data.nama;
             main.innerHTML =
-                '<h2>Tentang ' + esc(data.panggilan || data.nama) + '</h2>' +
+                '<h2>Tentang ' + esc(sebutan()) + '</h2>' +
                 '<ul class="facts">' + data.fakta.map(function (f) {
                     return '<li><div class="fi">' + esc(f.ikon || '•') + '</div><div><strong>' + esc(f.judul) + '</strong>' +
                         (f.isi ? '<span>' + esc(f.isi) + '</span>' : '<span class="kosong">Belum diisi</span>') + '</div></li>';
