@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=24">
-    <script src="i18n.js?v=6"></script>
+    <link rel="stylesheet" href="style.css?v=27">
+    <script src="i18n.js?v=8"></script>
     <script src="admin.js?v=1"></script>
     <script src="github.js?v=2"></script>
-    <script src="pengaturan.js?v=1"></script>
+    <script src="pengaturan.js?v=2"></script>
 </head>
 <body>
 
@@ -34,12 +34,18 @@
     <main class="page">
     <section id="tentang" class="about">
         <div class="wrap">
-            <div class="section-head reveal">
+            <div class="section-head reveal" id="kepala-halaman">
                 <h2>Tentang Kami</h2>
                 <p>Situs ini adalah ruang kecil kami di internet untuk mengenalkan diri dan menyimpan cerita keluarga.</p>
             </div>
 
-            <div class="values">
+            <div class="tree-bar khusus-admin">
+                <button type="button" class="btn btn-ghost" id="btn-kelola-halaman" aria-pressed="false">✏️ Kelola Halaman</button>
+                <p class="hint" id="kelola-halaman-hint" hidden>Mode kelola aktif: ubah judul & pengantar, atau tambah, ubah, hapus, dan geser kartu nilai keluarga.</p>
+            </div>
+
+            <!-- Kartu nilai: digambar ulang dari tentang.json; isi di bawah ini adalah bawaan -->
+            <div class="values" id="daftar-nilai">
                 <div class="value reveal">
                     <div class="ico">🤝</div>
                     <h3>Kebersamaan</h3>
@@ -67,5 +73,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
+    <script src="halaman.js?v=1"></script>
 </body>
 </html>

@@ -88,6 +88,8 @@
         box.classList.toggle('single', foto.length < 2);
         $('lb-tools').hidden = !getKunci();
         $('hapus-album').hidden = foto.length < 2;
+        $('jadi-sampul').hidden = $('geser-kiri').hidden = pos === 0;
+        $('geser-kanan').hidden = pos === foto.length - 1;
     }
     function bukaAlbum(i, mulai) { album = daftar[i]; tampil(mulai || 0); box.hidden = false; document.body.style.overflow = 'hidden'; }
     function tutupAlbum() { box.hidden = true; document.body.style.overflow = ''; }
@@ -236,6 +238,82 @@
     $('hapus-foto').addEventListener('click', function () { hapus(false); });
     $('hapus-album').addEventListener('click', function () { hapus(true); });
 
+    // ---------- Ubah album: keterangan, sampul, urutan foto ----------
+    // ubah(a) mengubah album di data terbaru; posisiBaru(a) = foto yang ditampilkan sesudahnya
+    function ubahAlbum(ubah, pesanCommit, posisiBaru) {
+        var ciri = fotoAlbum(album).slice();
+        var tombol = $('lb-tools').querySelectorAll('button');
+        Array.prototype.forEach.call(tombol, function (b) { b.disabled = true; });
+        return window.GH.simpan({
+            json: 'galeri.json', pesan: pesanCommit,
+            ubah: function (list) {
+                // Album dikenali dari fotonya (aman walau urutan album berubah)
+                var a = (list || []).filter(function (x) { return fotoAlbum(x).some(function (p) { return ciri.indexOf(p) >= 0; }); })[0];
+                if (!a) { var err = new Error('hilang'); err.status = 410; throw err; }
+                a.files = fotoAlbum(a); delete a.file;
+                ubah(a);
+                return list;
+            }
+        }).then(function (list) {
+            daftar = list; render();
+            album = list.filter(function (x) { return fotoAlbum(x).some(function (p) { return ciri.indexOf(p) >= 0; }); })[0] || album;
+            tampil(posisiBaru ? posisiBaru(album) : pos);
+        }).catch(function (err) {
+            alert(err.status === 410 ? 'Album ini sudah dihapus dari perangkat lain. Muat ulang halaman.' : window.GH.alasan(err));
+        }).then(function () {
+            Array.prototype.forEach.call(tombol, function (b) { b.disabled = false; });
+        });
+    }
+    function geserFoto(arah) {
+        var path = fotoAlbum(album)[pos];
+        ubahAlbum(function (a) {
+            var i = a.files.indexOf(path), j = i + arah;
+            if (i < 0 || j < 0 || j >= a.files.length) return;
+            a.files.splice(j, 0, a.files.splice(i, 1)[0]);
+        }, 'Urutkan foto: ' + album.tempat, function (a) { return a.files.indexOf(path); });
+    }
+    $('geser-kiri').addEventListener('click', function () { geserFoto(-1); });
+    $('geser-kanan').addEventListener('click', function () { geserFoto(1); });
+    $('jadi-sampul').addEventListener('click', function () {
+        var path = fotoAlbum(album)[pos];
+        ubahAlbum(function (a) {
+            var i = a.files.indexOf(path);
+            if (i > 0) a.files.unshift(a.files.splice(i, 1)[0]);
+        }, 'Ganti sampul: ' + album.tempat, function () { return 0; });
+    });
+
+    // Formulir ubah keterangan album
+    var mKet = document.createElement('div');
+    mKet.className = 'modal'; mKet.hidden = true;
+    mKet.innerHTML = '<form class="modal-card"><button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>' +
+        '<h2>Ubah Keterangan Album</h2>' +
+        '<label>Nama tempat <input name="tempat" required placeholder="contoh: Pantai Kuta"></label>' +
+        '<div class="row2"><label>Kota <input name="kota" placeholder="contoh: Bali"></label>' +
+        '<label>Waktu <input name="waktu" placeholder="contoh: Juli 2024"></label></div>' +
+        '<label>Cerita singkat <textarea name="cerita" rows="3" placeholder="Apa yang paling berkesan?"></textarea></label>' +
+        '<p class="pesan" role="status"></p><div class="modal-actions"><button type="button" class="btn btn-ghost" data-tutup>Batal</button>' +
+        '<button type="submit" class="btn">Simpan</button></div></form>';
+    document.body.appendChild(mKet);
+    var fKet = mKet.querySelector('form');
+    function tutupKet() { if (!fKet.querySelector('[type=submit]').disabled) mKet.hidden = true; }
+    mKet.addEventListener('click', function (e) { if (e.target === mKet || e.target.hasAttribute('data-tutup')) tutupKet(); });
+    $('ubah-album').addEventListener('click', function () {
+        fKet.tempat.value = album.tempat || ''; fKet.kota.value = album.kota || '';
+        fKet.waktu.value = album.waktu || ''; fKet.cerita.value = album.cerita || '';
+        fKet.querySelector('.pesan').textContent = '';
+        mKet.hidden = false; fKet.tempat.focus();
+    });
+    fKet.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var isi = { tempat: fKet.tempat.value.trim(), kota: fKet.kota.value.trim(), waktu: fKet.waktu.value.trim(), cerita: fKet.cerita.value.trim() };
+        if (!isi.tempat) return;
+        var btn = fKet.querySelector('[type=submit]'); btn.disabled = true;
+        fKet.querySelector('.pesan').className = 'pesan'; fKet.querySelector('.pesan').textContent = 'Menyimpan…';
+        ubahAlbum(function (a) { Object.assign(a, isi); }, 'Ubah keterangan album: ' + isi.tempat).then(function () {
+            btn.disabled = false; tutupKet();
+        });
+    });
+
     // ---------- Perkecil foto (maks 1600px, JPEG) ----------
     function perkecil(file) {
         return new Promise(function (ok, gagal) {
@@ -294,7 +372,8 @@
         if (e.target === modal || e.target.hasAttribute('data-tutup')) tutupForm();
     });
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { if (!modal.hidden) tutupForm(); else if (!box.hidden) tutupAlbum(); }
+        if (e.key === 'Escape') { if (!mKet.hidden) tutupKet(); else if (!modal.hidden) tutupForm(); else if (!box.hidden) tutupAlbum(); }
+        if (!mKet.hidden) return; // sedang mengetik keterangan
         if (!box.hidden && e.key === 'ArrowLeft') tampil(pos - 1);
         if (!box.hidden && e.key === 'ArrowRight') tampil(pos + 1);
     });

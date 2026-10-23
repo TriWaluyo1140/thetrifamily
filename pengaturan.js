@@ -11,7 +11,8 @@
             'on-brand': '#1a1613', shadow: '0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25)',
             'shadow-lg': '0 2px 4px rgba(0,0,0,.3), 0 20px 40px rgba(0,0,0,.35)' }
     };
-    var BAWAAN = { tema: 'auto', warna: '', latar: { jenis: 'bawaan', warna: '', gambar: '' } };
+    var BAWAAN = { tema: 'auto', warna: '', latar: { jenis: 'bawaan', warna: '', gambar: '' },
+        logo: { jenis: 'teks', teks: '', gambar: '' }, nama: '' };
 
     // ---------- Warna ----------
     function rgb(h) { h = h.replace('#', ''); if (h.length === 3) h = h.replace(/./g, '$&$&'); var n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
@@ -21,8 +22,31 @@
 
     // ---------- Terapkan ----------
     var lokalGambar = null; // gambar latar yang baru dipilih (sebelum situs diperbarui)
+    var lokalLogo = null;   // gambar logo yang baru dipilih
+
+    // Logo di menu atas: huruf (mis. "TW") atau gambar, nama di sampingnya, dan ikon tab browser
+    var asliLogo = null;
+    function terapkanLogo(cfg) {
+        var a = document.querySelector('.nav .logo'), mark = a && a.querySelector('.logo-mark');
+        if (!mark) return;
+        var teksNama = null;
+        Array.prototype.forEach.call(a.childNodes, function (n) { if (n.nodeType === 3 && n.nodeValue.trim()) teksNama = n; });
+        if (!teksNama) { teksNama = document.createTextNode(''); a.appendChild(teksNama); }
+        var ikon = document.querySelector('link[rel="icon"]');
+        if (!asliLogo) asliLogo = { teks: mark.textContent, nama: teksNama.nodeValue.trim(), ikon: ikon ? ikon.href : '' };
+        var logo = cfg.logo || {};
+        var gambar = logo.jenis === 'gambar' && (lokalLogo || logo.gambar);
+        mark.classList.toggle('logo-gambar', !!gambar);
+        if (gambar) mark.innerHTML = '<img src="' + String(gambar).replace(/"/g, '') + '" alt="">';
+        else mark.textContent = logo.teks || asliLogo.teks;
+        var nama = ' ' + (cfg.nama || asliLogo.nama);
+        if (teksNama.nodeValue !== nama) teksNama.nodeValue = nama;
+        if (ikon) ikon.href = gambar || asliLogo.ikon;
+    }
+
     function terapkan(cfg) {
         cfg = cfg || BAWAAN;
+        terapkanLogo(cfg);
         var latar = cfg.latar || {}, v = {};
         var mode = cfg.tema === 'terang' || cfg.tema === 'gelap' ? cfg.tema : 'auto';
         // Latar warna menentukan tema: latar terang = teks gelap, latar gelap = teks terang
@@ -104,6 +128,15 @@
             '<div data-latar="gambar"><label class="pick kecil"><input type="file" name="gambar" accept="image/*"><span class="gambar-teks">🖼 Pilih gambar latar</span></label>' +
             '<p class="hint">Gambar dibuat samar agar tulisan tetap mudah dibaca.</p></div>' +
             '</fieldset>' +
+            '<fieldset class="f-nikah"><legend>Logo</legend>' +
+            '<div class="pilih-latar">' +
+            '<label><input type="radio" name="logo" value="teks"> Huruf</label>' +
+            '<label><input type="radio" name="logo" value="gambar"> Gambar</label></div>' +
+            '<div data-logo="teks"><label>Huruf logo <input name="logoTeks" maxlength="3" placeholder="TW"></label></div>' +
+            '<div data-logo="gambar"><label class="pick kecil"><input type="file" name="logoGambar" accept="image/*"><span class="logo-pick">🖼 Pilih gambar logo</span></label>' +
+            '<p class="hint">Gambar dipotong persegi dan juga dipakai sebagai ikon di tab browser.</p></div>' +
+            '<label>Nama di samping logo <input name="namaSitus" placeholder="Keluarga Tri Waluyo"></label>' +
+            '</fieldset>' +
             '<p class="pesan" role="status"></p>' +
             '<div class="modal-actions"><button type="button" class="btn btn-ghost" data-reset>Kembalikan ke bawaan</button>' +
             '<button type="button" class="btn btn-ghost" data-tutup>Batal</button>' +
@@ -111,7 +144,7 @@
             '</form>';
         document.body.appendChild(modal);
         var form = modal.querySelector('form'), pesan = modal.querySelector('.pesan'), btn = form.querySelector('[type=submit]');
-        var draf = null, gambarBaru = null;
+        var draf = null, gambarBaru = null, logoBaru = null;
         function info(t, j) { pesan.textContent = t; pesan.className = 'pesan ' + (j || ''); }
 
         function isiForm() {
@@ -124,17 +157,26 @@
             Array.prototype.forEach.call(modal.querySelectorAll('[data-latar]'), function (d) { d.hidden = d.getAttribute('data-latar') !== draf.latar.jenis; });
             modal.querySelector('.gambar-teks').textContent = gambarBaru || draf.latar.gambar ? '🖼 Ganti gambar latar' : '🖼 Pilih gambar latar';
             form.tema.disabled = draf.latar.jenis === 'warna';
+            Array.prototype.forEach.call(form.logo, function (r) { r.checked = r.value === draf.logo.jenis; });
+            Array.prototype.forEach.call(modal.querySelectorAll('[data-logo]'), function (d) { d.hidden = d.getAttribute('data-logo') !== draf.logo.jenis; });
+            modal.querySelector('.logo-pick').textContent = logoBaru || draf.logo.gambar ? '🖼 Ganti gambar logo' : '🖼 Pilih gambar logo';
         }
-        function pratinjau() { lokalGambar = gambarBaru ? gambarBaru.dataUrl : null; terapkan(draf); isiForm(); }
+        function isiTeks() { form.logoTeks.value = draf.logo.teks || ''; form.namaSitus.value = draf.nama || ''; }
+        function pratinjau() {
+            lokalGambar = gambarBaru ? gambarBaru.dataUrl : null;
+            lokalLogo = logoBaru ? logoBaru.dataUrl : null;
+            terapkan(draf); isiForm();
+        }
 
         function buka() {
             draf = JSON.parse(JSON.stringify(aktif)); draf.latar = draf.latar || { jenis: 'bawaan' };
-            gambarBaru = null; info(''); isiForm();
+            draf.logo = draf.logo || { jenis: 'teks', teks: '', gambar: '' }; draf.nama = draf.nama || '';
+            gambarBaru = null; logoBaru = null; info(''); isiForm(); isiTeks();
             modal.hidden = false; document.body.style.overflow = 'hidden';
         }
         function tutup(batal) {
             if (btn.disabled) return;
-            if (batal) { lokalGambar = null; terapkan(aktif); }
+            if (batal) { lokalGambar = null; lokalLogo = null; terapkan(aktif); }
             modal.hidden = true; document.body.style.overflow = '';
         }
         document.getElementById('buka-pengaturan').addEventListener('click', buka);
@@ -149,7 +191,7 @@
                 pratinjau();
             }
             if (t.hasAttribute('data-bawaan')) { draf.warna = ''; pratinjau(); }
-            if (t.hasAttribute('data-reset')) { draf = JSON.parse(JSON.stringify(BAWAAN)); gambarBaru = null; pratinjau(); }
+            if (t.hasAttribute('data-reset')) { draf = JSON.parse(JSON.stringify(BAWAAN)); gambarBaru = null; logoBaru = null; pratinjau(); isiTeks(); }
         });
         modal.addEventListener('input', function (e) {
             var t = e.target, nama = t.getAttribute('data-warna-lain');
@@ -157,6 +199,9 @@
             else if (nama === 'latar') { draf.latar.jenis = 'warna'; draf.latar.warna = t.value; }
             else if (t.name === 'tema') draf.tema = t.value;
             else if (t.name === 'latar') draf.latar.jenis = t.value;
+            else if (t.name === 'logo') draf.logo.jenis = t.value;
+            else if (t.name === 'logoTeks') draf.logo.teks = t.value.trim();
+            else if (t.name === 'namaSitus') draf.nama = t.value.trim();
             else return;
             pratinjau();
         });
@@ -178,8 +223,25 @@
             img.src = URL.createObjectURL(f);
         });
 
+        // Gambar logo: potong persegi di tengah, 256 px, PNG (latar transparan tetap terjaga)
+        form.logoGambar.addEventListener('change', function () {
+            var f = form.logoGambar.files[0]; if (!f) return;
+            var img = new Image();
+            img.onload = function () {
+                var w = img.naturalWidth, h = img.naturalHeight, s = Math.min(w, h);
+                var c = document.createElement('canvas'); c.width = c.height = Math.min(256, s);
+                c.getContext('2d').drawImage(img, (w - s) / 2, (h - s) / 2, s, s, 0, 0, c.width, c.height);
+                var dataUrl = c.toDataURL('image/png');
+                logoBaru = { dataUrl: dataUrl, base64: dataUrl.split(',')[1] };
+                draf.logo.jenis = 'gambar'; pratinjau();
+            };
+            img.onerror = function () { info('Format foto ini tidak bisa dibuka. Gunakan foto JPG atau PNG.', 'error'); };
+            img.src = URL.createObjectURL(f);
+        });
+
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+            if (draf.logo.jenis === 'gambar' && !logoBaru && !draf.logo.gambar) return info('Pilih gambar logonya dulu.', 'error');
             if (draf.latar.jenis === 'gambar' && !gambarBaru && !draf.latar.gambar) return info('Pilih gambar latarnya dulu.', 'error');
             if (draf.latar.jenis === 'warna' && !draf.latar.warna) return info('Pilih warna latarnya dulu.', 'error');
             var lama = aktif.latar && aktif.latar.gambar;
@@ -191,6 +253,13 @@
             if (draf.latar.jenis !== 'gambar') draf.latar.gambar = '';
             // Gambar latar lama yang tidak dipakai lagi ikut dihapus
             if (lama && lama !== draf.latar.gambar && lama.indexOf('pengaturan/') === 0) hapus.push(lama);
+            var logoLama = aktif.logo && aktif.logo.gambar;
+            if (logoBaru) {
+                draf.logo.gambar = 'pengaturan/logo-' + Date.now().toString(36) + '.png';
+                foto.push({ path: draf.logo.gambar, base64: logoBaru.base64 });
+            }
+            if (draf.logo.jenis !== 'gambar') draf.logo.gambar = '';
+            if (logoLama && logoLama !== draf.logo.gambar && logoLama.indexOf('pengaturan/') === 0) hapus.push(logoLama);
             btn.disabled = true; info('Menyimpan…');
             var simpanDraf = JSON.parse(JSON.stringify(draf));
             window.GH.simpan({ json: 'pengaturan.json', foto: foto, hapus: hapus, pesan: 'Ubah pengaturan situs', ubah: function () { return simpanDraf; } })
@@ -201,6 +270,6 @@
         });
     }
 
-    function siap() { muat(); pasangPanel(); }
+    function siap() { terapkanLogo(aktif); muat(); pasangPanel(); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', siap); else siap();
 })();

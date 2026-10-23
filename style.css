@@ -670,3 +670,20 @@ html:not(.admin) .khusus-admin { display: none !important; }
 .sib.w5 { --c: var(--w5); } .sib.w6 { --c: var(--w6); } .sib.w7 { --c: var(--w7); }
 .pu-catatan { margin-top: 10px; font-size: .78rem; }
 a.ganti-foto { text-decoration: none; display: inline-block; }
+.lightbox .lb-tools button.lb-ubah { background: rgba(255, 255, 255, .14); color: #f3ece4; }
+.lightbox .lb-tools button.lb-ubah:hover { background: rgba(255, 255, 255, .28); color: #fff; }
+
+/* Kelola halaman Tentang & Motto */
+.value, .quote { position: relative; }
+.bisa-kelola { outline: 2px dashed color-mix(in srgb, var(--brand) 45%, transparent); outline-offset: 6px; border-radius: var(--radius); }
+.daftar-motto { display: grid; gap: 56px; }
+.quote-kecil blockquote { font-size: clamp(1.1rem, 2.6vw, 1.45rem); }
+.quote-kecil blockquote::before { font-size: 2.6rem; }
+.page > section#motto { flex-direction: column; justify-content: center; }
+.halaman-tambah { margin-top: 28px; }
+.modal-card .kolom-ikon input { width: 80px; text-align: center; font-size: 1.3rem; }
+.tree-actions { display: flex; justify-content: center; margin-top: 32px; }
+
+/* Logo gambar */
+.logo-mark.logo-gambar { background: none; overflow: hidden; }
+.logo-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; display: block; }

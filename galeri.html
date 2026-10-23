@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=24">
-    <script src="i18n.js?v=6"></script>
+    <link rel="stylesheet" href="style.css?v=27">
+    <script src="i18n.js?v=8"></script>
     <script src="admin.js?v=1"></script>
     <script src="github.js?v=2"></script>
-    <script src="pengaturan.js?v=1"></script>
+    <script src="pengaturan.js?v=2"></script>
 </head>
 <body>
 
@@ -58,6 +58,10 @@
             <figcaption></figcaption>
             <!-- Hanya muncul di perangkat yang menyimpan Kunci GitHub -->
             <div class="lb-tools khusus-admin" id="lb-tools" hidden>
+                <button type="button" class="lb-ubah" id="ubah-album">✏️ Ubah keterangan</button>
+                <button type="button" class="lb-ubah" id="jadi-sampul">⭐ Jadikan sampul</button>
+                <button type="button" class="lb-ubah" id="geser-kiri" title="Geser foto ke kiri">◀</button>
+                <button type="button" class="lb-ubah" id="geser-kanan" title="Geser foto ke kanan">▶</button>
                 <button type="button" id="hapus-foto">🗑 Hapus foto ini</button>
                 <button type="button" id="hapus-album">Hapus album</button>
             </div>
@@ -116,6 +120,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
-    <script src="galeri.js?v=5"></script>
+    <script src="galeri.js?v=6"></script>
 </body>
 </html>

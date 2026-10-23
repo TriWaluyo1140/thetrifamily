@@ -65,7 +65,7 @@
         'Geser foto di dalam lingkaran untuk mengatur posisi wajah.': 'Drag the photo inside the circle to position the face.',
         'Ubah Profil': 'Edit Profile', 'Nama tampilan': 'Display name', 'Nama panggilan': 'Nickname',
         'Data diri': 'Personal details', '＋ Tambah baris': '＋ Add row', 'Judul kata kunci': 'Keywords heading',
-        'Kata kunci': 'Keywords', 'Kutipan / motto': 'Quote / motto', 'Isi': 'Value', 'Judul': 'Label', 'Ikon': 'Icon', 'Hapus baris': 'Remove row',
+        'Kata kunci': 'Keywords', 'Kutipan / motto': 'Quote / motto', 'Isi': 'Value', 'Ikon': 'Icon', 'Hapus baris': 'Remove row',
         'Judul, contoh: Hobi': 'Label, e.g. Hobby', 'untuk judul "Tentang …"': 'for the "About …" heading',
         'contoh: Dikenal Sebagai / Hobi & Minat': 'e.g. Known As / Hobbies & Interests',
         'Pisahkan dengan koma, contoh: Pekerja Keras, Suka Memasak': 'Separate with commas, e.g. Hard Worker, Loves Cooking',
@@ -162,6 +162,23 @@
         'Anggota ini mungkin sudah dihapus. Kembali ke halaman Anggota.': 'This member may have been deleted. Go back to the Members page.',
         'Foto, nama, dan hubungan diubah lewat ✏️ Kelola Anggota.': 'Photo, name, and relationship are changed via ✏️ Manage Members.',
 
+        // Kelola galeri, Tentang Kami, Motto
+        '✏️ Ubah keterangan': '✏️ Edit details', '⭐ Jadikan sampul': '⭐ Set as cover',
+        'Geser foto ke kiri': 'Move photo left', 'Geser foto ke kanan': 'Move photo right',
+        'Ubah Keterangan Album': 'Edit Album Details',
+        'Album ini sudah dihapus dari perangkat lain. Muat ulang halaman.': 'This album was deleted from another device. Please reload the page.',
+        '✏️ Kelola Halaman': '✏️ Manage Page',
+        'Mode kelola aktif: ubah judul & pengantar, atau tambah, ubah, hapus, dan geser kartu nilai keluarga.': 'Manage mode is on: edit the heading & introduction, or add, edit, delete, and reorder the family value cards.',
+        'Mode kelola aktif: ubah, tambah, hapus, atau geser urutan motto dan kutipan keluarga.': 'Manage mode is on: edit, add, delete, or reorder the family mottos and quotes.',
+        '✏️ Ubah judul & pengantar': '✏️ Edit heading & introduction', 'Ubah Judul & Pengantar': 'Edit Heading & Introduction',
+        'Judul': 'Heading', 'Pengantar': 'Introduction', '＋ Tambah Nilai': '＋ Add Value', '＋ Tambah Motto': '＋ Add Motto',
+        'Tambah Nilai': 'Add Value', 'Ubah Nilai': 'Edit Value', 'Tambah Motto': 'Add Motto', 'Ubah Motto': 'Edit Motto',
+        'Ikon (emoji)': 'Icon (emoji)', 'Penjelasan': 'Description', 'contoh: Kebersamaan': 'e.g. Togetherness',
+        'Apa arti nilai ini bagi keluarga kita?': 'What does this value mean to our family?',
+        'Motto / kutipan': 'Motto / quote', 'Sumber': 'Source',
+        'contoh: Kerja keras tidak akan mengkhianati hasil.': 'e.g. Hard work never betrays its results.',
+        'contoh: Motto Keluarga Tri Waluyo / Pesan Kakek': 'e.g. Tri Waluyo Family Motto / Grandpa’s advice',
+
         // Pengaturan situs
         '⚙️ Pengaturan Situs': '⚙️ Site Settings', 'Pengaturan Situs': 'Site Settings',
         'Berlaku untuk semua halaman. Perubahan langsung terlihat sebagai pratinjau; klik Simpan untuk menerapkannya bagi semua pengunjung.': 'Applies to every page. Changes show right away as a preview; click Save to apply them for all visitors.',
@@ -171,7 +188,11 @@
         '🖼 Pilih gambar latar': '🖼 Choose background image', '🖼 Ganti gambar latar': '🖼 Change background image',
         'Gambar dibuat samar agar tulisan tetap mudah dibaca.': 'The image is faded so text stays easy to read.',
         'Kembalikan ke bawaan': 'Reset to default', 'Pilih gambar latarnya dulu.': 'Please choose a background image first.',
-        'Pilih warna latarnya dulu.': 'Please choose a background color first.', 'Pengaturan tersimpan! 🎉': 'Settings saved! 🎉',
+        'Pilih warna latarnya dulu.': 'Please choose a background color first.',
+        'Logo': 'Logo', 'Huruf': 'Letters', 'Huruf logo': 'Logo letters', '🖼 Pilih gambar logo': '🖼 Choose logo image',
+        '🖼 Ganti gambar logo': '🖼 Change logo image', 'Nama di samping logo': 'Name next to the logo',
+        'Gambar dipotong persegi dan juga dipakai sebagai ikon di tab browser.': 'The image is cropped square and also used as the browser tab icon.',
+        'Pilih gambar logonya dulu.': 'Please choose a logo image first.', 'Pengaturan tersimpan! 🎉': 'Settings saved! 🎉',
 
         // Judul halaman
         'Profil Ayah — Tri Waluyo': 'Father’s Profile — Tri Waluyo', 'Profil Ibu — Siti Umiyati': 'Mother’s Profile — Siti Umiyati',
@@ -191,6 +212,7 @@
         [/^Orang tua dan saudara kandung (.+?)(\.?)$/, function (m) { return 'Parents and siblings of ' + m[1] + m[2]; }],
         [/^Hapus "(.+)" dari halaman Anggota\?$/, function (m) { return 'Remove "' + m[1] + '" from the Members page?'; }],
         [/^Hapus kelompok "(.+)"\?$/, function (m) { return 'Delete the group "' + m[1] + '"?'; }],
+        [/^Hapus "(.+)"\?$/, function (m) { return 'Delete "' + m[1] + '"?'; }],
         [/^Warna (utama|latar) (#[0-9a-f]+)$/i, function (m) { return (m[1] === 'utama' ? 'Main color ' : 'Background color ') + m[2]; }],
         [/^Warna (\w+)$/, function (m) { return 'Color ' + m[1]; }],
         [/^Anak (pertama|kedua|ketiga|keempat|kelima|keenam|ketujuh|kedelapan|kesembilan|kesepuluh)$/i, function (m) { return URUT[m[1].toLowerCase()] + ' Child'; }],
