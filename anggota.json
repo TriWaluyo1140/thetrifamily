@@ -76,7 +76,17 @@
       "id": "keluarga-ibu",
       "judul": "Keluarga Besar Siti Umiyati",
       "sub": "Orang tua dan saudara kandung Siti Umiyati.",
-      "anggota": []
+      "anggota": [
+        {
+          "id": "mmvkk7lnu",
+          "foto": "",
+          "nama": "H. Endjum Bin H. Aceng",
+          "peran": "",
+          "desk": "",
+          "jk": "L",
+          "warna": "w5"
+        }
+      ]
     }
   ]
 }
