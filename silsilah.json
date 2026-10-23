@@ -172,7 +172,7 @@
     },
     {
       "id": "pmvj9gql3",
-      "foto": "",
+      "foto": "silsilah/pmvj9gql3-mvkqv7zm.jpg",
       "ortu": [
         "kakek-ayah",
         "nenek-ayah"
@@ -183,7 +183,13 @@
       "nama": "Putri Utami",
       "jk": "P",
       "ket": "Anak Keempat",
-      "nikah": {}
+      "nikah": {
+        "pmvj9i563": {
+          "status": "menikah",
+          "ke": 1
+        }
+      },
+      "urutan": 4
     },
     {
       "id": "pmvj9h680",
@@ -208,7 +214,11 @@
       "nama": "Faiz",
       "jk": "L",
       "ket": "Suami dari Putri Utami",
-      "nikah": {}
+      "nikah": {
+        "pmvj9gql3": {
+          "status": "menikah"
+        }
+      }
     },
     {
       "id": "pmvj9kbk7",
