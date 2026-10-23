@@ -59,7 +59,8 @@
           "peran": "Bapak",
           "desk": "",
           "jk": "L",
-          "warna": "ayah"
+          "warna": "ayah",
+          "silsilah": "kakek-ayah"
         },
         {
           "id": "mmvkkc9dz",
@@ -68,7 +69,8 @@
           "peran": "Ibu",
           "desk": "",
           "jk": "P",
-          "warna": "ibu"
+          "warna": "ibu",
+          "silsilah": "nenek-ayah"
         },
         {
           "id": "mmvkkcqwt",
@@ -77,7 +79,8 @@
           "peran": "Kakak",
           "desk": "",
           "jk": "L",
-          "warna": "anak1"
+          "warna": "anak1",
+          "silsilah": "pmvj5qdhu"
         },
         {
           "id": "mmvkkd2i3",
@@ -86,7 +89,8 @@
           "peran": "Kakak",
           "desk": "",
           "jk": "L",
-          "warna": "anak2"
+          "warna": "anak2",
+          "silsilah": "pmvj9fh8z"
         },
         {
           "id": "mmvkkdczl",
@@ -95,7 +99,8 @@
           "peran": "Adik",
           "desk": "",
           "jk": "P",
-          "warna": "w5"
+          "warna": "w5",
+          "silsilah": "pmvj9gql3"
         },
         {
           "id": "mmvkkdq7d",
@@ -104,7 +109,8 @@
           "peran": "Adik",
           "desk": "",
           "jk": "L",
-          "warna": "w6"
+          "warna": "w6",
+          "silsilah": "pmvj9h680"
         }
       ]
     },
@@ -120,7 +126,8 @@
           "peran": "Bapak",
           "desk": "",
           "jk": "L",
-          "warna": "ayah"
+          "warna": "ayah",
+          "silsilah": "kakek-ibu"
         },
         {
           "id": "mmvkkebyc",
@@ -129,7 +136,8 @@
           "peran": "Ibu",
           "desk": "",
           "jk": "P",
-          "warna": "ibu"
+          "warna": "ibu",
+          "silsilah": "nenek-ibu"
         }
       ]
     }
