@@ -73,14 +73,15 @@
       "nama": "Hj. Siam Binti H. Entong",
       "jk": "P",
       "ket": "",
-      "foto": "",
+      "foto": "silsilah/nenek-ibu-mvkqtqha.jpg",
       "ortu": [],
       "pasangan": [
         "kakek-ibu"
       ],
       "nikah": {
         "kakek-ibu": {
-          "status": "menikah"
+          "status": "menikah",
+          "ke": 1
         }
       }
     },
