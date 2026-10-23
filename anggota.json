@@ -51,7 +51,17 @@
       "id": "keluarga-ayah",
       "judul": "Keluarga Besar Tri Waluyo",
       "sub": "Orang tua dan saudara kandung Tri Waluyo.",
-      "anggota": []
+      "anggota": [
+        {
+          "id": "mmvkk4if3",
+          "foto": "silsilah/kakek-ayah-mvjcbl3t.jpg",
+          "nama": "Slamet Ranu Tirto",
+          "peran": "",
+          "desk": "",
+          "jk": "L",
+          "warna": "w5"
+        }
+      ]
     },
     {
       "id": "keluarga-ibu",
