@@ -112,7 +112,17 @@
       "id": "gmvkk8876",
       "judul": "Keluarga Inti Siti Umiyati",
       "sub": "",
-      "anggota": []
+      "anggota": [
+        {
+          "id": "mmvkke2lv",
+          "foto": "",
+          "nama": "H. Endjum Bin H. Aceng",
+          "peran": "Bapak",
+          "desk": "",
+          "jk": "L",
+          "warna": "ayah"
+        }
+      ]
     }
   ]
 }
