@@ -206,7 +206,7 @@
     },
     {
       "id": "pmvj9i563",
-      "foto": "",
+      "foto": "silsilah/pmvj9i563-mvkqvki2.jpg",
       "ortu": [],
       "pasangan": [
         "pmvj9gql3"
@@ -216,7 +216,8 @@
       "ket": "Suami dari Putri Utami",
       "nikah": {
         "pmvj9gql3": {
-          "status": "menikah"
+          "status": "menikah",
+          "ke": 1
         }
       }
     },
