@@ -56,12 +56,17 @@
       "nama": "H. Endjum Bin H. Aceng",
       "jk": "L",
       "ket": "",
-      "foto": "",
+      "foto": "silsilah/kakek-ibu-mvkqsokv.jpg",
       "ortu": [],
       "pasangan": [
         "nenek-ibu"
       ],
-      "nikah": {}
+      "nikah": {
+        "nenek-ibu": {
+          "status": "menikah",
+          "ke": 1
+        }
+      }
     },
     {
       "id": "nenek-ibu",
@@ -73,7 +78,11 @@
       "pasangan": [
         "kakek-ibu"
       ],
-      "nikah": {}
+      "nikah": {
+        "kakek-ibu": {
+          "status": "menikah"
+        }
+      }
     },
     {
       "id": "ibu",
