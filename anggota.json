@@ -51,7 +51,17 @@
       "id": "gmvkkawzl",
       "judul": "Keluarga Inti Tri Waluyo",
       "sub": "",
-      "anggota": []
+      "anggota": [
+        {
+          "id": "mmvkkbvex",
+          "foto": "silsilah/kakek-ayah-mvjcbl3t.jpg",
+          "nama": "Slamet Ranu Tirto",
+          "peran": "Bapak",
+          "desk": "",
+          "jk": "L",
+          "warna": "ayah"
+        }
+      ]
     },
     {
       "id": "gmvkk8876",
