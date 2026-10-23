@@ -51,17 +51,7 @@
       "id": "keluarga-ayah",
       "judul": "Keluarga Besar Tri Waluyo",
       "sub": "Orang tua dan saudara kandung Tri Waluyo.",
-      "anggota": [
-        {
-          "id": "mmvkk5rpz",
-          "foto": "silsilah/nenek-ayah-mvjcbzkp.jpg",
-          "nama": "Khotijah",
-          "peran": "",
-          "desk": "",
-          "jk": "P",
-          "warna": "ibu"
-        }
-      ]
+      "anggota": []
     },
     {
       "id": "keluarga-ibu",
