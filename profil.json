@@ -268,5 +268,48 @@
       "Musik lo-fi"
     ],
     "kutipan": "Satu baris kode hari ini, satu langkah menuju mimpi."
+  },
+  "ibu": {
+    "nama": "Siti Umiyati",
+    "panggilan": "Siti",
+    "fakta": [
+      {
+        "ikon": "👤",
+        "judul": "Nama Lengkap",
+        "isi": "Siti Umiyati"
+      },
+      {
+        "ikon": "📍",
+        "judul": "Tempat / Tanggal Lahir",
+        "isi": "Jakarta, 17 April 1985"
+      },
+      {
+        "ikon": "💍",
+        "judul": "Status",
+        "isi": "Menikah dengan Tri Waluyo"
+      },
+      {
+        "ikon": "💼",
+        "judul": "Pekerjaan",
+        "isi": "Ibu Rumah Tangga & Pemilik Usaha Katering"
+      },
+      {
+        "ikon": "🍛",
+        "judul": "Masakan Andalan",
+        "isi": "Rendang daging dan kue bolu pandan"
+      },
+      {
+        "ikon": "🌸",
+        "judul": "Koleksi",
+        "isi": "Tanaman hias anggrek"
+      }
+    ],
+    "judulKata": "Hobi & Minat",
+    "kata": [
+      "Memasak masakan Nusantara",
+      "Merawat anggrek",
+      "Membuat kue"
+    ],
+    "kutipan": "Masakan terenak adalah yang dimasak dengan cinta untuk keluarga."
   }
 }
