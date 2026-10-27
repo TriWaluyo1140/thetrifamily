@@ -311,5 +311,48 @@
       "Membuat kue"
     ],
     "kutipan": "Masakan terenak adalah yang dimasak dengan cinta untuk keluarga."
+  },
+  "anak2": {
+    "nama": "Haidar Fawaz Alhuzam Putra",
+    "panggilan": "Haidar",
+    "fakta": [
+      {
+        "ikon": "👤",
+        "judul": "Nama Lengkap",
+        "isi": "Haidar Fawaz Alhuzam Putra"
+      },
+      {
+        "ikon": "📍",
+        "judul": "Tempat / Tanggal Lahir",
+        "isi": "Jakarta, 23 November 2013"
+      },
+      {
+        "ikon": "👪",
+        "judul": "Status",
+        "isi": "Anak kedua dari Tri Waluyo & Siti Umiyati"
+      },
+      {
+        "ikon": "🎓",
+        "judul": "Pendidikan",
+        "isi": "Siswa MTsN 37 Jakarta Barat"
+      },
+      {
+        "ikon": "🎨",
+        "judul": "Kegiatan",
+        "isi": "Aktif di klub seni sekolah"
+      },
+      {
+        "ikon": "✨",
+        "judul": "Cita-cita",
+        "isi": "Menjadi Desainer Grafis atau Animator"
+      }
+    ],
+    "judulKata": "Hobi & Minat",
+    "kata": [
+      "Ilustrasi digital",
+      "Novel fiksi",
+      "Koleksi stiker lucu"
+    ],
+    "kutipan": "Setiap gambar dimulai dari satu goresan kecil."
   }
 }
