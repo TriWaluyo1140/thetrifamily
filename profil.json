@@ -230,5 +230,43 @@
     "judulKata": "Dikenal Sebagai",
     "kata": [],
     "kutipan": ""
+  },
+  "anak1": {
+    "nama": "Sylda Frizqia Qiftiyani Putri",
+    "panggilan": "Sylda",
+    "fakta": [
+      {
+        "ikon": "👤",
+        "judul": "Nama Lengkap",
+        "isi": "Sylda Frizqia Qiftiyani Putri"
+      },
+      {
+        "ikon": "📍",
+        "judul": "Tempat / Tanggal Lahir",
+        "isi": "Jakarta, 22 Juli 2010"
+      },
+      {
+        "ikon": "👪",
+        "judul": "Status",
+        "isi": "Anak pertama dari Tri Waluyo & Siti Umiyati"
+      },
+      {
+        "ikon": "🎓",
+        "judul": "Pendidikan",
+        "isi": "Santriwati Ponpes Al Amanah Al Gontory"
+      },
+      {
+        "ikon": "🚀",
+        "judul": "Cita-cita",
+        "isi": "Dokter"
+      }
+    ],
+    "judulKata": "Hobi & Minat",
+    "kata": [
+      "Game online",
+      "Coding website",
+      "Musik lo-fi"
+    ],
+    "kutipan": "Satu baris kode hari ini, satu langkah menuju mimpi."
   }
 }
