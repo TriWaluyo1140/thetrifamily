@@ -146,9 +146,11 @@ section { padding: 64px 0; }
 .section-head p { max-width: 520px; margin: 0 auto; }
 
 /* ---------- Kartu anggota ---------- */
-.members { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-@media (max-width: 960px) { .members { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 520px) { .members { grid-template-columns: 1fr; } }
+/* Kartu berukuran sama per kolom; baris yang tidak penuh (mis. 2 dari 4) berada di tengah */
+.members { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+.members > .member { flex: 0 1 calc((100% - 60px) / 4); }
+@media (max-width: 960px) { .members > .member { flex-basis: calc((100% - 20px) / 2); } }
+@media (max-width: 520px) { .members > .member { flex-basis: 100%; } }
 .member {
     --c: var(--brand);
     background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
@@ -304,7 +306,11 @@ footer .heart { color: var(--brand); }
 }
 
 /* ---------- Galeri ---------- */
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+/* Album berukuran sama per kolom; baris yang tidak penuh berada di tengah */
+.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; }
+.gallery > .photo { flex: 0 1 calc((100% - 44px) / 3); }
+@media (max-width: 860px) { .gallery > .photo { flex-basis: calc((100% - 22px) / 2); } }
+@media (max-width: 560px) { .gallery > .photo { flex-basis: 100%; } }
 .photo {
     background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
     overflow: hidden; box-shadow: var(--shadow); cursor: zoom-in;
