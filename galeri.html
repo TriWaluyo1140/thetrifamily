@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=28">
-    <script src="i18n.js?v=8"></script>
+    <link rel="stylesheet" href="style.css?v=29">
+    <script src="i18n.js?v=9"></script>
     <script src="admin.js?v=1"></script>
     <script src="github.js?v=2"></script>
     <script src="pengaturan.js?v=2"></script>
@@ -40,7 +40,7 @@
             </div>
 
             <div class="gallery-bar reveal khusus-admin">
-                <button type="button" class="btn" id="btn-tambah">＋ Tambah Foto</button>
+                <button type="button" class="btn" id="btn-tambah">＋ Tambah Foto / Video</button>
             </div>
 
             <!-- Foto diambil otomatis dari file galeri.json -->
@@ -55,6 +55,8 @@
         <button class="lb-prev" aria-label="Foto sebelumnya">‹</button>
         <figure>
             <img src="" alt="">
+            <video controls playsinline preload="metadata" hidden></video>
+            <div class="lb-yt" hidden></div>
             <figcaption></figcaption>
             <!-- Hanya muncul di perangkat yang menyimpan Kunci GitHub -->
             <div class="lb-tools khusus-admin" id="lb-tools" hidden>
@@ -69,11 +71,11 @@
         <button class="lb-next" aria-label="Foto berikutnya">›</button>
     </div>
 
-    <!-- Formulir tambah foto -->
+    <!-- Formulir tambah foto & video -->
     <div class="modal" id="modal-tambah" hidden>
         <form class="modal-card" id="form-tambah">
             <button type="button" class="modal-x" data-tutup aria-label="Tutup">✕</button>
-            <h2>Tambah Foto Liburan</h2>
+            <h2>Tambah Foto & Video Liburan</h2>
 
             <label>Simpan ke album
                 <select name="album" id="pilih-album">
@@ -82,10 +84,15 @@
             </label>
 
             <label class="pick" id="pick">
-                <input type="file" name="foto" accept="image/*" multiple>
-                <span id="pick-text">📷 Klik untuk memilih foto<br><small>Bisa pilih banyak foto sekaligus</small></span>
+                <input type="file" name="foto" accept="image/*,video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov,.m4v" multiple>
+                <span id="pick-text">📷 Klik untuk memilih foto atau video<br><small>Bisa pilih banyak sekaligus</small></span>
             </label>
             <div class="thumbs" id="thumbs"></div>
+            <p class="hint">🎬 Video: MP4 paling aman. Maksimal 90 MB per video, sebaiknya di bawah 50 MB agar cepat terunggah. Video panjang lebih baik diunggah ke YouTube, lalu tempel linknya di sini:</p>
+            <div class="yt-baris">
+                <input id="yt-link" type="url" inputmode="url" placeholder="https://youtu.be/..." aria-label="Link YouTube">
+                <button type="button" class="btn btn-ghost" id="tambah-yt">＋ Tambah link</button>
+            </div>
 
             <div class="info-baru" id="info-baru">
                 <label>Nama tempat <input name="tempat" placeholder="contoh: Pantai Kuta"></label>
@@ -107,7 +114,7 @@
             <p class="pesan" id="pesan" role="status"></p>
             <div class="modal-actions">
                 <button type="button" class="btn btn-ghost" data-tutup>Batal</button>
-                <button type="submit" class="btn" id="btn-simpan">Simpan Foto</button>
+                <button type="submit" class="btn" id="btn-simpan">Simpan</button>
             </div>
         </form>
     </div>
@@ -120,6 +127,6 @@
     </footer>
 
     <script src="script.js?v=6"></script>
-    <script src="galeri.js?v=6"></script>
+    <script src="galeri.js?v=7"></script>
 </body>
 </html>
