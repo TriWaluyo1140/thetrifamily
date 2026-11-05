@@ -716,23 +716,9 @@ a.ganti-foto { text-decoration: none; display: inline-block; }
 .yt-baris input { flex: 1; min-width: 0; }
 .yt-baris .btn { white-space: nowrap; padding: 10px 16px; }
 
-/* ---------- Silsilah: latar hangat bertema keluarga ----------
+/* ---------- Silsilah: siluet pohon & pita judul keluarga ----------
    Warna diturunkan dari --brand & --bg, sehingga serasi di tema terang/gelap dan ikut Pengaturan Situs */
-.page > section#silsilah {
-    position: relative; isolation: isolate; overflow: hidden;
-    background:
-        radial-gradient(900px 480px at 8% -6%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 62%),
-        radial-gradient(760px 460px at 96% 12%, color-mix(in srgb, #e9a46a 18%, transparent), transparent 60%),
-        radial-gradient(900px 600px at 50% 110%, color-mix(in srgb, var(--ibu) 14%, transparent), transparent 65%),
-        linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, var(--bg)) 0%, var(--bg) 85%);
-}
-/* Pola samar hati & daun */
-#silsilah::before {
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: var(--brand); opacity: .07;
-    -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><path d='M24 30c-4-6-14-4-14 4 0 7 14 14 14 14s14-7 14-14c0-8-10-10-14-4z'/><path d='M84 78c10-12 26-10 26-10s-2 16-14 22c-6 3-12 1-12 1s-4 6-8 8l-2-3c4-3 7-8 7-8s-2-5 3-10z'/><circle cx='92' cy='22' r='3'/><circle cx='30' cy='96' r='2.5'/></svg>") repeat; mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><path d='M24 30c-4-6-14-4-14 4 0 7 14 14 14 14s14-7 14-14c0-8-10-10-14-4z'/><path d='M84 78c10-12 26-10 26-10s-2 16-14 22c-6 3-12 1-12 1s-4 6-8 8l-2-3c4-3 7-8 7-8s-2-5 3-10z'/><circle cx='92' cy='22' r='3'/><circle cx='30' cy='96' r='2.5'/></svg>") repeat;
-    -webkit-mask-size: 120px; mask-size: 120px;
-}
+.page > section#silsilah { position: relative; isolation: isolate; overflow: hidden; }
 /* Siluet pohon keluarga yang sangat samar */
 #silsilah::after {
     content: ""; position: absolute; z-index: -1; pointer-events: none;
@@ -749,3 +735,61 @@ a.ganti-foto { text-decoration: none; display: inline-block; }
 }
 #silsilah .ft-blok h3::before { content: "🏡 "; }
 #silsilah .fam { background: color-mix(in srgb, var(--brand) 7%, var(--card)); border-color: color-mix(in srgb, var(--brand) 22%, var(--line)); }
+
+/* ---------- Latar hangat & animasi — semua halaman ----------
+   Dua lapisan tetap di belakang isi halaman:
+   1) cahaya hangat (oranye, amber, mawar) yang bergeser perlahan seperti aurora
+   2) pola hati & daun samar yang melayang naik
+   Warna diturunkan dari --brand, jadi ikut tema terang/gelap & Pengaturan Situs. */
+body::before, body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; }
+body::before {
+    inset: -20vmax;
+    background:
+        radial-gradient(40vmax 40vmax at 18% 22%, color-mix(in srgb, var(--brand) 34%, transparent), transparent 70%),
+        radial-gradient(36vmax 36vmax at 82% 18%, color-mix(in srgb, #f0a35e 30%, transparent), transparent 70%),
+        radial-gradient(44vmax 44vmax at 72% 82%, color-mix(in srgb, #e46b8a 22%, transparent), transparent 70%),
+        radial-gradient(36vmax 36vmax at 22% 86%, color-mix(in srgb, #f4c27a 26%, transparent), transparent 70%),
+        radial-gradient(30vmax 30vmax at 50% 50%, color-mix(in srgb, var(--brand) 14%, transparent), transparent 70%),
+        linear-gradient(160deg, color-mix(in srgb, var(--brand) 12%, transparent), color-mix(in srgb, #f0a35e 8%, transparent));
+    animation: latar-aurora 30s ease-in-out infinite alternate;
+}
+body::after {
+    /* Lebih besar dari layar; digeser tepat satu ukuran pola (120 x 240 px) agar perulangannya mulus */
+    inset: -240px;
+    background: var(--brand); opacity: .06;
+    -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><path d='M24 30c-4-6-14-4-14 4 0 7 14 14 14 14s14-7 14-14c0-8-10-10-14-4z'/><path d='M84 78c10-12 26-10 26-10s-2 16-14 22c-6 3-12 1-12 1s-4 6-8 8l-2-3c4-3 7-8 7-8s-2-5 3-10z'/><circle cx='92' cy='22' r='3'/><circle cx='30' cy='96' r='2.5'/></svg>") repeat; mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><path d='M24 30c-4-6-14-4-14 4 0 7 14 14 14 14s14-7 14-14c0-8-10-10-14-4z'/><path d='M84 78c10-12 26-10 26-10s-2 16-14 22c-6 3-12 1-12 1s-4 6-8 8l-2-3c4-3 7-8 7-8s-2-5 3-10z'/><circle cx='92' cy='22' r='3'/><circle cx='30' cy='96' r='2.5'/></svg>") repeat;
+    -webkit-mask-size: 120px; mask-size: 120px;
+    animation: latar-melayang 45s linear infinite;
+}
+@keyframes latar-aurora {
+    0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+    50%  { transform: translate3d(4vmax, -3vmax, 0) rotate(8deg) scale(1.08); }
+    100% { transform: translate3d(-3vmax, 3vmax, 0) rotate(-6deg) scale(1.03); }
+}
+@keyframes latar-melayang { to { transform: translate3d(120px, -240px, 0); } }
+
+/* Bagian berlatar penuh dibuat tembus agar latar hangat terlihat */
+.about { background: color-mix(in srgb, var(--bg-alt) 40%, transparent); }
+/* Kartu sedikit transparan: hangatnya latar ikut terasa, tulisan tetap jelas */
+.member, .value, .photo, .profile, .fam, .pc {
+    background-color: color-mix(in srgb, var(--card) 90%, transparent);
+}
+
+/* Beranda: lingkaran cahaya mengapung & judul berkilau lembut */
+.hero::before { animation: hero-apung 16s ease-in-out infinite alternate; }
+.hero::after { animation: hero-apung 19s ease-in-out infinite alternate-reverse; }
+@keyframes hero-apung { to { transform: translate3d(40px, 30px, 0) scale(1.15); } }
+.hero h1 em {
+    background: linear-gradient(90deg, var(--brand), #f0a35e, #e46b8a, var(--brand));
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: judul-kilau 8s ease-in-out infinite alternate;
+}
+@keyframes judul-kilau { to { background-position: 100% 0; } }
+
+/* Hormati pengaturan "kurangi gerakan" di perangkat */
+@media (prefers-reduced-motion: reduce) {
+    body::before, body::after, .hero::before, .hero::after, .hero h1 em { animation: none; }
+}
+/* Siluet pohon baru tampil setelah silsilah selesai dimuat */
+#silsilah:not(:has(.ft-blok))::after { display: none; }
