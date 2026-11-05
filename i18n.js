@@ -93,7 +93,7 @@
         '↔ Geser ke samping untuk melihat semua': '↔ Scroll sideways to see everything',
 
         // Silsilah
-        'Silsilah Keluarga': 'Family Tree',
+        'Silsilah Keluarga': 'Family Tree', '🌳 Akar & Ranting Kami': '🌳 Our Roots & Branches',
         'Garis keturunan keluarga besar kami. Klik nama untuk melihat foto dan keterangannya.': 'The lineage of our extended family. Click a name to see their photo and details.',
         '✏️ Kelola Silsilah': '✏️ Manage Family Tree', '✓ Selesai Mengelola': '✓ Done Managing',
         'Mode kelola aktif: klik seseorang untuk mengubah, menambah anak, pasangan, atau orang tua.': 'Manage mode is on: click someone to edit them or add a child, spouse, or parent.',

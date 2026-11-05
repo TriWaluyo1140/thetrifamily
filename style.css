@@ -715,3 +715,37 @@ a.ganti-foto { text-decoration: none; display: inline-block; }
 .yt-baris { display: flex; gap: 8px; }
 .yt-baris input { flex: 1; min-width: 0; }
 .yt-baris .btn { white-space: nowrap; padding: 10px 16px; }
+
+/* ---------- Silsilah: latar hangat bertema keluarga ----------
+   Warna diturunkan dari --brand & --bg, sehingga serasi di tema terang/gelap dan ikut Pengaturan Situs */
+.page > section#silsilah {
+    position: relative; isolation: isolate; overflow: hidden;
+    background:
+        radial-gradient(900px 480px at 8% -6%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 62%),
+        radial-gradient(760px 460px at 96% 12%, color-mix(in srgb, #e9a46a 18%, transparent), transparent 60%),
+        radial-gradient(900px 600px at 50% 110%, color-mix(in srgb, var(--ibu) 14%, transparent), transparent 65%),
+        linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, var(--bg)) 0%, var(--bg) 85%);
+}
+/* Pola samar hati & daun */
+#silsilah::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: var(--brand); opacity: .07;
+    -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><path d='M24 30c-4-6-14-4-14 4 0 7 14 14 14 14s14-7 14-14c0-8-10-10-14-4z'/><path d='M84 78c10-12 26-10 26-10s-2 16-14 22c-6 3-12 1-12 1s-4 6-8 8l-2-3c4-3 7-8 7-8s-2-5 3-10z'/><circle cx='92' cy='22' r='3'/><circle cx='30' cy='96' r='2.5'/></svg>") repeat; mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><path d='M24 30c-4-6-14-4-14 4 0 7 14 14 14 14s14-7 14-14c0-8-10-10-14-4z'/><path d='M84 78c10-12 26-10 26-10s-2 16-14 22c-6 3-12 1-12 1s-4 6-8 8l-2-3c4-3 7-8 7-8s-2-5 3-10z'/><circle cx='92' cy='22' r='3'/><circle cx='30' cy='96' r='2.5'/></svg>") repeat;
+    -webkit-mask-size: 120px; mask-size: 120px;
+}
+/* Siluet pohon keluarga yang sangat samar */
+#silsilah::after {
+    content: ""; position: absolute; z-index: -1; pointer-events: none;
+    width: min(760px, 120vw); aspect-ratio: 1; left: 50%; bottom: -60px; transform: translateX(-50%);
+    background: var(--brand); opacity: .06;
+    -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><path d='M188 400c6-60 4-104-10-140-12-30-36-50-60-64l10-10c24 12 44 30 56 52 4-30 2-56-8-84l14-4c12 32 14 62 8 94 14-26 36-44 64-56l6 12c-30 14-52 34-62 62-8 22-6 56 2 138z'/><circle cx='200' cy='110' r='78'/><circle cx='120' cy='160' r='62'/><circle cx='282' cy='160' r='62'/><circle cx='150' cy='80' r='52'/><circle cx='252' cy='78' r='54'/><circle cx='200' cy='190' r='56'/></svg>") no-repeat center / contain; mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><path d='M188 400c6-60 4-104-10-140-12-30-36-50-60-64l10-10c24 12 44 30 56 52 4-30 2-56-8-84l14-4c12 32 14 62 8 94 14-26 36-44 64-56l6 12c-30 14-52 34-62 62-8 22-6 56 2 138z'/><circle cx='200' cy='110' r='78'/><circle cx='120' cy='160' r='62'/><circle cx='282' cy='160' r='62'/><circle cx='150' cy='80' r='52'/><circle cx='252' cy='78' r='54'/><circle cx='200' cy='190' r='56'/></svg>") no-repeat center / contain;
+}
+#silsilah .section-head .eyebrow { margin-bottom: 14px; }
+/* Judul tiap keluarga besar sebagai pita */
+#silsilah .ft-blok h3 {
+    display: table; margin: 0 auto 6px; padding: 8px 22px; border-radius: 999px;
+    background: color-mix(in srgb, var(--card) 85%, transparent); border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--line));
+    box-shadow: var(--shadow);
+}
+#silsilah .ft-blok h3::before { content: "🏡 "; }
+#silsilah .fam { background: color-mix(in srgb, var(--brand) 7%, var(--card)); border-color: color-mix(in srgb, var(--brand) 22%, var(--line)); }
